@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">KИСУ КНД ТБ Рейды М</string>
+    <string name="authorization_greeting">Вас приветствует система\nКИСУ КНД ТБ Рейды М</string>
+    <string name="login_hint">Имя пользователя в КИСУ КНД ТБ</string>
+    <string name="password_hint">Введите пароль</string>
+    <string name="authorization_enter">Войти</string>
+    <string name="hotline_support">Горячая линия технической поддержки:</string>
+    <string name="support_email_link">kisu-ir@geopallada.ru</string>
+
+    <string name="error">Error</string>
+    <string name="login_error">Не удалось выполнить вход, проверьте правильность введенных данных!</string>
+    <string name="server_error">Ошибка сервера!</string>
+    <string name="registration_info">Придумайте новый пароль для регистрации в системе.</string>
+
+    <string name="new_raid">Создать рейдовый осмотр ТС</string>
+    <string name="search_raid">Поиск рейдовых осмотров ТС</string>
+    <string name="raid_information">Информация об осмотре ТС</string>
+    <string name="vehicle_information">Информация О ТС</string>
+    <string name="new_raid_bar">Создание осмотра ТС</string>
+
+    <string name="department">Отдел:</string>
+    <string name="transport_type">Вид транспорта*</string>
+    <string name="raid_address">Место проведения (адрес)*</string>
+    <string name="act_number">Номер акта*</string>
+    <string name="inspector">Уполномоченное(ые) лицо(а), проводившее(ие) рейдовый осмотр*</string>
+    <string name="disposition_number">Номер распоряжения*</string>
+    <string name="disposition_date">Дата распоряжения*</string>
+    <string name="task_number">Номер задания</string>
+    <string name="task_date">Дата задания</string>
+    <string name="start_date">Начало рейдового осмотра*</string>
+    <string name="end_date">Окончание рейдового осмотра*</string>
+    <string name="vehicle_owner">Собственник/Перевозчик*</string>
+    <string name="owner_ogrn">ОГРН собственника</string>
+    <string name="owner_inn">ИНН собственника</string>
+    <string name="warning_count">Количество предостережений</string>
+    <string name="warning_date">Дата предостережений</string>
+    <string name="violation_existing">Выявленные нарушения</string>
+    <string name="save_button">Сохранить</string>
+    <string name="plus_button">+</string>
+    <string name="minus_button">-</string>
+    <string name="edit_raid_bar">Рейдовый осмотр ТС</string>
+    <string name="create_administrative_case">Создание административного дела</string>
+    <string name="administrative_case_number">№ административного дела</string>
+    <string name="clause">Статья КоАП*</string>
+    <string name="protocol">Протокол</string>
+    <string name="protocol_number">№ протокола</string>
+    <string name="protocol_place">Место протокола</string>
+    <string name="date">Дата</string>
+    <string name="decree">Постановление</string>
+    <string name="decree_number">№ постановления</string>
+    <string name="decree_place">Место постановления</string>
+    <string name="definition">Определение</string>
+    <string name="definition_number">№ определения</string>
+    <string name="definition_place">Место определения</string>
+
+    <string-array name="transport_type">
+        <item>Автомобильный</item>
+        <item>Воздушный</item>
+        <item>Железнодорожный</item>
+        <item>Морской</item>
+        <item>Внутренний водный</item>
+    </string-array>
+</resources>

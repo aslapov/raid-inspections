@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_margin="30dp"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/greetings"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/greetings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login"
+        android:text="@string/authorization_greeting"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:hint="@string/login_hint"
+        android:inputType="textPersonName"
+        android:singleLine="true"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/greetings"
+        android:layout_marginTop="20dp"
+        android:hint="@string/password_hint"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:visibility="invisible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="@string/authorization_enter"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textAllCaps="false"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/hotline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mail"
+        android:text="@string/hotline_support"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:autoLink="email|web"
+        android:text="@string/support_email_link"
+        android:textAlignment="center"
+        android:textColorLink="@android:color/holo_blue_dark"
+        android:textSize="20sp" />
+
+</RelativeLayout>
