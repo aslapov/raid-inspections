@@ -1,9 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.view.raid;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.content.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidPresenter;
 
 public class RaidFragment extends Fragment implements IRaidFragmentView {

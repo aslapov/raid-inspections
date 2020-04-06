@@ -1,12 +1,10 @@
 package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.content.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
 public class RaidHolder extends RecyclerView.ViewHolder {
     private TextView mOwnerTextView;

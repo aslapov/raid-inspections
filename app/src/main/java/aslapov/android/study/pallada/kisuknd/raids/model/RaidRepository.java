@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import aslapov.android.study.pallada.kisuknd.raids.api.ApiFactory;
-import aslapov.android.study.pallada.kisuknd.raids.content.LoggedInUser;
-import aslapov.android.study.pallada.kisuknd.raids.content.Raid;
+
+import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.AuthPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidPresenter;
@@ -21,7 +21,7 @@ public class RaidRepository {
 
     public void login(String username, String password, AuthPresenter presenter) {
         LoggedInUser user = new LoggedInUser(username, password);
-        ApiFactory.getRaidService().login(user).enqueue(new Callback<ResponseBody>() {
+        RaidApiFactory.getRaidService().login(user).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -45,7 +45,7 @@ public class RaidRepository {
     }
 
     public List<Raid> queryRaids(RaidListPresenter presenter) {
-        ApiFactory.getRaidService().queryRaids().enqueue(new Callback<List<Raid>>() {
+        RaidApiFactory.getRaidService().queryRaids().enqueue(new Callback<List<Raid>>() {
             @Override
             public void onResponse(Call<List<Raid>> call, Response<List<Raid>> response) {
                 if (response.isSuccessful()) {
@@ -65,7 +65,7 @@ public class RaidRepository {
     }
 
     public Raid queryRaidById(UUID raidId, RaidPresenter presenter) {
-        ApiFactory.getRaidService().queryRaidById(raidId).enqueue(new Callback<Raid>() {
+        RaidApiFactory.getRaidService().queryRaidById(raidId).enqueue(new Callback<Raid>() {
             @Override
             public void onResponse(Call<Raid> call, retrofit2.Response<Raid> response) {
                 // код 200

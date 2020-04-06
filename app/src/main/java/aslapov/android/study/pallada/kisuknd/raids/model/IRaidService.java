@@ -1,10 +1,10 @@
-package aslapov.android.study.pallada.kisuknd.raids.api;
+package aslapov.android.study.pallada.kisuknd.raids.model;
 
 import java.util.List;
 import java.util.UUID;
 
-import aslapov.android.study.pallada.kisuknd.raids.content.LoggedInUser;
-import aslapov.android.study.pallada.kisuknd.raids.content.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;

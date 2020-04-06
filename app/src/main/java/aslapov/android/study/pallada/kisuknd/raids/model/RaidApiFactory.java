@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.api;
+package aslapov.android.study.pallada.kisuknd.raids.model;
 
 import androidx.annotation.NonNull;
 import com.google.gson.Gson;
@@ -13,7 +13,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public final class ApiFactory {
+public final class RaidApiFactory {
 
     private static OkHttpClient sClient;
 
@@ -21,14 +21,14 @@ public final class ApiFactory {
 
     private static final String BASE_URL = "http://10.1.3.106:8085/app/";
 
-    private ApiFactory() {
+    private RaidApiFactory() {
     }
 
     @NonNull
     public static IRaidService getRaidService() {
         IRaidService service = sService;
         if (service == null) {
-            synchronized (ApiFactory.class) {
+            synchronized (RaidApiFactory.class) {
                 service = sService;
                 if (service == null) {
                     service = sService = buildRetrofit().create(IRaidService.class);
@@ -61,7 +61,7 @@ public final class ApiFactory {
     private static OkHttpClient getClient() {
         OkHttpClient client = sClient;
         if (client == null) {
-            synchronized (ApiFactory.class) {
+            synchronized (RaidApiFactory.class) {
                 client = sClient;
                 if (client == null) {
                     client = sClient = buildClient();

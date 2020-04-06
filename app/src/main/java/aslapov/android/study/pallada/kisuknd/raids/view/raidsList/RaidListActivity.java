@@ -2,8 +2,13 @@ package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -14,7 +19,7 @@ import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 import aslapov.android.study.pallada.kisuknd.raids.view.SingleFragmentActivity;
 
-public class RaidListActivity extends SingleFragmentActivity implements IRaidListView {
+public class RaidListActivity extends AppCompatActivity implements IRaidListView {
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RaidListActivity.class);
@@ -22,13 +27,20 @@ public class RaidListActivity extends SingleFragmentActivity implements IRaidLis
     }
 
     @Override
-    protected Fragment createFragment() {
-        return new RaidListFragment();
-    }
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_masterdetail;
+        setContentView(R.layout.activity_masterdetail);
+
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+        if (fragment == null) {
+            fragment = new RaidListFragment();
+            fm.beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 
     @Override

@@ -8,7 +8,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.AuthPresenter;
@@ -30,10 +29,11 @@ public class AuthActivity extends AppCompatActivity implements IAuthView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization_layout);
 
-        mLoadingView = this;//LoadingDialog.view(getSupportFragmentManager());
-        LifecycleOwner lifecycleOwner = this;
-        mPresenter = new AuthPresenter(lifecycleOwner, this);
-        //mPresenter.init();
+        //mLoadingView = LoadingDialog.view(getSupportFragmentManager());
+
+        if (mPresenter == null)
+            mPresenter = new AuthPresenter();
+        mPresenter.attachView(this);
 
         mLogin = (EditText) findViewById(R.id.login);
         mPassword = (EditText) findViewById(R.id.password);
@@ -46,7 +46,7 @@ public class AuthActivity extends AppCompatActivity implements IAuthView {
             @Override
             public void onClick(View view) {
                 String userName = mLogin.getText().toString();
-                String password = mPassword.getText().toString(); //"gH97uf7a";
+                String password = mPassword.getText().toString();
                 mPresenter.tryAuth(userName, password);
             }
         });
@@ -59,6 +59,14 @@ public class AuthActivity extends AppCompatActivity implements IAuthView {
     }
 
     @Override
+    public void showAuthInfo(String message) {
+        if (mLogin.getVisibility() == View.VISIBLE)
+            mLogin.setError(message);
+        else
+            mPassword.setError(message);
+    }
+
+    @Override
     public void showAuthError(String message) {
         if (mLogin.getVisibility() == View.VISIBLE)
             mLogin.setError(message);
@@ -67,18 +75,17 @@ public class AuthActivity extends AppCompatActivity implements IAuthView {
     }
 
     @Override
-    public void showPasswordLayout() {
-        mLogin.setVisibility(View.INVISIBLE);
-        mPassword.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void tryAgain() {
+    public void clearView() {
         mLogin.setText("");
         mPassword.setText("");
         mLogin.setVisibility(View.VISIBLE);
         mPassword.setVisibility(View.INVISIBLE);
-        showAuthError("Не удалось выполнить вход, проверьте правильность введенных данных!");
+    }
+
+    @Override
+    public void showPasswordLayout() {
+        mLogin.setVisibility(View.INVISIBLE);
+        mPassword.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -95,5 +102,11 @@ public class AuthActivity extends AppCompatActivity implements IAuthView {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_PASSWORD_INPUT_VISIBLE, mPassword.getVisibility() == View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
     }
 }

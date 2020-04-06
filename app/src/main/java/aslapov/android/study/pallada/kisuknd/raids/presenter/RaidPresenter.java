@@ -3,7 +3,7 @@ package aslapov.android.study.pallada.kisuknd.raids.presenter;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import java.util.UUID;
-import aslapov.android.study.pallada.kisuknd.raids.content.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.IRaidFragmentView;

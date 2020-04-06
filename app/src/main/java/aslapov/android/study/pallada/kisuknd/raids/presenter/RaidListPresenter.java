@@ -5,10 +5,9 @@ import androidx.lifecycle.LifecycleOwner;
 
 import java.util.List;
 
-import aslapov.android.study.pallada.kisuknd.raids.content.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
-import aslapov.android.study.pallada.kisuknd.raids.view.raidsList.IRaidListView;
 import aslapov.android.study.pallada.kisuknd.raids.view.raidsList.IRaidsFragmentView;
 
 public class RaidListPresenter {
