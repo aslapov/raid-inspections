@@ -22,19 +22,17 @@ import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
 
-public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<Raid>, IRaidsFragmentView {
+public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<Raid> {
     public static final String TAG = "RaidListFragment";
 
-    private RaidListPresenter mPresenter;
-
-    private IRaidListView mRaidListView;
+    private IRaidListActivityView mRaidListView;
     private EmptyRecyclerView mRecyclerView;
     private RaidAdapter mAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mRaidListView = (IRaidListView) context;
+        mRaidListView = (IRaidListActivityView) context;
     }
 
     @Override
@@ -55,21 +53,16 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         mAdapter.attachToRecyclerView(mRecyclerView);
         mAdapter.setOnItemClickListener(this);
 
-        LifecycleOwner lifecycleOwner = this;
-        mPresenter = new RaidListPresenter(lifecycleOwner, this);
-        mPresenter.init();
-
         return v;
     }
 
-    @Override
     public void showRaids(List<Raid> raids) {
         mAdapter.changeDataSet(raids);
     }
 
     @Override
     public void onItemClick(@NonNull Raid item) {
-        mRaidListView.showRaidInfo(item.getId());
+        mRaidListView.showRaidInfo(item);
     }
 
     @Override

@@ -1,26 +1,27 @@
 package aslapov.android.study.pallada.kisuknd.raids.presenter;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-
 import java.util.List;
+import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
-import aslapov.android.study.pallada.kisuknd.raids.view.raidsList.IRaidsFragmentView;
+import aslapov.android.study.pallada.kisuknd.raids.view.raidsList.IRaidListActivityView;
 
-public class RaidListPresenter {
+public class RaidListPresenter implements IBasePresenter<IRaidListActivityView> {
 
-    private LifecycleOwner mLifecycleOwner;
-    private IRaidsFragmentView mRaidsFragmentView;
+    private IRaidListActivityView mView;
 
     private List<Raid> mRaids = null;
 
-    public RaidListPresenter(@NonNull LifecycleOwner lifecycleOwner,
-                         @NonNull IRaidsFragmentView raidsFragmentView) {
-        mLifecycleOwner = lifecycleOwner;
-        mRaidsFragmentView = raidsFragmentView;
+    @Override
+    public void attachView(IRaidListActivityView view) {
+        mView = view;
+    }
+
+    @Override
+    public void detachView() {
+        mView = null;
     }
 
     public void init() {
@@ -37,7 +38,17 @@ public class RaidListPresenter {
     }
 
     public void showRaids() {
-        if (mRaidsFragmentView != null)
-            mRaidsFragmentView.showRaids(getRaids());
+        if (mView != null)
+            mView.showRaids(getRaids());
+    }
+
+    public Raid getRaidById(UUID raidId) {
+        if (mRaids != null) {
+            for (Raid raid : mRaids) {
+                if (raid.getId() == raidId)
+                    return raid;
+            }
+        }
+        return null;
     }
 }

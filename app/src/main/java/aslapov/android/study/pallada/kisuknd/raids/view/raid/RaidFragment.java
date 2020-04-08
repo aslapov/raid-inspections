@@ -22,11 +22,9 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidPresenter;
 
-public class RaidFragment extends Fragment implements IRaidFragmentView {
+public class RaidFragment extends Fragment {
     public static final String TAG = "RaidFragment";
     private static final String ARG_RAID_ID = "raid_id";
-
-    private RaidPresenter mPresenter;
 
     private MaterialTextView mDepartment;
     private AppCompatSpinner mTransportType;
@@ -62,15 +60,6 @@ public class RaidFragment extends Fragment implements IRaidFragmentView {
         return (UUID) getArguments().getSerializable(ARG_RAID_ID);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        UUID raidId = getShownIndex();
-        LifecycleOwner lifecycleOwner = this;
-        mPresenter = new RaidPresenter(lifecycleOwner, this);
-        mPresenter.init(raidId);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -100,7 +89,6 @@ public class RaidFragment extends Fragment implements IRaidFragmentView {
         return v;
     }
 
-    @Override
     public void showRaidInfo(Raid raid) {
         mDepartment.setText(raid.getDepartment());
         //transportType.text

@@ -6,18 +6,12 @@ import java.util.UUID;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
-import aslapov.android.study.pallada.kisuknd.raids.view.raid.IRaidFragmentView;
+import aslapov.android.study.pallada.kisuknd.raids.view.raid.IRaidActivityView;
 
-public class RaidPresenter {
-    private LifecycleOwner mLifecycleOwner;
-    private IRaidFragmentView mRaidFragmentView;
+public class RaidPresenter implements IBasePresenter<IRaidActivityView> {
+
+    private IRaidActivityView mView;
     private Raid mRaid;
-
-    public RaidPresenter(@NonNull LifecycleOwner lifecycleOwner,
-                         @NonNull IRaidFragmentView raidFragmentView) {
-        mLifecycleOwner = lifecycleOwner;
-        mRaidFragmentView = raidFragmentView;
-    }
 
     public void init(UUID raidId) {
         RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
@@ -34,6 +28,16 @@ public class RaidPresenter {
 
     public void showRaidInfo(Raid raid) {
         if (raid != null)
-            mRaidFragmentView.showRaidInfo(raid);
+            mView.showRaidInfo(raid);
+    }
+
+    @Override
+    public void attachView(IRaidActivityView view) {
+        mView = view;
+    }
+
+    @Override
+    public void detachView() {
+        mView = null;
     }
 }

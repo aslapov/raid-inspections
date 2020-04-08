@@ -41,7 +41,6 @@ public class AuthPresenter implements IBasePresenter<IAuthView> {
             }
             RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
             raidRepo.login(userName, password, this);
-            //mAuthView.openRaidListScreen();
         }
     }
 
