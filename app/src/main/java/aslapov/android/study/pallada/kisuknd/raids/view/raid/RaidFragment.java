@@ -1,5 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.view.raid;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,11 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidPresenter;
 
-public class RaidFragment extends Fragment {
+public class RaidFragment extends Fragment implements IRaidView {
     public static final String TAG = "RaidFragment";
     private static final String ARG_RAID_ID = "raid_id";
+
+    private RaidPresenter mPresenter;
 
     private MaterialTextView mDepartment;
     private AppCompatSpinner mTransportType;
@@ -60,6 +63,20 @@ public class RaidFragment extends Fragment {
         return (UUID) getArguments().getSerializable(ARG_RAID_ID);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getActivity().finish();
+            return;
+        }
+
+        mPresenter = new RaidPresenter();
+        mPresenter.attachView(this);
+        mPresenter.loadRaid(getShownIndex());
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,6 +106,7 @@ public class RaidFragment extends Fragment {
         return v;
     }
 
+    @Override
     public void showRaidInfo(Raid raid) {
         mDepartment.setText(raid.getDepartment());
         //transportType.text
@@ -108,5 +126,17 @@ public class RaidFragment extends Fragment {
         mWarningCount.setText(Integer.toString(raid.getWarningCount()));
         //warningDate.setText(raid.getWarningDate().toString());
         mViolationExisting.setChecked(raid.isViolationsPresence());
+    }
+
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        mPresenter.detachView();
+        super.onDetach();
     }
 }

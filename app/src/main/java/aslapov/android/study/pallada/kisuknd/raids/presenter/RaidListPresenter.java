@@ -6,16 +6,23 @@ import java.util.UUID;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
-import aslapov.android.study.pallada.kisuknd.raids.view.raidsList.IRaidListActivityView;
+import aslapov.android.study.pallada.kisuknd.raids.view.raidsList.IRaidListView;
 
-public class RaidListPresenter implements IBasePresenter<IRaidListActivityView> {
+public class RaidListPresenter implements IBasePresenter<IRaidListView> {
 
-    private IRaidListActivityView mView;
+    private IRaidListView mView;
 
     private List<Raid> mRaids = null;
 
+    public List<Raid> getRaids() {
+        return mRaids;
+    }
+    public void setRaids(List<Raid> raids) {
+        mRaids = raids;
+    }
+
     @Override
-    public void attachView(IRaidListActivityView view) {
+    public void attachView(IRaidListView view) {
         mView = view;
     }
 
@@ -24,17 +31,9 @@ public class RaidListPresenter implements IBasePresenter<IRaidListActivityView> 
         mView = null;
     }
 
-    public void init() {
+    public void loadRaids() {
         RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
         raidRepo.queryRaids(this);
-    }
-
-    public void setRaids(List<Raid> raids) {
-        mRaids = raids;
-    }
-
-    public List<Raid> getRaids() {
-        return mRaids;
     }
 
     public void showRaids() {
@@ -42,13 +41,8 @@ public class RaidListPresenter implements IBasePresenter<IRaidListActivityView> 
             mView.showRaids(getRaids());
     }
 
-    public Raid getRaidById(UUID raidId) {
-        if (mRaids != null) {
-            for (Raid raid : mRaids) {
-                if (raid.getId() == raidId)
-                    return raid;
-            }
-        }
-        return null;
+    public void showRaidInfo(Raid raid) {
+        if (mView != null)
+            mView.showRaidInfo(raid);
     }
 }

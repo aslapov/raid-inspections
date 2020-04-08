@@ -8,21 +8,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.util.List;
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 
-public class RaidListActivity extends AppCompatActivity implements IRaidListActivityView {
-
-    RaidListPresenter mPresenter;
-
-    RaidListFragment mRaidListFragment;
+public class RaidListActivity extends AppCompatActivity {
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RaidListActivity.class);
@@ -33,32 +28,29 @@ public class RaidListActivity extends AppCompatActivity implements IRaidListActi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            setContentView(R.layout.activity_fragment);
-        else
-            setContentView(R.layout.activity_twopane);
+        setContentView(R.layout.activity_masterdetail);
 
         FragmentManager fm = getSupportFragmentManager();
-        mRaidListFragment = (RaidListFragment) fm.findFragmentById(R.id.fragment_container);
+        Fragment raidListFragment  = fm.findFragmentById(R.id.fragment_container);
 
-        if (mRaidListFragment == null) {
-            mRaidListFragment = new RaidListFragment();
+        if (raidListFragment == null) {
+            raidListFragment = new RaidListFragment();
             fm.beginTransaction()
-                    .add(R.id.fragment_container, mRaidListFragment)
+                    .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
-
-        mPresenter = new RaidListPresenter();
-        mPresenter.attachView(this);
-        mPresenter.init();
     }
 
     @Override
-    public void showRaids(List<Raid> raids) {
-        mRaidListFragment.showRaids(raids);
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
     public void showRaidInfo(Raid raid) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             RaidActivity.start(this, raid.getId());
@@ -73,13 +65,6 @@ public class RaidListActivity extends AppCompatActivity implements IRaidListActi
             }
             //raidFragment.showRaidInfo(raid);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        mRaidListFragment = null;
-        mPresenter.detachView();
-        super.onDestroy();
     }
 
     /*@Override

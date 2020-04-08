@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +21,20 @@ import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
 
-public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<Raid> {
+public class RaidListFragment extends Fragment implements IRaidListView, BaseAdapter.OnItemClickListener<Raid> {
     public static final String TAG = "RaidListFragment";
 
-    private IRaidListActivityView mRaidListView;
+    private RaidListPresenter mPresenter;
+
+    private RaidListActivity mActivity;
+
     private EmptyRecyclerView mRecyclerView;
     private RaidAdapter mAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mRaidListView = (IRaidListActivityView) context;
+        mActivity = (RaidListActivity) context;
     }
 
     @Override
@@ -53,6 +55,10 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         mAdapter.attachToRecyclerView(mRecyclerView);
         mAdapter.setOnItemClickListener(this);
 
+        mPresenter = new RaidListPresenter();
+        mPresenter.attachView(this);
+        mPresenter.loadRaids();
+
         return v;
     }
 
@@ -61,8 +67,13 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     }
 
     @Override
+    public void showRaidInfo(Raid raid) {
+        mActivity.showRaidInfo(raid);
+    }
+
+    @Override
     public void onItemClick(@NonNull Raid item) {
-        mRaidListView.showRaidInfo(item);
+        mPresenter.showRaidInfo(item);
     }
 
     @Override
@@ -91,6 +102,6 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     @Override
     public void onDetach() {
         super.onDetach();
-        mRaidListView = null;
+        mPresenter.detachView();
     }
 }

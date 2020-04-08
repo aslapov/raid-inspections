@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
-public interface IRaidActivityView {
+public interface IRaidView {
 
     void showRaidInfo(Raid raid);
 }
