@@ -36,7 +36,7 @@ public class RaidPresenter implements IBasePresenter<IRaidView> {
     }
 
     public void showRaidInfo(Raid raid) {
-        if (raid != null)
+        if (mView != null)
             mView.showRaidInfo(raid);
     }
 }

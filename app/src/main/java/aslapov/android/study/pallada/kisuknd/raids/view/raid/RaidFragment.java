@@ -2,6 +2,7 @@ package aslapov.android.study.pallada.kisuknd.raids.view.raid;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,12 +66,8 @@ public class RaidFragment extends Fragment implements IRaidView {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("log " + this.toString(), "onCreate");
         super.onCreate(savedInstanceState);
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            getActivity().finish();
-            return;
-        }
 
         mPresenter = new RaidPresenter();
         mPresenter.attachView(this);
@@ -80,6 +77,7 @@ public class RaidFragment extends Fragment implements IRaidView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("log " + this.toString(), "onCreateView");
         View v = inflater.inflate(R.layout.raid_layout, container, false);
 
         mDepartment = (MaterialTextView) v.findViewById(R.id.department);
@@ -108,6 +106,7 @@ public class RaidFragment extends Fragment implements IRaidView {
 
     @Override
     public void showRaidInfo(Raid raid) {
+        Log.d("log " + this.toString(), "showRaidInfo");
         mDepartment.setText(raid.getDepartment());
         //transportType.text
         mAddress.setText(raid.getPlaceAddress());
@@ -129,13 +128,26 @@ public class RaidFragment extends Fragment implements IRaidView {
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
+        Log.d("log " + this.toString(), "onPause");
+        super.onPause();
+    }
 
+    @Override
+    public void onStop() {
+        Log.d("log " + this.toString(), "onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("log " + this.toString(), "onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onDetach() {
+        Log.d("log " + this.toString(), "onDetach");
         mPresenter.detachView();
         super.onDetach();
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,7 @@ import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 
-public class RaidListActivity extends AppCompatActivity {
+public class RaidListActivity extends AppCompatActivity implements RaidListFragment.OnRaidSelectedListener {
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RaidListActivity.class);
@@ -26,6 +27,8 @@ public class RaidListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("log " + this.toString(), "onCreate");
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_masterdetail);
@@ -39,20 +42,20 @@ public class RaidListActivity extends AppCompatActivity {
                     .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
+
+        if (fm.findFragmentById(R.id.detail_fragment_container) != null) {
+            Fragment fragment = fm.findFragmentById(R.id.detail_fragment_container);
+            Log.d("log " + this.toString(), "find: " + fragment.toString());
+            fm.beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    public void showRaidInfo(Raid raid) {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+    public void onRaidSelected(Raid raid) {
+        Log.d("log " + this.toString(), "onRaidSelected");
+        if (findViewById(R.id.detail_fragment_container) == null) {
             RaidActivity.start(this, raid.getId());
         } else {
             RaidFragment raidFragment = (RaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
@@ -65,6 +68,24 @@ public class RaidListActivity extends AppCompatActivity {
             }
             //raidFragment.showRaidInfo(raid);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("log " + this.toString(), "onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("log " + this.toString(), "onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("log " + this.toString(), "onDestroy");
+        super.onDestroy();
     }
 
     /*@Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ public class RaidActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("log " + this.toString(), "onCreate");
         super.onCreate(savedInstanceState);
 
         // Если текущую активити перевели в горизонтальное положение,
@@ -46,12 +48,20 @@ public class RaidActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onPause() {
+        Log.d("log " + this.toString(), "onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("log " + this.toString(), "onStop");
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
+        Log.d("log " + this.toString(), "onDestroy");
         super.onDestroy();
     }
 }
