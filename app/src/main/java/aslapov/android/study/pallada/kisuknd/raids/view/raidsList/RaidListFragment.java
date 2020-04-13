@@ -2,7 +2,6 @@ package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,23 +11,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
-import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
-import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 
 public class RaidListFragment extends Fragment implements IRaidListView, BaseAdapter.OnItemClickListener<Raid> {
-    public static final String TAG = "RaidListFragment";
-
     private RaidListPresenter mPresenter;
 
     private OnRaidSelectedListener mListener;
@@ -52,7 +45,6 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("log " + this.toString(), "onCreate");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -60,7 +52,6 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("log " + this.toString(), "onCreateView");
         View v = inflater.inflate(R.layout.fragment_raid_list, container, false);
         mRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -79,18 +70,6 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
 
     public void showRaids(List<Raid> raids) {
         mAdapter.changeDataSet(raids);
-
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        if (fm.findFragmentById(R.id.detail_fragment_container) != null) {
-            RaidFragment raidFragment = (RaidFragment) fm.findFragmentById(R.id.detail_fragment_container);
-            Log.d("log " + this.toString(), "find: " + raidFragment.toString());
-            UUID raidId = raidFragment.getShownIndex();
-            fm.beginTransaction()
-                    .remove(raidFragment)
-                    .commit();
-
-            RaidActivity.start(getActivity(), raidId);
-        }
     }
 
     @Override
@@ -127,26 +106,7 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
     }
 
     @Override
-    public void onPause() {
-        Log.d("log " + this.toString(), "onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        Log.d("log " + this.toString(), "onStop");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.d("log " + this.toString(), "onDestroy");
-        super.onDestroy();
-    }
-
-    @Override
     public void onDetach() {
-        Log.d("log " + this.toString(), "onDetach");
         super.onDetach();
         mPresenter.detachView();
     }
