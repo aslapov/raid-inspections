@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.button.MaterialButton;
@@ -107,24 +108,29 @@ public class RaidFragment extends Fragment implements IRaidView {
     @Override
     public void showRaidInfo(Raid raid) {
         Log.d("log " + this.toString(), "showRaidInfo");
-        mDepartment.setText(raid.getDepartment());
-        //transportType.text
-        mAddress.setText(raid.getPlaceAddress());
-        mActNumber.setText(raid.getActNumber());
-        mInspector.setText(raid.getInspectors().get(0));
-        mDispositionNumber.setText(raid.getOrderNumber());
-        mDispositionDate.setText(raid.getOrderDate().toString());
-        mTaskNumber.setText(raid.getTaskNumber());
-        mTaskDate.setText(raid.getTaskDate().toString());
-        mStartDate.setText(raid.getRealStart().toString());
-        mEndDate.setText(raid.getRealEnd().toString());
-        mVehicleInfo.setText(raid.getVehicleInfo());
-        mOwnerInn.setText(raid.getOwnerInn());
-        mOwnerOgrn.setText(raid.getOwnerOgrn());
-        mVehicleOwner.setText(raid.getVehicleOwner());
-        mWarningCount.setText(Integer.toString(raid.getWarningCount()));
-        //warningDate.setText(raid.getWarningDate().toString());
-        mViolationExisting.setChecked(raid.isViolationsPresence());
+
+        // Если активити не финишируется (в случае поворота экрана)
+        // Явно финишируется RaidActivity в случае поворота экрана на двупанельный экран
+        if (!getActivity().isFinishing()) { // TODO возможно кривое условие
+            mDepartment.setText(raid.getDepartment());
+            //transportType.text
+            mAddress.setText(raid.getPlaceAddress());
+            mActNumber.setText(raid.getActNumber());
+            mInspector.setText(raid.getInspectors().get(0));
+            mDispositionNumber.setText(raid.getOrderNumber());
+            mDispositionDate.setText(raid.getOrderDate().toString());
+            mTaskNumber.setText(raid.getTaskNumber());
+            mTaskDate.setText(raid.getTaskDate().toString());
+            mStartDate.setText(raid.getRealStart().toString());
+            mEndDate.setText(raid.getRealEnd().toString());
+            mVehicleInfo.setText(raid.getVehicleInfo());
+            mOwnerInn.setText(raid.getOwnerInn());
+            mOwnerOgrn.setText(raid.getOwnerOgrn());
+            mVehicleOwner.setText(raid.getVehicleOwner());
+            mWarningCount.setText(Integer.toString(raid.getWarningCount()));
+            //warningDate.setText(raid.getWarningDate().toString());
+            mViolationExisting.setChecked(raid.isViolationsPresence());
+        }
     }
 
     @Override

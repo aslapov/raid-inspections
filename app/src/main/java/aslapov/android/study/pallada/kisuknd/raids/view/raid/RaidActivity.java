@@ -10,6 +10,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
@@ -30,17 +32,27 @@ public class RaidActivity extends AppCompatActivity {
         Log.d("log " + this.toString(), "onCreate");
         super.onCreate(savedInstanceState);
 
+        FragmentManager fm = getSupportFragmentManager();
+        RaidFragment raidFragment = (RaidFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
         // Если текущую активити перевели в горизонтальное положение,
         // то вернуться к предыдущей активити
-        /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        // TODO передача raidId в RaidListActivity (startActivityForResult)
+        if (getResources().getConfiguration().screenWidthDp >= 600) {
+            if (raidFragment != null) {
+                fm.beginTransaction()
+                        .remove(raidFragment)
+                        .commit();
+            }
+
             finish();
             return;
-        }*/
+        }
 
         setContentView(R.layout.activity_fragment);
         if (savedInstanceState == null) {
             UUID raidId = (UUID) getIntent().getSerializableExtra(EXTRA_RAID_ID);
-            RaidFragment raidFragment = RaidFragment.newInstance(raidId);
+            raidFragment = RaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, raidFragment)
                     .commit();

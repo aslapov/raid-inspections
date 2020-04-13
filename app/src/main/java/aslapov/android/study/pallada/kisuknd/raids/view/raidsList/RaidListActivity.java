@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.UUID;
+
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
@@ -28,26 +30,28 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("log " + this.toString(), "onCreate");
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_masterdetail);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment raidListFragment  = fm.findFragmentById(R.id.fragment_container);
+        RaidFragment raidFragmentFromDualPane = (RaidFragment) fm.findFragmentById(R.id.detail_fragment_container);
 
-        if (raidListFragment == null) {
+        // Случай поворота экрана из горизонтального положения с открытым RaidFragment
+        // в вертикальное положение. В таком случае необходимо открыть RaidActivity
+        // и RaidFragment
+        if (findViewById(R.id.detail_fragment_container) == null && raidFragmentFromDualPane != null) {
+            UUID raidId = raidFragmentFromDualPane.getShownIndex();
+            fm.beginTransaction()
+                    .remove(raidFragmentFromDualPane)
+                    .commit();
+
+            RaidActivity.start(this, raidId);
+        } else if (raidListFragment == null) {
             raidListFragment = new RaidListFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, raidListFragment)
-                    .commit();
-        }
-
-        if (fm.findFragmentById(R.id.detail_fragment_container) != null) {
-            Fragment fragment = fm.findFragmentById(R.id.detail_fragment_container);
-            Log.d("log " + this.toString(), "find: " + fragment.toString());
-            fm.beginTransaction()
-                    .remove(fragment)
                     .commit();
         }
     }
@@ -66,7 +70,6 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
             }
-            //raidFragment.showRaidInfo(raid);
         }
     }
 

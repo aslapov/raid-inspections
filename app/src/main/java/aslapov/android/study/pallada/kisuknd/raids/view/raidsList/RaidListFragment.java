@@ -12,15 +12,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
+import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
+import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 
 public class RaidListFragment extends Fragment implements IRaidListView, BaseAdapter.OnItemClickListener<Raid> {
     public static final String TAG = "RaidListFragment";
@@ -75,6 +79,18 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
 
     public void showRaids(List<Raid> raids) {
         mAdapter.changeDataSet(raids);
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        if (fm.findFragmentById(R.id.detail_fragment_container) != null) {
+            RaidFragment raidFragment = (RaidFragment) fm.findFragmentById(R.id.detail_fragment_container);
+            Log.d("log " + this.toString(), "find: " + raidFragment.toString());
+            UUID raidId = raidFragment.getShownIndex();
+            fm.beginTransaction()
+                    .remove(raidFragment)
+                    .commit();
+
+            RaidActivity.start(getActivity(), raidId);
+        }
     }
 
     @Override
