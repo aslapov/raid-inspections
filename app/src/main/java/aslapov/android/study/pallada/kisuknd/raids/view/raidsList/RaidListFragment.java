@@ -68,6 +68,7 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
         return v;
     }
 
+    @Override
     public void showRaids(List<Raid> raids) {
         mAdapter.changeDataSet(raids);
     }

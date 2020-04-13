@@ -1,7 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.presenter;
 
 import java.util.List;
-import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;

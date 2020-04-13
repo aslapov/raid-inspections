@@ -18,7 +18,7 @@ import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
 import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 
 public class RaidListActivity extends AppCompatActivity implements RaidListFragment.OnRaidSelectedListener {
-    private static final int REQUEST_CODE_RAID = 1;
+    private static final int REQUEST_CODE_RAID_ACTIVITY = 0;
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RaidListActivity.class);
@@ -44,19 +44,22 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
                     .remove(raidFragmentFromDualPane)
                     .commit();
 
-            RaidActivity.start(this, raidId, REQUEST_CODE_RAID);
+            RaidActivity.start(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
         } else if (raidListFragment == null) {
             raidListFragment = new RaidListFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
+
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
     }
 
     @Override
     public void onRaidSelected(Raid raid) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            RaidActivity.start(this, raid.getId(), REQUEST_CODE_RAID);
+            RaidActivity.start(this, raid.getId(), REQUEST_CODE_RAID_ACTIVITY);
         } else {
             showRaidFragment(raid.getId());
         }
@@ -66,10 +69,10 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Восстановление RaidFragment при повороте экрана в горизонтальное положение
+        // Восстановление RaidFragment при повороте экрана в горизонтальное положение.
         // RESULT_OK нужен для отличия от события нажатия кнопки "назад", при котором
-        // автоматически генерируется результат RESULT_CANCELED
-        if (requestCode == REQUEST_CODE_RAID && resultCode == RESULT_OK) {
+        // автоматически генерируется код результата RESULT_CANCELED
+        if (requestCode == REQUEST_CODE_RAID_ACTIVITY && resultCode == RESULT_OK) {
             UUID raidId = RaidActivity.getRaidId(data);
             showRaidFragment(raidId);
         }
@@ -84,12 +87,4 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
                     .commit();
         }
     }
-
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_raid_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }*/
 }

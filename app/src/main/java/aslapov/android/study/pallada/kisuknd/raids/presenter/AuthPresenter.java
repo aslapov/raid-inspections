@@ -3,7 +3,6 @@ package aslapov.android.study.pallada.kisuknd.raids.presenter;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -32,13 +31,6 @@ public class AuthPresenter implements IBasePresenter<IAuthView> {
         if (TextUtils.isEmpty(userName)) {
             mView.showAuthError("Введите имя пользователя");
         } else {
-            // TODO Auth here
-            mUserName = userName;
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
             raidRepo.login(userName, password, this);
         }

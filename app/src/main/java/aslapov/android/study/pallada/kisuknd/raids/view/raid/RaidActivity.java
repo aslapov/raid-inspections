@@ -24,8 +24,7 @@ public class RaidActivity extends AppCompatActivity {
 
     // Возврат в родительский Activity ID рейдового осмотра ТС
     public static UUID getRaidId(Intent result) {
-        UUID res = (UUID) result.getSerializableExtra(EXTRA_RAID_ID);
-        return res;
+        return (UUID) result.getSerializableExtra(EXTRA_RAID_ID);
     }
 
     @Override
