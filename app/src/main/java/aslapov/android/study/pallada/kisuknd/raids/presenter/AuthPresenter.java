@@ -31,6 +31,7 @@ public class AuthPresenter implements IBasePresenter<IAuthView> {
         if (TextUtils.isEmpty(userName)) {
             mView.showAuthError("Введите имя пользователя");
         } else {
+            mUserName = userName;
             RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
             raidRepo.login(userName, password, this);
         }
