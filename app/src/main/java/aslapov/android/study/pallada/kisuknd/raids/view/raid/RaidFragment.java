@@ -22,7 +22,7 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidViewModel;
 
-public class RaidFragment extends Fragment implements IRaidView {
+public class RaidFragment extends Fragment {
     private static final String ARG_RAID_ID = "raid_id";
 
     private RaidViewModel mViewModel;
@@ -98,8 +98,7 @@ public class RaidFragment extends Fragment implements IRaidView {
         return v;
     }
 
-    @Override
-    public void showRaidInfo(Raid raid) {
+    private void showRaidInfo(Raid raid) {
         mDepartment.setText(raid.getDepartment());
         //transportType.text
         mAddress.setText(raid.getPlaceAddress());

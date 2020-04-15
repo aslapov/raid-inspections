@@ -23,7 +23,7 @@ public class RaidViewModel extends ViewModel {
 
     private void loadRaid(UUID raidId) {
         RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
-        raidRepo.queryRaidById(raidId, new RaidRepository.MyCallback<Raid>() {
+        raidRepo.queryRaidById(raidId, new RaidRepository.ResponseCallback<Raid>() {
             @Override
             public void onResponse(Raid result) {
                 raid.setValue(result);

@@ -17,7 +17,7 @@ import retrofit2.Response;
 
 public class RaidRepository {
 
-    public interface MyCallback<T> {
+    public interface ResponseCallback<T> {
         void onResponse(T result);
         void onError(Throwable t);
     }
@@ -44,10 +44,9 @@ public class RaidRepository {
                 String s = "";
             }
         });
-
     }
 
-    public void queryRaids(MyCallback<List<Raid>> callback) {
+    public void queryRaids(ResponseCallback<List<Raid>> callback) {
         RaidApiFactory.getRaidService().queryRaids().enqueue(new Callback<List<Raid>>() {
             @Override
             public void onResponse(Call<List<Raid>> call, Response<List<Raid>> response) {
@@ -62,7 +61,7 @@ public class RaidRepository {
         });
     }
 
-    public void queryRaidById(UUID raidId, MyCallback<Raid> callback) {
+    public void queryRaidById(UUID raidId, ResponseCallback<Raid> callback) {
         RaidApiFactory.getRaidService().queryRaidById(raidId).enqueue(new Callback<Raid>() {
 
             @Override

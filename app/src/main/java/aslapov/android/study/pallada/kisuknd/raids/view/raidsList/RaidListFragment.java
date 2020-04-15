@@ -22,7 +22,7 @@ import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidListViewModel;
 
-public class RaidListFragment extends Fragment implements IRaidListView, BaseAdapter.OnItemClickListener<Raid> {
+public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<Raid> {
     private RaidListViewModel mViewModel;
 
     private OnRaidSelectedListener mListener;
@@ -61,14 +61,18 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
         mAdapter.attachToRecyclerView(mRecyclerView);
         mAdapter.setOnItemClickListener(this);
 
-        mViewModel = ViewModelProviders.of(this).get(RaidListViewModel.class);
-        mViewModel.getRaids().observe(this, this::showRaids);
-
         return v;
     }
 
     @Override
-    public void showRaids(List<Raid> raids) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this).get(RaidListViewModel.class);
+        mViewModel.getRaids().observe(this, this::showRaids);
+    }
+
+    private void showRaids(List<Raid> raids) {
         mAdapter.changeDataSet(raids);
     }
 

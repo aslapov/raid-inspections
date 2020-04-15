@@ -23,7 +23,7 @@ public class RaidListViewModel extends ViewModel {
 
     private void loadRaids() {
         RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
-        raidRepo.queryRaids(new RaidRepository.MyCallback<List<Raid>>() {
+        raidRepo.queryRaids(new RaidRepository.ResponseCallback<List<Raid>>() {
             @Override
             public void onResponse(List<Raid> result) {
                 raids.setValue(result);
