@@ -10,14 +10,17 @@ import java.util.UUID;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.presenter.AuthPresenter;
-import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
-import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidPresenter;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RaidRepository {
+
+    public interface MyCallback<T> {
+        void onResponse(T result);
+        void onError(Throwable t);
+    }
 
     public void login(String username, String password, AuthPresenter presenter) {
         LoggedInUser user = new LoggedInUser(username, password);
@@ -44,35 +47,29 @@ public class RaidRepository {
 
     }
 
-    public List<Raid> queryRaids(RaidListPresenter presenter) {
+    public void queryRaids(MyCallback<List<Raid>> callback) {
         RaidApiFactory.getRaidService().queryRaids().enqueue(new Callback<List<Raid>>() {
             @Override
             public void onResponse(Call<List<Raid>> call, Response<List<Raid>> response) {
-                if (response.isSuccessful()) {
-                    List<Raid> raids = response.body();
-                    presenter.setRaids(raids);
-                    presenter.showRaids();
-                }
+                if (response.isSuccessful())
+                    callback.onResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Raid>> call, Throwable t) {
-
+                callback.onError(t);
             }
         });
-
-        return null;
     }
 
-    public Raid queryRaidById(UUID raidId, RaidPresenter presenter) {
+    public void queryRaidById(UUID raidId, MyCallback<Raid> callback) {
         RaidApiFactory.getRaidService().queryRaidById(raidId).enqueue(new Callback<Raid>() {
+
             @Override
             public void onResponse(Call<Raid> call, retrofit2.Response<Raid> response) {
                 // код 200
                 if (response.isSuccessful()) {
-                    Raid raid = response.body();
-                    presenter.setRaid(raid);
-                    presenter.showRaidInfo(raid);
+                    callback.onResponse(response.body());
                 } else {
                     switch (response.code()) {
                         case 401:
@@ -83,10 +80,8 @@ public class RaidRepository {
 
             @Override
             public void onFailure(Call<Raid> call, Throwable t) {
-
+                callback.onError(t);
             }
         });
-
-        return null;
     }
 }

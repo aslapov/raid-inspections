@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -19,12 +20,12 @@ import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidPresenter;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidViewModel;
 
 public class RaidFragment extends Fragment implements IRaidView {
     private static final String ARG_RAID_ID = "raid_id";
 
-    private RaidPresenter mPresenter;
+    private RaidViewModel mViewModel;
 
     private MaterialTextView mDepartment;
     private AppCompatSpinner mTransportType;
@@ -64,10 +65,8 @@ public class RaidFragment extends Fragment implements IRaidView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO при повороте экрана возникает лишний запрос удаляемого (remove) фрагмента
-        mPresenter = new RaidPresenter();
-        mPresenter.attachView(this);
-        mPresenter.loadRaid(getRaidId());
+        mViewModel = ViewModelProviders.of(this).get(RaidViewModel.class);
+        mViewModel.getRaid(getRaidId()).observe(this, this::showRaidInfo);
     }
 
     @Nullable
@@ -101,33 +100,23 @@ public class RaidFragment extends Fragment implements IRaidView {
 
     @Override
     public void showRaidInfo(Raid raid) {
-        // Если активити не финишируется (в случае поворота экрана)
-        // Явно финишируется RaidActivity в случае поворота экрана на двупанельный экран
-        if (!getActivity().isFinishing()) { // TODO возможно кривое условие
-            mDepartment.setText(raid.getDepartment());
-            //transportType.text
-            mAddress.setText(raid.getPlaceAddress());
-            mActNumber.setText(raid.getActNumber());
-            mInspector.setText(raid.getInspectors().get(0));
-            mDispositionNumber.setText(raid.getOrderNumber());
-            mDispositionDate.setText(raid.getOrderDate().toString());
-            mTaskNumber.setText(raid.getTaskNumber());
-            mTaskDate.setText(raid.getTaskDate().toString());
-            mStartDate.setText(raid.getRealStart().toString());
-            mEndDate.setText(raid.getRealEnd().toString());
-            mVehicleInfo.setText(raid.getVehicleInfo());
-            mOwnerInn.setText(raid.getOwnerInn());
-            mOwnerOgrn.setText(raid.getOwnerOgrn());
-            mVehicleOwner.setText(raid.getVehicleOwner());
-            mWarningCount.setText(Integer.toString(raid.getWarningCount()));
-            //warningDate.setText(raid.getWarningDate().toString());
-            mViolationExisting.setChecked(raid.isViolationsPresence());
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        mPresenter.detachView();
-        super.onDetach();
+        mDepartment.setText(raid.getDepartment());
+        //transportType.text
+        mAddress.setText(raid.getPlaceAddress());
+        mActNumber.setText(raid.getActNumber());
+        mInspector.setText(raid.getInspectors().get(0));
+        mDispositionNumber.setText(raid.getOrderNumber());
+        mDispositionDate.setText(raid.getOrderDate().toString());
+        mTaskNumber.setText(raid.getTaskNumber());
+        mTaskDate.setText(raid.getTaskDate().toString());
+        mStartDate.setText(raid.getRealStart().toString());
+        mEndDate.setText(raid.getRealEnd().toString());
+        mVehicleInfo.setText(raid.getVehicleInfo());
+        mOwnerInn.setText(raid.getOwnerInn());
+        mOwnerOgrn.setText(raid.getOwnerOgrn());
+        mVehicleOwner.setText(raid.getVehicleOwner());
+        mWarningCount.setText(Integer.toString(raid.getWarningCount()));
+        //warningDate.setText(raid.getWarningDate().toString());
+        mViolationExisting.setChecked(raid.isViolationsPresence());
     }
 }

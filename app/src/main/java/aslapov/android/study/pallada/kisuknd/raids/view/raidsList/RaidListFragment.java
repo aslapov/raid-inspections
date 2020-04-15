@@ -11,22 +11,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.presenter.RaidListPresenter;
 import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidListViewModel;
 
 public class RaidListFragment extends Fragment implements IRaidListView, BaseAdapter.OnItemClickListener<Raid> {
-    private RaidListPresenter mPresenter;
+    private RaidListViewModel mViewModel;
 
     private OnRaidSelectedListener mListener;
 
-    private EmptyRecyclerView mRecyclerView;
     private RaidAdapter mAdapter;
 
     public interface OnRaidSelectedListener {
@@ -53,7 +53,7 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_raid_list, container, false);
-        mRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
+        EmptyRecyclerView mRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setEmptyView(v);
 
@@ -61,9 +61,8 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
         mAdapter.attachToRecyclerView(mRecyclerView);
         mAdapter.setOnItemClickListener(this);
 
-        mPresenter = new RaidListPresenter();
-        mPresenter.attachView(this);
-        mPresenter.loadRaids();
+        mViewModel = ViewModelProviders.of(this).get(RaidListViewModel.class);
+        mViewModel.getRaids().observe(this, this::showRaids);
 
         return v;
     }
@@ -74,13 +73,8 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
     }
 
     @Override
-    public void showRaidInfo(Raid raid) {
-        mListener.onRaidSelected(raid);
-    }
-
-    @Override
     public void onItemClick(@NonNull Raid raid) {
-        mPresenter.showRaidInfo(raid);
+        mListener.onRaidSelected(raid);
     }
 
     @Override
@@ -104,11 +98,5 @@ public class RaidListFragment extends Fragment implements IRaidListView, BaseAda
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mPresenter.detachView();
     }
 }

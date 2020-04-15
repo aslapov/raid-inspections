@@ -7,6 +7,4 @@ import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 public interface IRaidListView {
 
     void showRaids(List<Raid> raids);
-
-    void showRaidInfo(Raid raid);
 }
