@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.auth.AuthActivity"
+            android:name=".view.AuthActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,8 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.raidsList.RaidListActivity" />
-        <activity android:name=".view.raid.RaidActivity" />
+        <activity android:name=".view.RaidListActivity" />
+        <activity android:name=".view.RaidActivity" />
     </application>
 
 </manifest>

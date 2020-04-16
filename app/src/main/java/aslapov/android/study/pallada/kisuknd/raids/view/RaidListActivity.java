@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
+package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,8 +14,6 @@ import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidActivity;
-import aslapov.android.study.pallada.kisuknd.raids.view.raid.RaidFragment;
 
 public class RaidListActivity extends AppCompatActivity implements RaidListFragment.OnRaidSelectedListener {
     private static final int REQUEST_CODE_RAID_ACTIVITY = 0;

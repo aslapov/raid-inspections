@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
+package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.view.View;
 import android.widget.TextView;

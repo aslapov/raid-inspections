@@ -1,16 +1,11 @@
 package aslapov.android.study.pallada.kisuknd.raids.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import aslapov.android.study.pallada.kisuknd.raids.model.content.AuthResponse;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.presenter.AuthPresenter;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,26 +17,53 @@ public class RaidRepository {
         void onError(Throwable t);
     }
 
-    public void login(String username, String password, AuthPresenter presenter) {
-        LoggedInUser user = new LoggedInUser(username, password);
-        RaidApiFactory.getRaidService().login(user).enqueue(new Callback<ResponseBody>() {
+    public void login(String username, String password, ResponseCallback<AuthResult> callback) {
+        LoggedInUser user = new LoggedInUser(username.toUpperCase(), password);
+        RaidApiFactory.getRaidService().login(user).enqueue(new Callback<AuthResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                AuthResult result = new AuthResult();
+
                 if (response.isSuccessful()) {
-                    try {
-                        String jsonResponseString = response.body().string();
-                        presenter.processLoginResponse(new Gson().fromJson(jsonResponseString, JsonObject.class));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        presenter.showError(e.getMessage());
+                    AuthResponse authResponse = response.body();
+
+                    if (authResponse.getStatusCode() != null) {
+                        switch (authResponse.getStatusCode()) {
+                            case 100:   //  Правильный логин
+                                result.setAuthState(AuthResult.State.LOGINED);
+                                break;
+                            case 403:   // Ошибка логина или пароля
+                                result.setAuthState(AuthResult.State.WRONG);
+                                break;
+                            case 204:   // Пользователь найден в системе КИСУ. Регистрация
+                                result.setAuthState(AuthResult.State.REGISTRATION);
+                                break;
+                            default:
+                                result.setAuthState(AuthResult.State.FAIL);
+                                break;
+                        }
+                        callback.onResponse(result);
+                        return;
                     }
-                    int s = response.code();
+                    if (authResponse.isSucceeded()) {
+                        result.setAuthState(AuthResult.State.REGISTERED);
+                        callback.onResponse(result);
+                        return;
+                    }
+                    // Успешная авторизация
+                    if (username.toUpperCase().equals(authResponse.getUserName())) {
+                        result.setAuthState(AuthResult.State.SUCCESS);
+                        callback.onResponse(result);
+                    }
+                } else {
+                    result.setAuthState(AuthResult.State.FAIL);
+                    callback.onResponse(result);
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                String s = "";
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                callback.onError(t);
             }
         });
     }

@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
+package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,7 +7,6 @@ import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
 
 public class RaidAdapter extends BaseAdapter<RaidHolder, Raid> {
 

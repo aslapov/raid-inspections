@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view.raidsList;
+package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,8 +18,6 @@ import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
-import aslapov.android.study.pallada.kisuknd.raids.view.BaseAdapter;
-import aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidListViewModel;
 
 public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<Raid> {

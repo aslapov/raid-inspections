@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view.raid;
+package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -63,7 +63,7 @@ public class RaidFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); getLifecycle().getCurrentState();
 
         mViewModel = ViewModelProviders.of(this).get(RaidViewModel.class);
         mViewModel.getRaid(getRaidId()).observe(this, this::showRaidInfo);
