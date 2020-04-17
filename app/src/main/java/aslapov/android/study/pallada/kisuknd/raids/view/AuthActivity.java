@@ -121,6 +121,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void openRaidListScreen() {
+        mLoading.setVisibility(View.VISIBLE);
         RaidListActivity.start(this);
         setResult(RESULT_OK);
         finish();

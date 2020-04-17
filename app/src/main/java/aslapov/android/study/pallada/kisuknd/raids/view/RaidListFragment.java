@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,6 +28,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     private OnRaidSelectedListener mListener;
 
     private RaidAdapter mAdapter;
+    private ProgressBar mLoading;
 
     public interface OnRaidSelectedListener {
         void onRaidSelected(Raid raid);
@@ -53,11 +56,13 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         View v = inflater.inflate(R.layout.fragment_raid_list, container, false);
         EmptyRecyclerView mRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setEmptyView(v);
+        mRecyclerView.setEmptyView(v.findViewById(R.id.raid_recycler_view));
 
         mAdapter = new RaidAdapter(new ArrayList<>());
         mAdapter.attachToRecyclerView(mRecyclerView);
         mAdapter.setOnItemClickListener(this);
+
+        mLoading = v.findViewById(R.id.loading);
 
         return v;
     }
@@ -66,11 +71,14 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mLoading.setVisibility(View.VISIBLE);
+
         mViewModel = ViewModelProviders.of(this).get(RaidListViewModel.class);
         mViewModel.getRaids().observe(this, this::showRaids);
     }
 
     private void showRaids(List<Raid> raids) {
+        mLoading.setVisibility(View.GONE);
         mAdapter.changeDataSet(raids);
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,8 @@ public class RaidFragment extends Fragment {
     private static final String ARG_RAID_ID = "raid_id";
 
     private RaidViewModel mViewModel;
+
+    private ProgressBar mLoading;
 
     private MaterialTextView mDepartment;
     private AppCompatSpinner mTransportType;
@@ -61,18 +64,12 @@ public class RaidFragment extends Fragment {
         return (UUID) getArguments().getSerializable(ARG_RAID_ID);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); getLifecycle().getCurrentState();
-
-        mViewModel = ViewModelProviders.of(this).get(RaidViewModel.class);
-        mViewModel.getRaid(getRaidId()).observe(this, this::showRaidInfo);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.raid_layout, container, false);
+
+        mLoading = v.findViewById(R.id.loading);
 
         mDepartment = (MaterialTextView) v.findViewById(R.id.department);
         mTransportType = (AppCompatSpinner) v.findViewById(R.id.transport_type);
@@ -98,7 +95,19 @@ public class RaidFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mLoading.setVisibility(View.VISIBLE);
+
+        mViewModel = ViewModelProviders.of(this).get(RaidViewModel.class);
+        mViewModel.getRaid(getRaidId()).observe(this, this::showRaidInfo);
+    }
+
     private void showRaidInfo(Raid raid) {
+        mLoading.setVisibility(View.GONE);
+
         mDepartment.setText(raid.getDepartment());
         //transportType.text
         mAddress.setText(raid.getPlaceAddress());

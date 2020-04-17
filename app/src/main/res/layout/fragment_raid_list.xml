@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/raid_recycler_view"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:paddingTop="?attr/actionBarSize"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_width="match_parent">
 
-</aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView>
+    <aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/raid_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="?attr/actionBarSize"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"/>
+
+</RelativeLayout>
