@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
@@ -101,8 +102,8 @@ public class RaidFragment extends Fragment {
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = ViewModelProviders.of(this).get(RaidViewModel.class);
-        mViewModel.getRaid(getRaidId()).observe(this, this::showRaidInfo);
+        mViewModel = new ViewModelProvider(this).get(RaidViewModel.class);
+        mViewModel.getRaid(getRaidId()).observe(getViewLifecycleOwner(), this::showRaidInfo);
     }
 
     private void showRaidInfo(Raid raid) {

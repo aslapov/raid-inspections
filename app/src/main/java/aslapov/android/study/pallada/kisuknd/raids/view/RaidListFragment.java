@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
@@ -73,8 +74,8 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = ViewModelProviders.of(this).get(RaidListViewModel.class);
-        mViewModel.getRaids().observe(this, this::showRaids);
+        mViewModel = new ViewModelProvider(this).get(RaidListViewModel.class);
+        mViewModel.getRaids().observe(getViewLifecycleOwner(), this::showRaids);
     }
 
     private void showRaids(List<Raid> raids) {
@@ -108,5 +109,11 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }
