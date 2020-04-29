@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.AuthViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -32,7 +34,7 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization_layout);
-        mViewModel = ViewModelProviders.of(this).get(AuthViewModel.class);
+        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getApplication())).get(AuthViewModel.class);
 
         mLogin = (EditText) findViewById(R.id.login);
         mPassword = (EditText) findViewById(R.id.password);

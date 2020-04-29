@@ -1,6 +1,10 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
+import android.app.Application;
+import android.content.Context;
+
 import androidx.annotation.Nullable;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,6 +15,12 @@ import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 
 public class AuthViewModel extends ViewModel {
+
+    private RaidRepository mRaidRepository;
+
+    public AuthViewModel(Context applicationContext) {
+        mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
+    }
 
     public class ValidationField {
         private boolean isValid;
@@ -44,8 +54,7 @@ public class AuthViewModel extends ViewModel {
     public LiveData<ValidationField> getPasswordValid() { return passwordField; }
 
     public void tryAuth(String login, String password) {
-        RaidRepository raidRepo = RepositoryProvider.provideRaidRepository();
-        raidRepo.login(login, password, new RaidRepository.ResponseCallback<AuthResult>() {
+        mRaidRepository.login(login, password, new RaidRepository.ResponseCallback<AuthResult>() {
             @Override
             public void onResponse(AuthResult result) {
                 authResult.setValue(result);

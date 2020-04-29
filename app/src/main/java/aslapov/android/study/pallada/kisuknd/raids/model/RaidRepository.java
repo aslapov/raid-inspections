@@ -1,5 +1,10 @@
 package aslapov.android.study.pallada.kisuknd.raids.model;
 
+import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +20,22 @@ public class RaidRepository {
     public interface ResponseCallback<T> {
         void onResponse(T result);
         void onError(Throwable t);
+    }
+
+    private RaidDao mRaidDao;
+    private LiveData<List<RaidWithInspectors>> mRaids;
+
+    public RaidRepository(Context applicationContext) {
+        RaidRoomDatabase db = RaidRoomDatabase.getDatabase(applicationContext);
+        mRaidDao = db.raidDao();
+    }
+
+    public List<RaidWithInspectors> queryRaids() {
+        return mRaidDao.queryRaidList();
+    }
+
+    public LiveData<RaidWithInspectors> queryRaidListById(UUID raidId) {
+        return mRaidDao.queryRaidListById(raidId.toString());
     }
 
     public void login(String username, String password, ResponseCallback<AuthResult> callback) {
@@ -68,11 +89,39 @@ public class RaidRepository {
         });
     }
 
-    public void queryRaids(ResponseCallback<List<Raid>> callback) {
+    /*public void queryRaids(ResponseCallback<List<Raid>> callback) {
         RaidApiFactory.getRaidService().queryRaids().enqueue(new Callback<List<Raid>>() {
             @Override
             public void onResponse(Call<List<Raid>> call, Response<List<Raid>> response) {
                 if (response.isSuccessful())
+
+                    /*for (Raid raid : response.body()) {
+                        RaidEntity raidEntity = new RaidEntity();
+                        raidEntity.setId(raid.getId().toString());
+                        raidEntity.setActNumber(raid.getActNumber());
+                        raidEntity.setDepartment(raid.getDepartment());
+                        raidEntity.setTransportType(raid.getTransportType());
+                        raidEntity.setOrderDate(raid.getOrderDate());
+                        raidEntity.setOrderNumber(raid.getOrderNumber());
+                        raidEntity.setOwnerInn(raid.getOwnerInn());
+                        raidEntity.setOwnerOgrn(raid.getOwnerOgrn());
+                        raidEntity.setPlaceAddress(raid.getPlaceAddress());
+                        raidEntity.setRealEnd(raid.getRealEnd());
+                        raidEntity.setRealStart(raid.getRealStart());
+                        raidEntity.setTaskDate(raid.getTaskDate());
+                        raidEntity.setTaskNumber(raid.getTaskNumber());
+
+                        List<RaidInspectionMemberEntity> inspectors = new ArrayList<>();
+                        for (String inspector : raid.getInspectors()) {
+                            RaidInspectionMemberEntity member = new RaidInspectionMemberEntity();
+                            member.setContactName(inspector);
+                            member.setRaidInspectionId(raid.getId().toString());
+                            inspectors.add(member);
+                        }
+                        mRaidDao.insertRaidWithInspectors(raidEntity, inspectors);
+                    }
+                    response.body();
+                    List<RaidWithInspectors> raids = mRaidDao.queryRaidList();
                     callback.onResponse(response.body());
             }
 
@@ -81,9 +130,9 @@ public class RaidRepository {
                 callback.onError(t);
             }
         });
-    }
+    }*/
 
-    public void queryRaidById(UUID raidId, ResponseCallback<Raid> callback) {
+    /*public void queryRaidById(UUID raidId, ResponseCallback<Raid> callback) {
         RaidApiFactory.getRaidService().queryRaidById(raidId).enqueue(new Callback<Raid>() {
 
             @Override
@@ -104,5 +153,5 @@ public class RaidRepository {
                 callback.onError(t);
             }
         });
-    }
+    }*/
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
 public class RaidListActivity extends AppCompatActivity implements RaidListFragment.OnRaidSelectedListener {
@@ -55,11 +56,12 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
     }
 
     @Override
-    public void onRaidSelected(Raid raid) {
+    public void onRaidSelected(RaidWithInspectors raid) {
+        UUID raidId = UUID.fromString(raid.getRaidEntity().getId());
         if (findViewById(R.id.detail_fragment_container) == null) {
-            RaidActivity.start(this, raid.getId(), REQUEST_CODE_RAID_ACTIVITY);
+            RaidActivity.start(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
         } else {
-            showRaidFragment(raid.getId());
+            showRaidFragment(raidId);
         }
     }
 

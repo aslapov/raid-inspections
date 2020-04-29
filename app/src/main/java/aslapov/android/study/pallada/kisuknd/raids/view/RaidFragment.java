@@ -21,8 +21,11 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidEntity;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public class RaidFragment extends Fragment {
     private static final String ARG_RAID_ID = "raid_id";
@@ -102,18 +105,19 @@ public class RaidFragment extends Fragment {
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = new ViewModelProvider(this).get(RaidViewModel.class);
+        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidViewModel.class);
         mViewModel.getRaid(getRaidId()).observe(getViewLifecycleOwner(), this::showRaidInfo);
     }
 
-    private void showRaidInfo(Raid raid) {
+    private void showRaidInfo(RaidWithInspectors raidInspection) {
         mLoading.setVisibility(View.GONE);
 
+        RaidEntity raid = raidInspection.getRaidEntity();
         mDepartment.setText(raid.getDepartment());
         //transportType.text
         mAddress.setText(raid.getPlaceAddress());
         mActNumber.setText(raid.getActNumber());
-        mInspector.setText(raid.getInspectors().get(0));
+        mInspector.setText(raidInspection.getInspectors().get(0).getContactName());
         mDispositionNumber.setText(raid.getOrderNumber());
         mDispositionDate.setText(raid.getOrderDate().toString());
         mTaskNumber.setText(raid.getTaskNumber());

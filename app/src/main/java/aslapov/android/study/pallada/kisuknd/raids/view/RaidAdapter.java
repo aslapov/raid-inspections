@@ -6,11 +6,12 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
-public class RaidAdapter extends BaseAdapter<RaidHolder, Raid> {
+public class RaidAdapter extends BaseAdapter<RaidHolder, RaidWithInspectors> {
 
-    public RaidAdapter(@NonNull List<Raid> items) { super(items); }
+    public RaidAdapter(@NonNull List<RaidWithInspectors> items) { super(items); }
 
     @Override
     public RaidHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -21,7 +22,7 @@ public class RaidAdapter extends BaseAdapter<RaidHolder, Raid> {
     @Override
     public void onBindViewHolder(@NonNull RaidHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        Raid raid = getItem(position);
+        RaidWithInspectors raid = getItem(position);
         holder.bind(raid);
     }
 }

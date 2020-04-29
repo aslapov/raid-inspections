@@ -4,13 +4,15 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidEntity;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
 public class RaidHolder extends RecyclerView.ViewHolder {
     private TextView mOwnerTextView;
     private TextView mTransportTypeTextView;
     private TextView mVehicleInfoTextView;
-    private Raid mRaid;
+    private RaidEntity mRaid;
 
     public RaidHolder(View itemView) {
         super(itemView);
@@ -19,8 +21,8 @@ public class RaidHolder extends RecyclerView.ViewHolder {
         mVehicleInfoTextView = (TextView) itemView.findViewById(R.id.vehicle_info);
     }
 
-    public void bind(Raid raid) {
-        mRaid = raid;
+    public void bind(RaidWithInspectors raid) {
+        mRaid = raid.getRaidEntity();
         mOwnerTextView.setText(mRaid.getVehicleOwner());
         mTransportTypeTextView.setText(mRaid.getTransportType());
         mVehicleInfoTextView.setText(mRaid.getVehicleInfo());

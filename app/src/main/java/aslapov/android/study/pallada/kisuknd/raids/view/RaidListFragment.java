@@ -20,10 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidListViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
-public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<Raid> {
+public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<RaidWithInspectors> {
     private RaidListViewModel mViewModel;
 
     private OnRaidSelectedListener mListener;
@@ -32,7 +34,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     private ProgressBar mLoading;
 
     public interface OnRaidSelectedListener {
-        void onRaidSelected(Raid raid);
+        void onRaidSelected(RaidWithInspectors raid);
     }
 
     @Override
@@ -74,17 +76,17 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = new ViewModelProvider(this).get(RaidListViewModel.class);
+        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidListViewModel.class);
         mViewModel.getRaids().observe(getViewLifecycleOwner(), this::showRaids);
     }
 
-    private void showRaids(List<Raid> raids) {
+    private void showRaids(List<RaidWithInspectors> raids) {
         mLoading.setVisibility(View.GONE);
         mAdapter.changeDataSet(raids);
     }
 
     @Override
-    public void onItemClick(@NonNull Raid raid) {
+    public void onItemClick(@NonNull RaidWithInspectors raid) {
         mListener.onRaidSelected(raid);
     }
 

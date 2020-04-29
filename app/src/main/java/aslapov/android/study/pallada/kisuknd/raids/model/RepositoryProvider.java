@@ -1,5 +1,8 @@
 package aslapov.android.study.pallada.kisuknd.raids.model;
 
+import android.app.Application;
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 public final class RepositoryProvider {
@@ -11,9 +14,9 @@ public final class RepositoryProvider {
     }
 
     @NonNull
-    public static RaidRepository provideRaidRepository() {
+    public static RaidRepository provideRaidRepository(Context applicationContext) {
         if (sRaidRepository == null) {
-            sRaidRepository = new RaidRepository();
+            sRaidRepository = new RaidRepository(applicationContext);
         }
         return sRaidRepository;
     }
