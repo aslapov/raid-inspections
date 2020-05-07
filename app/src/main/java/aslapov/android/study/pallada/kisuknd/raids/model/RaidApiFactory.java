@@ -84,7 +84,7 @@ public final class RaidApiFactory {
         @NotNull
         @Override
         public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
-            return (mCookies != null) ? mCookies : new ArrayList<Cookie>();
+            return (mCookies != null) ? mCookies : new ArrayList<>();
         }
 
         @Override

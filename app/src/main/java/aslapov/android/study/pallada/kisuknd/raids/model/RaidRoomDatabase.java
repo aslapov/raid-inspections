@@ -17,8 +17,6 @@ public abstract class RaidRoomDatabase extends RoomDatabase {
     public abstract RaidDao raidDao();
 
     private static volatile RaidRoomDatabase INSTANCE;
-    private static final int NUMBER_OF_THREADS = 4;
-    private static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public static RaidRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {

@@ -4,13 +4,11 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.content.AuthResponse;
 import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,12 +28,16 @@ public class RaidRepository {
         mRaidDao = db.raidDao();
     }
 
-    public List<RaidWithInspectors> queryRaids() {
+    public LiveData<List<RaidWithInspectors>> queryRaids() {
         return mRaidDao.queryRaidList();
     }
 
     public LiveData<RaidWithInspectors> queryRaidListById(UUID raidId) {
         return mRaidDao.queryRaidListById(raidId.toString());
+    }
+
+    public void updateRaid(RaidWithInspectors raid) {
+        mRaidDao.updateRaidWithInspectors(raid.getRaidEntity(), raid.getInspectors());
     }
 
     public void login(String username, String password, ResponseCallback<AuthResult> callback) {

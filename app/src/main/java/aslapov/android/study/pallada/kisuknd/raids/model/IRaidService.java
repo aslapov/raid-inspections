@@ -17,9 +17,6 @@ public interface IRaidService {
     @GET("IsAuthentificated")
     public Call<ResponseBody> isAuthentificated();
 
-    /*@POST("Login")
-    public Call<ResponseBody> login(@Body LoggedInUser loggedInUser);*/
-
     @POST("Login")
     public Call<AuthResponse> login(@Body LoggedInUser loggedInUser);
 

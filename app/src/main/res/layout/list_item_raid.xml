@@ -23,4 +23,10 @@
         android:layout_height="wrap_content"
         android:text="@string/vehicle_information"/>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/act_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/act_number"/>
+
 </LinearLayout>

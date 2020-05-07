@@ -3,7 +3,6 @@ package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
@@ -20,12 +19,7 @@ public class RaidListViewModel extends ViewModel {
         mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
     }
 
-    private MutableLiveData<List<RaidWithInspectors>> raids;
     public LiveData<List<RaidWithInspectors>> getRaids() {
-        if (raids == null) {
-            raids = new MutableLiveData<>();
-            raids.postValue(mRaidRepository.queryRaids());
-        }
-        return raids;
+        return mRaidRepository.queryRaids();
     }
 }

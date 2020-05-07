@@ -12,6 +12,7 @@ public class RaidHolder extends RecyclerView.ViewHolder {
     private TextView mOwnerTextView;
     private TextView mTransportTypeTextView;
     private TextView mVehicleInfoTextView;
+    private TextView mActNumberTextView;
     private RaidEntity mRaid;
 
     public RaidHolder(View itemView) {
@@ -19,6 +20,7 @@ public class RaidHolder extends RecyclerView.ViewHolder {
         mOwnerTextView = (TextView) itemView.findViewById(R.id.vehicle_owner);
         mTransportTypeTextView = (TextView) itemView.findViewById(R.id.transport_type);
         mVehicleInfoTextView = (TextView) itemView.findViewById(R.id.vehicle_info);
+        mActNumberTextView = (TextView) itemView.findViewById(R.id.act_number);
     }
 
     public void bind(RaidWithInspectors raid) {
@@ -26,5 +28,6 @@ public class RaidHolder extends RecyclerView.ViewHolder {
         mOwnerTextView.setText(mRaid.getVehicleOwner());
         mTransportTypeTextView.setText(mRaid.getTransportType());
         mVehicleInfoTextView.setText(mRaid.getVehicleInfo());
+        mActNumberTextView.setText(mRaid.getActNumber());
     }
 }

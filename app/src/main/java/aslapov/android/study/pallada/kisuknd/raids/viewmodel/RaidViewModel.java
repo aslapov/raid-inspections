@@ -22,4 +22,8 @@ public class RaidViewModel extends ViewModel {
     public LiveData<RaidWithInspectors> getRaid(UUID raidId) {
         return mRaidRepository.queryRaidListById(raidId);
     }
+
+    public void updateRaid(RaidWithInspectors raid) {
+        mRaidRepository.updateRaid(raid);
+    }
 }

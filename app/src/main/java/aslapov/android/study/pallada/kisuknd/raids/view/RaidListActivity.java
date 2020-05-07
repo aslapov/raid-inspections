@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -14,7 +15,6 @@ import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
 public class RaidListActivity extends AppCompatActivity implements RaidListFragment.OnRaidSelectedListener {
     private static final int REQUEST_CODE_RAID_ACTIVITY = 0;
@@ -51,8 +51,8 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
                     .commit();
         }
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override

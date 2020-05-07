@@ -54,6 +54,7 @@ public class RaidFragment extends Fragment {
     private MaterialButton mWarningCount;
     private MaterialButton mWarningDate;
     private MaterialCheckBox mViolationExisting;
+    private MaterialButton mSave;
 
     public static RaidFragment newInstance(UUID raidId) {
         Bundle args = new Bundle();
@@ -67,6 +68,8 @@ public class RaidFragment extends Fragment {
     public UUID getRaidId() {
         return (UUID) getArguments().getSerializable(ARG_RAID_ID);
     }
+
+    private RaidWithInspectors mRaid;
 
     @Nullable
     @Override
@@ -96,6 +99,30 @@ public class RaidFragment extends Fragment {
         mWarningDate = (MaterialButton) v.findViewById(R.id.warning_date);
         mViolationExisting = (MaterialCheckBox) v.findViewById(R.id.violation_existing);
 
+        mSave = (MaterialButton) v.findViewById(R.id.save_button);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RaidEntity raid = mRaid.getRaidEntity();
+
+                raid.setTaskNumber(mTaskNumber.getText().toString());
+                //raid.setTaskDate(mTaskDate.getText().toString());
+                raid.setPlaceAddress(mAddress.getText().toString());
+                raid.setOwnerOgrn(mOwnerOgrn.getText().toString());
+                raid.setOwnerInn(mOwnerInn.getText().toString());
+                raid.setOrderNumber(mDispositionNumber.getText().toString());
+                //raid.setTransportType(mTransportType.getText().toString());
+                raid.setActNumber(mActNumber.getText().toString());
+                raid.setDepartment(mDepartment.getText().toString());
+                raid.setVehicleInfo(mVehicleInfo.getText().toString());
+                raid.setVehicleOwner(mVehicleOwner.getText().toString());
+
+                mRaid.setRaidEntity(raid);
+
+                mViewModel.updateRaid(mRaid);
+            }
+        });
+
         return v;
     }
 
@@ -111,6 +138,7 @@ public class RaidFragment extends Fragment {
 
     private void showRaidInfo(RaidWithInspectors raidInspection) {
         mLoading.setVisibility(View.GONE);
+        mRaid = raidInspection;
 
         RaidEntity raid = raidInspection.getRaidEntity();
         mDepartment.setText(raid.getDepartment());
