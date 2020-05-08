@@ -20,7 +20,7 @@
     <string name="vehicle_information">Информация О ТС</string>
     <string name="new_raid_bar">Создание осмотра ТС</string>
 
-    <string name="department">Отдел:</string>
+    <string name="department">Отдел: </string>
     <string name="transport_type">Вид транспорта*</string>
     <string name="raid_address">Место проведения (адрес)*</string>
     <string name="act_number">Номер акта*</string>

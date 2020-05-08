@@ -3,31 +3,32 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 import android.view.View;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidEntity;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 
 public class RaidHolder extends RecyclerView.ViewHolder {
-    private TextView mOwnerTextView;
-    private TextView mTransportTypeTextView;
-    private TextView mVehicleInfoTextView;
-    private TextView mActNumberTextView;
-    private RaidEntity mRaid;
+    private TextView mTransportType;
+    private TextView mActNumber;
+    private TextView mStartDate;
 
     public RaidHolder(View itemView) {
         super(itemView);
-        mOwnerTextView = (TextView) itemView.findViewById(R.id.vehicle_owner);
-        mTransportTypeTextView = (TextView) itemView.findViewById(R.id.transport_type);
-        mVehicleInfoTextView = (TextView) itemView.findViewById(R.id.vehicle_info);
-        mActNumberTextView = (TextView) itemView.findViewById(R.id.act_number);
+        mTransportType = (TextView) itemView.findViewById(R.id.transport_type);
+        mActNumber = (TextView) itemView.findViewById(R.id.act_number);
+        mStartDate = (TextView) itemView.findViewById(R.id.start_date);
     }
 
     public void bind(RaidWithInspectors raid) {
-        mRaid = raid.getRaidEntity();
-        mOwnerTextView.setText(mRaid.getVehicleOwner());
-        mTransportTypeTextView.setText(mRaid.getTransportType());
-        mVehicleInfoTextView.setText(mRaid.getVehicleInfo());
-        mActNumberTextView.setText(mRaid.getActNumber());
+        RaidEntity mRaid = raid.getRaidEntity();
+        mTransportType.setText(mRaid.getTransportType());
+        mActNumber.setText(mRaid.getActNumber());
+        Date realStartDate = mRaid.getRealStart();
+        String realStart = new SimpleDateFormat("dd.MM.yyyy").format(realStartDate);
+        mStartDate.setText(realStart);
     }
 }

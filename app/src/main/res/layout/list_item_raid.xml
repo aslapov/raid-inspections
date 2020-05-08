@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/vehicle_owner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/vehicle_owner"/>
+    android:padding="8dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/transport_type"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/transport_type"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/vehicle_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/vehicle_information"/>
-
-    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/act_number"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/transport_type"
         android:text="@string/act_number"/>
 
-</LinearLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="19.02.1994"/>
+
+</RelativeLayout>

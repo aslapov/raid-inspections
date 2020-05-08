@@ -50,9 +50,6 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
                     .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
     @Override

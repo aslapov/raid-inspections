@@ -21,7 +21,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             app:cardBackgroundColor="@color/cardview_shadow_end_color">
 
             <LinearLayout
@@ -32,96 +32,88 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:text="@string/raid_information"
-                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/department"
-                        android:textSize="20sp" />
+                        android:text="@string/department" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/department"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/transport_type"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/transport_type" />
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/transport_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:entries="@array/transport_type"
                     android:spinnerMode="dropdown" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/raid_address"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/raid_address" />
 
                 <EditText
                     android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="textMultiLine" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/act_number"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/act_number" />
 
                 <EditText
                     android:id="@+id/act_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="text"
                     android:singleLine="true" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/inspector"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/inspector" />
 
                 <EditText
                     android:id="@+id/inspector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="textCapCharacters"
                     android:singleLine="true" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/disposition_number"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/disposition_number" />
 
                 <EditText
                     android:id="@+id/disposition_number"
@@ -134,9 +126,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/disposition_date"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/disposition_date" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/disposition_date"
@@ -147,24 +138,22 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/task_number"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/task_number" />
 
                 <EditText
                     android:id="@+id/task_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="text"
                     android:singleLine="true" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/task_date"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/task_date" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/task_date"
@@ -175,9 +164,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/start_date"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/start_date" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -202,9 +190,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/end_date"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/end_date" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -231,7 +218,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             app:cardBackgroundColor="@color/cardview_shadow_end_color">
 
             <LinearLayout
@@ -242,45 +229,41 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:text="@string/vehicle_information"
-                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/vehicle_information"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/vehicle_information" />
 
                 <EditText
                     android:id="@+id/vehicle_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="textMultiLine" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/vehicle_owner"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/vehicle_owner" />
 
                 <EditText
                     android:id="@+id/vehicle_owner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="textMultiLine" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/owner_ogrn"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/owner_ogrn" />
 
                 <EditText
                     android:id="@+id/owner_ogrn"
@@ -295,15 +278,14 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/owner_inn"
-                    android:textSize="20sp" />
+                    android:layout_margin="8dp"
+                    android:text="@string/owner_inn" />
 
                 <EditText
                     android:id="@+id/owner_inn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:inputType="number"
                     android:singleLine="true"
                     android:maxLength="12"
@@ -314,7 +296,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             app:cardBackgroundColor="@color/cardview_shadow_end_color">
 
             <LinearLayout
@@ -326,8 +308,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/warning_count"
-                    android:textSize="20sp"
-                    android:layout_margin="16dp"/>
+                    android:layout_margin="8dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -362,8 +343,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/warning_date"
-                    android:textSize="20sp"
-                    android:layout_margin="16dp"/>
+                    android:layout_margin="8dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/warning_date"
@@ -378,9 +358,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/violation_existing"
-            android:textSize="20sp"
             android:textColor="@color/material_on_surface_emphasis_medium"
-            android:layout_margin="16dp" />
+            android:layout_margin="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_button"
