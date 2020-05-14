@@ -7,9 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Database(entities = {RaidEntity.class, RaidInspectionMemberEntity.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class RaidRoomDatabase extends RoomDatabase {

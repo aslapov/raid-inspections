@@ -1,10 +1,8 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">KИСУ КНД ТБ Рейды М</string>
+
+    <string name="navigation_drawer_open">Открыть меню навигации</string>
+    <string name="navigation_drawer_close">Закрыть меню навигации</string>
+    <string name="navigation_all">Все</string>
+    <string name="navigation_drafts">Черновики</string>
+    <string name="navigation_trash">Корзина</string>
+    <string name="navigation_config">Настройки</string>
+
     <string name="authorization_greeting">Вас приветствует система\nКИСУ КНД ТБ Рейды М</string>
     <string name="login_hint">Имя пользователя в КИСУ КНД ТБ</string>
     <string name="password_hint">Введите пароль</string>

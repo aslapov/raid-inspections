@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_main">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all"
+            android:title="@string/navigation_all" />
+        <item
+            android:id="@+id/nav_drafts"
+            android:title="@string/navigation_drafts" />
+        <item
+            android:id="@+id/nav_trash"
+            android:title="@string/navigation_trash" />
+
+        <item
+            android:id="@+id/nav_configuration"
+            android:title="@string/navigation_config" />
+    </group>
+
+</menu>

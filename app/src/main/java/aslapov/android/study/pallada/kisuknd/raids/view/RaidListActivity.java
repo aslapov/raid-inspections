@@ -3,20 +3,28 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
 
-public class RaidListActivity extends AppCompatActivity implements RaidListFragment.OnRaidSelectedListener {
+public class RaidListActivity extends AppCompatActivity
+        implements RaidListFragment.OnRaidSelectedListener, NavigationView.OnNavigationItemSelectedListener {
+
     private static final int REQUEST_CODE_RAID_ACTIVITY = 0;
 
     public static void start(@NonNull Activity activity) {
@@ -27,8 +35,20 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        setContentView(R.layout.activity_masterdetail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment raidListFragment  = fm.findFragmentById(R.id.fragment_container);
@@ -50,6 +70,26 @@ public class RaidListActivity extends AppCompatActivity implements RaidListFragm
                     .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int i = 0;
+        switch (item.getItemId()) {
+            case R.id.nav_all:
+                i = 1;
+                break;
+            case R.id.nav_drafts:
+                i = 2;
+                break;
+            default:
+                i = 100;
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override

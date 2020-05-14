@@ -1,6 +1,5 @@
 package aslapov.android.study.pallada.kisuknd.raids.model;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;

@@ -9,9 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * @author Artur Vasilov
- */
 public class EmptyRecyclerView extends RecyclerView {
 
     @Nullable

@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -23,7 +22,6 @@ import java.util.UUID;
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidEntity;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
