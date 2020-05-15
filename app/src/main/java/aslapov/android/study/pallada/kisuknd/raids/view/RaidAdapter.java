@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 
 public class RaidAdapter extends BaseAdapter<RaidHolder, RaidWithInspectors> {
 

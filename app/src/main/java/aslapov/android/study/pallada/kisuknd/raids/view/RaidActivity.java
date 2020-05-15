@@ -16,6 +16,11 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 public class RaidActivity extends AppCompatActivity {
     public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.view.raid_id";
 
+    public static void start(@NonNull Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, RaidActivity.class);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
     public static void start(@NonNull Activity activity, UUID raidId, int requestCode) {
         Intent intent = new Intent(activity, RaidActivity.class);
         intent.putExtra(EXTRA_RAID_ID, raidId);

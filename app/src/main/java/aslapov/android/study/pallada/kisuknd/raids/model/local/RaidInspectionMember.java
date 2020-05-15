@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.model;
+package aslapov.android.study.pallada.kisuknd.raids.model.local;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -9,12 +9,12 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "RaidInspectionMember", primaryKeys = {"RaidInspectionId", "ContactName"},
     foreignKeys = @ForeignKey(
-        entity = RaidEntity.class,
+        entity = Raid.class,
         parentColumns = "Id",
         childColumns = "RaidInspectionId",
         onDelete = CASCADE)
     )
-public class RaidInspectionMemberEntity {
+public class RaidInspectionMember {
 
     @ColumnInfo(name = "RaidInspectionId")
     @NonNull

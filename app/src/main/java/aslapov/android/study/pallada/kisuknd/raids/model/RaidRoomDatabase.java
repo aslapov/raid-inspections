@@ -7,7 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {RaidEntity.class, RaidInspectionMemberEntity.class}, version = 1, exportSchema = false)
+import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidInspectionMember;
+
+@Database(entities = {Raid.class, RaidInspectionMember.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class RaidRoomDatabase extends RoomDatabase {
 

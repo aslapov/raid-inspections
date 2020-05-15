@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 
 public class RaidListViewModel extends ViewModel {
@@ -19,7 +19,7 @@ public class RaidListViewModel extends ViewModel {
         mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
     }
 
-    public LiveData<List<RaidWithInspectors>> getRaids() {
-        return mRaidRepository.queryRaids();
+    public LiveData<List<RaidWithInspectors>> getRaids(boolean isDraft) {
+        return mRaidRepository.queryRaids(isDraft);
     }
 }

@@ -7,8 +7,9 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.UUID;
 
-import aslapov.android.study.pallada.kisuknd.raids.model.content.AuthResponse;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.AuthResponse;
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.LoggedInUser;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,8 +29,8 @@ public class RaidRepository {
         mRaidDao = db.raidDao();
     }
 
-    public LiveData<List<RaidWithInspectors>> queryRaids() {
-        return mRaidDao.queryRaidList();
+    public LiveData<List<RaidWithInspectors>> queryRaids(boolean isDraft) {
+        return mRaidDao.queryRaidList(isDraft);
     }
 
     public LiveData<RaidWithInspectors> queryRaidListById(UUID raidId) {
@@ -37,7 +38,7 @@ public class RaidRepository {
     }
 
     public void updateRaid(RaidWithInspectors raid) {
-        mRaidDao.updateRaidWithInspectors(raid.getRaidEntity(), raid.getInspectors());
+        mRaidDao.updateRaidWithInspectors(raid.getRaid(), raid.getInspectors());
     }
 
     public void login(String username, String password, ResponseCallback<AuthResult> callback) {
@@ -98,7 +99,7 @@ public class RaidRepository {
                 if (response.isSuccessful())
 
                     /*for (Raid raid : response.body()) {
-                        RaidEntity raidEntity = new RaidEntity();
+                        Raid raidEntity = new Raid();
                         raidEntity.setId(raid.getId().toString());
                         raidEntity.setActNumber(raid.getActNumber());
                         raidEntity.setDepartment(raid.getDepartment());
@@ -113,9 +114,9 @@ public class RaidRepository {
                         raidEntity.setTaskDate(raid.getTaskDate());
                         raidEntity.setTaskNumber(raid.getTaskNumber());
 
-                        List<RaidInspectionMemberEntity> inspectors = new ArrayList<>();
+                        List<RaidInspectionMember> inspectors = new ArrayList<>();
                         for (String inspector : raid.getInspectors()) {
-                            RaidInspectionMemberEntity member = new RaidInspectionMemberEntity();
+                            RaidInspectionMember member = new RaidInspectionMember();
                             member.setContactName(inspector);
                             member.setRaidInspectionId(raid.getId().toString());
                             inspectors.add(member);

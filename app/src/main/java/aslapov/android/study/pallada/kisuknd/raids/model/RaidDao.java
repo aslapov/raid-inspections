@@ -10,45 +10,45 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidInspectionMember;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
+
 @Dao
 public abstract class RaidDao {
 
-    /*@Transaction
-    @Query("SELECT * FROM RaidInspections")
-    public abstract LiveData<List<RaidWithInspectors>> queryRaidList();*/
-
     @Transaction
-    @Query("SELECT * FROM RaidInspections")
-    public abstract LiveData<List<RaidWithInspectors>> queryRaidList();
+    @Query("SELECT * FROM RaidInspections WHERE IsDraft = :isDraft")
+    public abstract LiveData<List<RaidWithInspectors>> queryRaidList(boolean isDraft);
 
     @Transaction
     @Query("SELECT * FROM RaidInspections WHERE Id = :raidId")
     public abstract LiveData<RaidWithInspectors> queryRaidListById(String raidId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insertRaid(RaidEntity raid);
+    public abstract void insertRaid(Raid raid);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insertRaidInspector(RaidInspectionMemberEntity member);
+    public abstract void insertRaidInspector(RaidInspectionMember member);
 
     @Transaction
-    public void insertRaidWithInspectors(RaidEntity raid, List<RaidInspectionMemberEntity> inspectors) {
+    public void insertRaidWithInspectors(Raid raid, List<RaidInspectionMember> inspectors) {
         insertRaid(raid);
-        for (RaidInspectionMemberEntity member : inspectors) {
+        for (RaidInspectionMember member : inspectors) {
             insertRaidInspector(member);
         }
     }
 
     @Update
-    public abstract void updateRaid(RaidEntity raid);
+    public abstract void updateRaid(Raid raid);
 
     @Update
-    public abstract void updateRaidInspector(RaidInspectionMemberEntity member);
+    public abstract void updateRaidInspector(RaidInspectionMember member);
 
     @Transaction
-    public  void updateRaidWithInspectors(RaidEntity raid, List<RaidInspectionMemberEntity> inspectors) {
+    public  void updateRaidWithInspectors(Raid raid, List<RaidInspectionMember> inspectors) {
         updateRaid(raid);
-        for (RaidInspectionMemberEntity member : inspectors) {
+        for (RaidInspectionMember member : inspectors) {
             updateRaidInspector(member);
         }
     };

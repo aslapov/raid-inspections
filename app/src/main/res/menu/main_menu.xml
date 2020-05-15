@@ -6,14 +6,5 @@
         android:id="@+id/search_raid"
         android:title="@string/search_raid"
         android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/new_raid"
-        android:title="@string/new_raid"
-        android:icon="@android:drawable/ic_menu_add"
-        app:showAsAction="ifRoom">
-    </item>
-
-
+        app:showAsAction="ifRoom" />
 </menu>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,12 +16,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 
 public class RaidListActivity extends AppCompatActivity
         implements RaidListFragment.OnRaidSelectedListener, NavigationView.OnNavigationItemSelectedListener {
@@ -65,27 +67,36 @@ public class RaidListActivity extends AppCompatActivity
 
             RaidActivity.start(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
         } else if (raidListFragment == null) {
-            raidListFragment = new RaidListFragment();
+            raidListFragment = RaidListFragment.newInstance(false);
             fm.beginTransaction()
                     .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
+
+        FloatingActionButton addRaidButton = findViewById(R.id.float_create);
+        addRaidButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int i = 0;
+        Fragment raidListFragment;
+
         switch (item.getItemId()) {
-            case R.id.nav_all:
-                i = 1;
-                break;
             case R.id.nav_drafts:
-                i = 2;
+                raidListFragment = RaidListFragment.newInstance(true);
                 break;
             default:
-                i = 100;
-                break;
+                raidListFragment = RaidListFragment.newInstance(false);
         }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, raidListFragment)
+                .commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -94,7 +105,7 @@ public class RaidListActivity extends AppCompatActivity
 
     @Override
     public void onRaidSelected(RaidWithInspectors raid) {
-        UUID raidId = UUID.fromString(raid.getRaidEntity().getId());
+        UUID raidId = UUID.fromString(raid.getRaid().getId());
         if (findViewById(R.id.detail_fragment_container) == null) {
             RaidActivity.start(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
         } else {

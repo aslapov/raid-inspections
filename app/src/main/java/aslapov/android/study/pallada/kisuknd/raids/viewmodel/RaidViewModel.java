@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 
 public class RaidViewModel extends ViewModel {

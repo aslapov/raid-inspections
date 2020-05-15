@@ -8,8 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidEntity;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 
 public class RaidHolder extends RecyclerView.ViewHolder {
     private TextView mTransportType;
@@ -24,7 +24,7 @@ public class RaidHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(RaidWithInspectors raid) {
-        RaidEntity mRaid = raid.getRaidEntity();
+        Raid mRaid = raid.getRaid();
         mTransportType.setText(mRaid.getTransportType());
         mActNumber.setText(mRaid.getActNumber());
         Date realStartDate = mRaid.getRealStart();

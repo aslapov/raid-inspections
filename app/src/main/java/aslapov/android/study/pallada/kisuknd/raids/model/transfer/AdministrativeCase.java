@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.model.content;
+package aslapov.android.study.pallada.kisuknd.raids.model.transfer;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

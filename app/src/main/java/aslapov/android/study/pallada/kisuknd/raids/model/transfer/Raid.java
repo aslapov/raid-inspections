@@ -1,99 +1,123 @@
-package aslapov.android.study.pallada.kisuknd.raids.model;
+package aslapov.android.study.pallada.kisuknd.raids.model.transfer;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-@Entity(tableName = "RaidInspections")
-public class RaidEntity {
-
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "Id")
-    private String id;
+public class Raid {
+    // Идентификатор рейдового осмотра
+    @SerializedName("Id")
+    @Expose
+    private UUID id;
 
     // Вид транспорта
-    @ColumnInfo(name = "TransportType")
+    @SerializedName("TransportType")
+    @Expose
     private String transportType;
 
     // Отдел
-    @ColumnInfo(name = "Department")
+    @SerializedName("Department")
+    @Expose
     private String department;
 
     // № акта
-    @ColumnInfo(name = "ActNumber")
+    @SerializedName("ActNumber")
+    @Expose
     private String actNumber;
 
     // Дата (время) начала проведения рейдового осмотра
-    @ColumnInfo(name = "RealStart")
+    @SerializedName("RealStart")
+    @Expose
     private Date realStart;
 
     // Дата (время) окончания проведения рейдового осмотра
-    @ColumnInfo(name = "RealEnd")
+    @SerializedName("RealEnd")
+    @Expose
     private Date realEnd;
 
     // Место проведения (адрес)
-    @ColumnInfo(name = "PlaceAddress")
+    @SerializedName("PlaceAddress")
+    @Expose
     private String placeAddress;
 
     // № распоряжения
-    @ColumnInfo(name = "OrderNumber")
+    @SerializedName("OrderNumber")
+    @Expose
     private String orderNumber;
 
     // Дата распоряжения
-    @ColumnInfo(name = "OrderDate")
+    @SerializedName("OrderDate")
+    @Expose
     private Date orderDate;
 
     // № задания
-    @ColumnInfo(name = "TaskNumber")
+    @SerializedName("TaskNumber")
+    @Expose
     private String taskNumber;
 
     // Дата задания
-    @ColumnInfo(name = "TaskDate")
+    @SerializedName("TaskDate")
+    @Expose
     private Date taskDate;
 
     // Информация о ТС (наименование, марка, модель и т.д.)
-    @ColumnInfo(name = "VehicleInfo")
+    @SerializedName("VehicleInfo")
+    @Expose
     private String vehicleInfo;
 
     // Собственник/Перевозчик
-    @ColumnInfo(name = "VehicleOwner")
+    @SerializedName("VehicleOwner")
+    @Expose
     private String vehicleOwner;
 
     // ОГРН собственника
-    @ColumnInfo(name = "OwnerOgrn")
+    @SerializedName("OwnerOgrn")
+    @Expose
     private String ownerOgrn;
 
     // ИНН собственника
-    @ColumnInfo(name = "OwnerInn")
+    @SerializedName("OwnerInn")
+    @Expose
     private String ownerInn;
 
     // Есть ли нарушения
-    @ColumnInfo(name = "ViolationsPresence")
+    @SerializedName("ViolationsPresence")
+    @Expose
     private boolean violationsPresence;
 
     // Количество вынесенных предостережений
     // Каждый осмотр ТС может приводить к вынесению нескольких предостережений
-    @ColumnInfo(name = "WarningCount")
+    @SerializedName("WarningCount")
+    @Expose
     private int warningCount;
 
     // Дата вынесенного(ых) предостережения(й)
-    @ColumnInfo(name = "WarningDate")
+    @SerializedName("WarningDate")
+    @Expose
     private Date warningDate;
 
     // Часовой пояс в формате ±HHmm
-    @ColumnInfo(name = "TimeZone")
+    @SerializedName("TimeZone")
+    @Expose
     private String timeZone;
 
-    @NonNull
-    public String getId() {
+    // Уполномоченные на проведение проверки
+    @SerializedName("Inspectors")
+    @Expose
+    private List<String> inspectors;
+
+    // Вложенные файлы
+    //public List<WebAttachment> Attachments { get; set; }
+
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -239,5 +263,13 @@ public class RaidEntity {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public List<String> getInspectors() {
+        return inspectors;
+    }
+
+    public void setInspectors(List<String> inspectors) {
+        this.inspectors = inspectors;
     }
 }

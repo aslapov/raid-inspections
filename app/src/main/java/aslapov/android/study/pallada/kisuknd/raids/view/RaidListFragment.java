@@ -19,11 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidListViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<RaidWithInspectors> {
+    private static final String ARG_IS_DRAFT = "is_draft";
+
     private RaidListViewModel mViewModel;
 
     private OnRaidSelectedListener mListener;
@@ -33,6 +35,19 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
     public interface OnRaidSelectedListener {
         void onRaidSelected(RaidWithInspectors raid);
+    }
+
+    public static RaidListFragment newInstance(boolean isDraft) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_IS_DRAFT, isDraft);
+
+        RaidListFragment fragment = new RaidListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public boolean isDraft() {
+        return (boolean) getArguments().getSerializable(ARG_IS_DRAFT);
     }
 
     @Override
@@ -75,7 +90,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         mLoading.setVisibility(View.VISIBLE);
 
         mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidListViewModel.class);
-        mViewModel.getRaids().observe(getViewLifecycleOwner(), this::showRaids);
+        mViewModel.getRaids(isDraft()).observe(getViewLifecycleOwner(), this::showRaids);
     }
 
     private void showRaids(List<RaidWithInspectors> raids) {
@@ -92,17 +107,11 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main_menu, menu);
-
-        MenuItem subtitleItem = menu.findItem(R.id.new_raid);
-        subtitleItem.setTitle("Create Raid");
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_raid:
-
-                return true;
             case R.id.search_raid:
 
                 return true;

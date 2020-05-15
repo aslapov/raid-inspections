@@ -3,9 +3,9 @@ package aslapov.android.study.pallada.kisuknd.raids.model;
 import java.util.List;
 import java.util.UUID;
 
-import aslapov.android.study.pallada.kisuknd.raids.model.content.AuthResponse;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.LoggedInUser;
-import aslapov.android.study.pallada.kisuknd.raids.model.content.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.AuthResponse;
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.LoggedInUser;
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Raid;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
