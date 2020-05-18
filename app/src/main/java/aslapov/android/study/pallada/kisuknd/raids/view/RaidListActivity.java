@@ -54,18 +54,18 @@ public class RaidListActivity extends AppCompatActivity
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment raidListFragment  = fm.findFragmentById(R.id.fragment_container);
-        RaidFragment raidFragmentFromDualPane = (RaidFragment) fm.findFragmentById(R.id.detail_fragment_container);
+        ShowRaidFragment raidFragmentFromDualPane = (ShowRaidFragment) fm.findFragmentById(R.id.detail_fragment_container);
 
-        // Случай поворота экрана из горизонтального положения с открытым RaidFragment
-        // в вертикальное положение. В таком случае необходимо открыть RaidActivity
-        // и RaidFragment
+        // Случай поворота экрана из горизонтального положения с открытым ShowRaidFragment
+        // в вертикальное положение. В таком случае необходимо открыть ShowRaidActivity
+        // и ShowRaidFragment
         if (findViewById(R.id.detail_fragment_container) == null && raidFragmentFromDualPane != null) {
             UUID raidId = raidFragmentFromDualPane.getRaidId();
             fm.beginTransaction()
                     .remove(raidFragmentFromDualPane)
                     .commit();
 
-            RaidActivity.start(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
+            ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
         } else if (raidListFragment == null) {
             raidListFragment = RaidListFragment.newInstance(false);
             fm.beginTransaction()
@@ -74,11 +74,8 @@ public class RaidListActivity extends AppCompatActivity
         }
 
         FloatingActionButton addRaidButton = findViewById(R.id.float_create);
-        addRaidButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        addRaidButton.setOnClickListener(view -> {
+            CreateRaidActivity.start(this);
         });
     }
 
@@ -86,12 +83,10 @@ public class RaidListActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment raidListFragment;
 
-        switch (item.getItemId()) {
-            case R.id.nav_drafts:
-                raidListFragment = RaidListFragment.newInstance(true);
-                break;
-            default:
-                raidListFragment = RaidListFragment.newInstance(false);
+        if (item.getItemId() == R.id.nav_drafts) {
+            raidListFragment = RaidListFragment.newInstance(true);
+        } else {
+            raidListFragment = RaidListFragment.newInstance(false);
         }
 
         getSupportFragmentManager().beginTransaction()
@@ -107,7 +102,7 @@ public class RaidListActivity extends AppCompatActivity
     public void onRaidSelected(RaidWithInspectors raid) {
         UUID raidId = UUID.fromString(raid.getRaid().getId());
         if (findViewById(R.id.detail_fragment_container) == null) {
-            RaidActivity.start(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
+            ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
         } else {
             showRaidFragment(raidId);
         }
@@ -117,19 +112,19 @@ public class RaidListActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Восстановление RaidFragment при повороте экрана в горизонтальное положение.
+        // Восстановление ShowRaidFragment при повороте экрана в горизонтальное положение.
         // RESULT_OK нужен для отличия от события нажатия кнопки "назад", при котором
         // автоматически генерируется код результата RESULT_CANCELED
         if (requestCode == REQUEST_CODE_RAID_ACTIVITY && resultCode == RESULT_OK) {
-            UUID raidId = RaidActivity.getRaidId(data);
+            UUID raidId = ShowRaidActivity.getRaidId(data);
             showRaidFragment(raidId);
         }
     }
 
     private void showRaidFragment(UUID raidId) {
-        RaidFragment raidFragment = (RaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
+        ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
         if (raidFragment == null || raidFragment.getRaidId() != raidId) {
-            raidFragment = RaidFragment.newInstance(raidId);
+            raidFragment = ShowRaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_fragment_container, raidFragment)
                     .commit();

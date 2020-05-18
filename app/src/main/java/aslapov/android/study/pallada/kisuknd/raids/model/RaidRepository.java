@@ -41,6 +41,10 @@ public class RaidRepository {
         mRaidDao.updateRaidWithInspectors(raid.getRaid(), raid.getInspectors());
     }
 
+    public void addRaid(RaidWithInspectors raid) {
+        mRaidDao.insertRaidWithInspectors(raid.getRaid(), raid.getInspectors());
+    }
+
     public void login(String username, String password, ResponseCallback<AuthResult> callback) {
         LoggedInUser user = new LoggedInUser(username.toUpperCase(), password);
         RaidApiFactory.getRaidService().login(user).enqueue(new Callback<AuthResponse>() {

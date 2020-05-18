@@ -11,11 +11,11 @@ import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 
-public class RaidViewModel extends ViewModel {
+public class ShowRaidViewModel extends ViewModel {
 
     private RaidRepository mRaidRepository;
 
-    public RaidViewModel(Context applicationContext) {
+    public ShowRaidViewModel(Context applicationContext) {
         mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
     }
 

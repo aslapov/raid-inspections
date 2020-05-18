@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context=".view.RaidListActivity">
 
-    <include layout="@layout/raid_layout" />
+    <include layout="@layout/show_raid_layout" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"

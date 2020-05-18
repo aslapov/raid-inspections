@@ -22,14 +22,13 @@ import java.util.UUID;
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
-import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ShowRaidViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
-public class RaidFragment extends Fragment {
+public class ShowRaidFragment extends Fragment {
     private static final String ARG_RAID_ID = "raid_id";
-    private static final String ARG_RAID_IS_TO_CREATE = "is_raid_to_create";
 
-    private RaidViewModel mViewModel;
+    private ShowRaidViewModel mViewModel;
 
     private ProgressBar mLoading;
 
@@ -55,27 +54,13 @@ public class RaidFragment extends Fragment {
     private MaterialCheckBox mViolationExisting;
     private MaterialButton mSave;
 
-    public static RaidFragment newInstance() {
-        Bundle args = new Bundle();
-        args.putBoolean(ARG_RAID_IS_TO_CREATE, true);
-
-        RaidFragment fragment = new RaidFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static RaidFragment newInstance(UUID raidId) {
+    public static ShowRaidFragment newInstance(UUID raidId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_RAID_ID, raidId);
-        args.putBoolean(ARG_RAID_IS_TO_CREATE, false);
 
-        RaidFragment fragment = new RaidFragment();
+        ShowRaidFragment fragment = new ShowRaidFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public boolean isRaidCreate() {
-        return getArguments().getBoolean(ARG_RAID_IS_TO_CREATE);
     }
 
     public UUID getRaidId() {
@@ -87,9 +72,7 @@ public class RaidFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = isRaidCreate() ?
-                inflater.inflate(R.layout.create_raid_layout, container, false) :
-                inflater.inflate(R.layout.raid_layout, container, false);
+        View v = inflater.inflate(R.layout.show_raid_layout, container, false);
 
         mLoading = v.findViewById(R.id.loading);
 
@@ -114,30 +97,6 @@ public class RaidFragment extends Fragment {
         mWarningDate = (MaterialButton) v.findViewById(R.id.warning_date);
         mViolationExisting = (MaterialCheckBox) v.findViewById(R.id.violation_existing);
 
-        mSave = (MaterialButton) v.findViewById(R.id.save_button);
-        mSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Raid raid = mRaid.getRaid();
-
-                raid.setTaskNumber(mTaskNumber.getText().toString());
-                //raid.setTaskDate(mTaskDate.getText().toString());
-                raid.setPlaceAddress(mAddress.getText().toString());
-                raid.setOwnerOgrn(mOwnerOgrn.getText().toString());
-                raid.setOwnerInn(mOwnerInn.getText().toString());
-                raid.setOrderNumber(mDispositionNumber.getText().toString());
-                //raid.setTransportType(mTransportType.getText().toString());
-                raid.setActNumber(mActNumber.getText().toString());
-                raid.setDepartment(mDepartment.getText().toString());
-                raid.setVehicleInfo(mVehicleInfo.getText().toString());
-                raid.setVehicleOwner(mVehicleOwner.getText().toString());
-
-                mRaid.setRaid(raid);
-
-                mViewModel.updateRaid(mRaid);
-            }
-        });
-
         return v;
     }
 
@@ -147,10 +106,8 @@ public class RaidFragment extends Fragment {
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidViewModel.class);
-
-        if (isRaidCreate())
-            mViewModel.getRaid(getRaidId()).observe(getViewLifecycleOwner(), this::showRaidInfo);
+        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(ShowRaidViewModel.class);
+        mViewModel.getRaid(getRaidId()).observe(getViewLifecycleOwner(), this::showRaidInfo);
     }
 
     private void showRaidInfo(RaidWithInspectors raidInspection) {

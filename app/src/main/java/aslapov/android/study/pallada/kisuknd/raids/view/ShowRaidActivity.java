@@ -13,16 +13,11 @@ import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 
-public class RaidActivity extends AppCompatActivity {
+public class ShowRaidActivity extends AppCompatActivity {
     public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.view.raid_id";
 
-    public static void start(@NonNull Activity activity, int requestCode) {
-        Intent intent = new Intent(activity, RaidActivity.class);
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    public static void start(@NonNull Activity activity, UUID raidId, int requestCode) {
-        Intent intent = new Intent(activity, RaidActivity.class);
+    public static void startForResult(@NonNull Activity activity, UUID raidId, int requestCode) {
+        Intent intent = new Intent(activity, ShowRaidActivity.class);
         intent.putExtra(EXTRA_RAID_ID, raidId);
         activity.startActivityForResult(intent, requestCode);
     }
@@ -39,11 +34,11 @@ public class RaidActivity extends AppCompatActivity {
         UUID raidId = (UUID) getIntent().getSerializableExtra(EXTRA_RAID_ID);
 
         FragmentManager fm = getSupportFragmentManager();
-        RaidFragment raidFragment = (RaidFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
         // Если текущую активити перевели в горизонтальное положение,
         // то вернуться к предыдущей активити
-        if (getResources().getConfiguration().screenWidthDp >= 600) {
+        if (getResources().getConfiguration().screenWidthDp >= 900) {
             if (raidFragment != null) {
                 fm.beginTransaction()
                         .remove(raidFragment)
@@ -60,7 +55,7 @@ public class RaidActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fragment);
         if (savedInstanceState == null) {
-            raidFragment = RaidFragment.newInstance(raidId);
+            raidFragment = ShowRaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, raidFragment)
                     .commit();
