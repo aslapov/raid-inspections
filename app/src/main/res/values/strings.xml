@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KИСУ КНД ТБ Рейды М</string>
+    <string name="applicationLabel">KИСУ КНД ТБ Рейды М</string>
 
     <string name="navigation_drawer_open">Открыть меню навигации</string>
     <string name="navigation_drawer_close">Закрыть меню навигации</string>
@@ -7,6 +7,9 @@
     <string name="navigation_drafts">Черновики</string>
     <string name="navigation_trash">Корзина</string>
     <string name="navigation_config">Настройки</string>
+
+    <string name="menu_save">Сохранить</string>
+    <string name="menu_delete">Удалить</string>
 
     <string name="authorization_greeting">Вас приветствует система\nКИСУ КНД ТБ Рейды М</string>
     <string name="login_hint">Имя пользователя в КИСУ КНД ТБ</string>
@@ -34,8 +37,8 @@
     <string name="act_number">Номер акта*</string>
     <string name="inspector">Уполномоченное(ые) лицо(а), проводившее(ие) рейдовый осмотр*</string>
     <string name="inspector_short">Уполномоченное(ые) лицо(а)*</string>
-    <string name="disposition_number">Номер распоряжения*</string>
-    <string name="disposition_date">Дата распоряжения*</string>
+    <string name="order_number">Номер распоряжения*</string>
+    <string name="order_date">Дата распоряжения*</string>
     <string name="task_number">Номер задания</string>
     <string name="task_date">Дата задания</string>
     <string name="start_date">Начало рейдового осмотра*</string>
@@ -46,9 +49,6 @@
     <string name="warning_count">Количество предостережений</string>
     <string name="warning_date">Дата предостережений</string>
     <string name="violation_existing">Выявленные нарушения</string>
-    <string name="save_button">Сохранить</string>
-    <string name="plus_button">+</string>
-    <string name="minus_button">-</string>
     <string name="edit_raid_bar">Рейдовый осмотр ТС</string>
     <string name="create_administrative_case">Создание административного дела</string>
     <string name="administrative_case_number">№ административного дела</string>
@@ -63,6 +63,7 @@
     <string name="definition">Определение</string>
     <string name="definition_number">№ определения</string>
     <string name="definition_place">Место определения</string>
+    <string name="act_date">Дата акта</string>
 
     <string-array name="transport_type">
         <item>Автомобильный</item>

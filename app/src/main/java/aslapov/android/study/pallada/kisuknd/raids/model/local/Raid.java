@@ -31,6 +31,10 @@ public class Raid {
     @ColumnInfo(name = "ActNumber")
     private String actNumber;
 
+    // Дата акта
+    @ColumnInfo(name = "ActDate")
+    private Date actDate;
+
     // Дата (время) начала проведения рейдового осмотра
     @ColumnInfo(name = "RealStart")
     private Date realStart;
@@ -131,6 +135,14 @@ public class Raid {
 
     public void setActNumber(String actNumber) {
         this.actNumber = actNumber;
+    }
+
+    public Date getActDate() {
+        return actDate;
+    }
+
+    public void setActDate(Date actDate) {
+        this.actDate = actDate;
     }
 
     public Date getRealStart() {

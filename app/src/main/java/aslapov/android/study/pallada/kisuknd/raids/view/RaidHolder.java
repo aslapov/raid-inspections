@@ -14,13 +14,13 @@ import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspector
 public class RaidHolder extends RecyclerView.ViewHolder {
     private TextView mTransportType;
     private TextView mActNumber;
-    //private TextView mStartDate;
+    private TextView mStartDate;
 
     public RaidHolder(View itemView) {
         super(itemView);
         mTransportType = (TextView) itemView.findViewById(R.id.transport_type);
         mActNumber = (TextView) itemView.findViewById(R.id.act_number);
-        //mStartDate = (TextView) itemView.findViewById(R.id.start_date);
+        mStartDate = (TextView) itemView.findViewById(R.id.start_date);
     }
 
     public void bind(RaidWithInspectors raid) {
@@ -29,6 +29,6 @@ public class RaidHolder extends RecyclerView.ViewHolder {
         mActNumber.setText(mRaid.getActNumber());
         Date realStartDate = mRaid.getRealStart();
         String realStart = new SimpleDateFormat("dd.MM.yyyy").format(realStartDate);
-        //mStartDate.setText(realStart);
+        mStartDate.setText(realStart);
     }
 }

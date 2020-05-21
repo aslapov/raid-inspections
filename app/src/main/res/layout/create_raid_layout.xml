@@ -17,11 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:background="@android:color/holo_blue_dark">
+            android:background="@color/primary_color">
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/action_bar_button_text_color"
                 android:text="@string/new_raid_bar"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -30,6 +31,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/raid_layout" />
+    <include layout="@layout/raid_editable" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

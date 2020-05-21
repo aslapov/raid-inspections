@@ -2,27 +2,40 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="aslapov.android.study.pallada.kisuknd.raids">
 
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/applicationLabel"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
+
         <activity
-            android:name=".view.RaidListActivity">
+            android:name=".view.RaidListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".view.AuthActivity" />
-        <activity android:name=".view.ShowRaidActivity" />
-        <activity android:name=".view.CreateRaidActivity"/>
-        <activity android:name=".view.EditRaidActivity" />
+
+        <activity
+            android:name=".view.ShowRaidActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".view.CreateRaidActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".view.EditRaidActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

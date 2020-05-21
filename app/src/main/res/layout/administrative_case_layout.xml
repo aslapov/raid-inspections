@@ -98,8 +98,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/protocol_date"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/AppTheme.Button"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -162,8 +161,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/decree_date"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/AppTheme.Button"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -226,17 +224,10 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/definition_date"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/AppTheme.Button"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="@string/save_button"
-            android:layout_gravity="center_horizontal"
-            style="@style/AppTheme.Button"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

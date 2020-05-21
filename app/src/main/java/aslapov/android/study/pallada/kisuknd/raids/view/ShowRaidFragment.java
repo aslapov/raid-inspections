@@ -81,8 +81,8 @@ public class ShowRaidFragment extends Fragment {
         mAddress = (EditText) v.findViewById(R.id.address);
         mActNumber = (EditText) v.findViewById(R.id.act_number);
         mInspector = (EditText) v.findViewById(R.id.inspector);
-        mDispositionNumber = (EditText) v.findViewById(R.id.disposition_number);
-        mDispositionDate =  (MaterialButton) v.findViewById(R.id.disposition_date);
+        mDispositionNumber = (EditText) v.findViewById(R.id.order_number);
+        mDispositionDate =  (MaterialButton) v.findViewById(R.id.order_date);
         mTaskNumber = (EditText) v.findViewById(R.id.task_number);
         mTaskDate = (MaterialButton) v.findViewById(R.id.task_date);
         mStartDate = (MaterialButton) v.findViewById(R.id.start_date);
