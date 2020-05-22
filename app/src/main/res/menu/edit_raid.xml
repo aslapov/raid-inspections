@@ -6,9 +6,4 @@
         app:showAsAction="always"
         android:actionLayout="@layout/save_button"
         android:title="@string/menu_save" />
-
-    <item
-        android:id="@+id/menu_delete"
-        app:showAsAction="ifRoom"
-        android:title="@string/menu_delete" />
 </menu>

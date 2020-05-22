@@ -72,4 +72,24 @@
         <item>Морской</item>
         <item>Внутренний водный</item>
     </string-array>
+
+    <string-array name="department">
+        <item>ОНОТБ УГАН НОТБ ЦФО</item>
+        <item>ОНОТБ УГАН НОТБ СЗФО</item>
+        <item>ОНОТБ УГАН НОТБ ЮФО</item>
+        <item>ОНОТБ УГАН НОТБ УФО</item>
+        <item>ОНОТБ УГАН НОТБ ПФО</item>
+        <item>ОНОТБ УГАН НОТБ СФО</item>
+        <item>ОНОТБ УГАН НОТБ ДФО</item>
+        <item>МТУ НОТБ СКФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ ЦФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ СЗФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ ЮФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ УФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ ПФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ СФО</item>
+        <item>ОНОАБ И ПАСОП УГАН НОТБ ДФО</item>
+        <item>ОНОТБ УТБ</item>
+        <item>ОНОАБ УТБ</item>
+    </string-array>
 </resources>

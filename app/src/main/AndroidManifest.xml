@@ -12,11 +12,11 @@
         android:label="@string/applicationLabel"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name=".view.RaidListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".view.RaidListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,15 +27,29 @@
 
         <activity
             android:name=".view.ShowRaidActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".view.RaidListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.RaidListActivity" />
+        </activity>
 
         <activity
             android:name=".view.CreateRaidActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/new_raid_bar"
+            android:parentActivityName=".view.RaidListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.RaidListActivity" />
+        </activity>
 
         <activity
             android:name=".view.EditRaidActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/edit_raid_bar"
+            android:parentActivityName=".view.RaidListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.RaidListActivity" />
+        </activity>
     </application>
 
 </manifest>

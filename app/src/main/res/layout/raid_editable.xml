@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:singleLine="true"
                 android:hint="@string/warning_count"/>
 
@@ -173,14 +173,13 @@
             android:text="@string/violation_existing"
             android:layout_margin="8dp" />
 
-        <EditText
+        <Spinner
             android:id="@+id/department"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
+            style="@style/SpinnerStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textCapCharacters"
-            android:singleLine="true"
-            android:hint="@string/department"/>
+            android:entries="@array/department"
+            android:spinnerMode="dropdown" />
 
         <EditText
             android:id="@+id/inspector"
@@ -226,17 +225,6 @@
             android:singleLine="true"
             android:maxLength="15"
             android:hint="@string/owner_ogrn"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/editor_menu_save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="8dp"
-            android:text="@string/menu_save"
-            android:background="@color/primary_color"
-            android:textColor="@color/action_bar_button_text_color"
-            android:textSize="20sp" />
 
     </LinearLayout>
 
