@@ -1,6 +1,7 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.text.Editable;
 
 import androidx.lifecycle.LiveData;
@@ -21,6 +22,12 @@ import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidInspectionMember;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CreateRaidViewModel extends ViewModel {
 
@@ -35,6 +42,7 @@ public class CreateRaidViewModel extends ViewModel {
     private String mOrderDateError;
     private String mTaskDateError;
     private String mWarningDateError;
+    private String mCreateError;
 
     private Locale mLocaleRu = new Locale("ru");
     private DateFormat mDateFormatter = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, mLocaleRu);
@@ -42,6 +50,20 @@ public class CreateRaidViewModel extends ViewModel {
 
     public CreateRaidViewModel(Context applicationContext) {
         mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
+    }
+
+    public void init() {
+        Date currentDate = Calendar.getInstance(mLocaleRu).getTime();
+        mRaid.setValue(new Raid());
+        mInspector.setValue(new RaidInspectionMember());
+        getRaid().setRealStart(currentDate);
+        getRaid().setRealEnd(currentDate);
+        getRaid().setActDate(currentDate);
+        getRaid().setOrderDate(currentDate);
+        getRaid().setTaskDate(currentDate);
+        getRaid().setWarningDate(currentDate);
+        getRaid().setWarningCount(0);
+        notifyViewModelChange();
     }
 
     public void saveRaid() {
@@ -65,7 +87,26 @@ public class CreateRaidViewModel extends ViewModel {
         raid.setRaid(getRaid());
         raid.setInspectors(members);
 
-        mRaidRepository.addRaid(raid);
+        Completable.fromAction(() -> mRaidRepository.addRaid(raid))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(new CompletableObserver() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onComplete() {
+                    notifyViewModelChange();
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mCreateError = e.getMessage();
+                    notifyViewModelChange();
+                }
+            });
     }
 
     public LiveData<CreateRaidViewModel> getViewModel() {
@@ -214,6 +255,8 @@ public class CreateRaidViewModel extends ViewModel {
     public String getWarningDateError() {
         return mWarningDateError;
     }
+
+    public String getCreateError() { return mCreateError; }
 
     private void notifyViewModelChange() {
         mViewModel.setValue(this);

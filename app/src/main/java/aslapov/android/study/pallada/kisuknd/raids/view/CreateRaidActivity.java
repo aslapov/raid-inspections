@@ -85,10 +85,6 @@ public class CreateRaidActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
-                .get(CreateRaidViewModel.class);
-        mViewModel.getViewModel().observe(this, this::updateUI);
-
         mDepartment = findViewById(R.id.department);
         mInspector = findViewById(R.id.inspector);
         mStartDate = findViewById(R.id.start_date);
@@ -110,6 +106,11 @@ public class CreateRaidActivity extends AppCompatActivity {
         mVehicleOwner = findViewById(R.id.vehicle_owner);
         mOwnerInn = findViewById(R.id.owner_inn);
         mOwnerOgrn = findViewById(R.id.owner_ogrn);
+
+        mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
+                .get(CreateRaidViewModel.class);
+        mViewModel.init();
+        mViewModel.getViewModel().observe(this, this::updateUI);
 
         View.OnClickListener dateChooseClick = view -> {
             Calendar calendar = Calendar.getInstance();
@@ -218,7 +219,7 @@ public class CreateRaidActivity extends AppCompatActivity {
         mOrderDate.setText(mDateFormatter.format(raid.getOrderDate()));
         mTaskNumber.setText(raid.getTaskNumber());
         mTaskDate.setText(mDateFormatter.format(raid.getTaskDate()));
-        mWarningCount.setText(raid.getWarningCount());
+        mWarningCount.setText(String.valueOf(raid.getWarningCount()));
         mWarningDate.setText(mDateFormatter.format(raid.getWarningDate()));
         mViolationExisting.setChecked(raid.isViolationsPresence());
         mVehicleInfo.setText(raid.getVehicleInfo());
