@@ -1,7 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.text.Editable;
 
 import androidx.lifecycle.LiveData;
@@ -22,12 +21,12 @@ import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidInspectionMember;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CreateRaidViewModel extends ViewModel {
 
@@ -43,26 +42,31 @@ public class CreateRaidViewModel extends ViewModel {
     private String mTaskDateError;
     private String mWarningDateError;
     private String mCreateError;
+    private boolean isCreated;
 
     private Locale mLocaleRu = new Locale("ru");
     private DateFormat mDateFormatter = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, mLocaleRu);
     private DateFormat mDateTimeFormatter = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, mLocaleRu);
 
-    public CreateRaidViewModel(Context applicationContext) {
+    CreateRaidViewModel(Context applicationContext) {
         mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
     }
 
     public void init() {
         Date currentDate = Calendar.getInstance(mLocaleRu).getTime();
-        mRaid.setValue(new Raid());
+
+        Raid raid = new Raid();
+        raid.setRealStart(currentDate);
+        raid.setRealEnd(currentDate);
+        raid.setActDate(currentDate);
+        raid.setOrderDate(currentDate);
+        raid.setTaskDate(currentDate);
+        raid.setWarningDate(currentDate);
+        raid.setWarningCount(0);
+
+        mRaid.setValue(raid);
         mInspector.setValue(new RaidInspectionMember());
-        getRaid().setRealStart(currentDate);
-        getRaid().setRealEnd(currentDate);
-        getRaid().setActDate(currentDate);
-        getRaid().setOrderDate(currentDate);
-        getRaid().setTaskDate(currentDate);
-        getRaid().setWarningDate(currentDate);
-        getRaid().setWarningCount(0);
+
         notifyViewModelChange();
     }
 
@@ -98,11 +102,13 @@ public class CreateRaidViewModel extends ViewModel {
 
                 @Override
                 public void onComplete() {
+                    isCreated = true;
                     notifyViewModelChange();
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
+                    isCreated = false;
                     mCreateError = e.getMessage();
                     notifyViewModelChange();
                 }
@@ -118,6 +124,36 @@ public class CreateRaidViewModel extends ViewModel {
     }
 
     public RaidInspectionMember getInspector() { return mInspector.getValue(); }
+
+    public String getStartDateError() {
+        return mStartDateError;
+    }
+
+    public String getEndDateError() {
+        return mEndDateError;
+    }
+
+    public String getActDateError() {
+        return mActDateError;
+    }
+
+    public String getOrderDateError() {
+        return mOrderDateError;
+    }
+
+    public String getTaskDateError() {
+        return mTaskDateError;
+    }
+
+    public String getWarningDateError() {
+        return mWarningDateError;
+    }
+
+    public String getCreateError() { return mCreateError; }
+
+    public boolean isCreated() {
+        return isCreated;
+    }
 
     public void setStartDate(CharSequence date, CharSequence time) {
         try {
@@ -231,32 +267,6 @@ public class CreateRaidViewModel extends ViewModel {
     public void setInspector(Editable inspector) {
         getInspector().setContactName(inspector.toString());
     }
-
-    public String getStartDateError() {
-        return mStartDateError;
-    }
-
-    public String getEndDateError() {
-        return mEndDateError;
-    }
-
-    public String getActDateError() {
-        return mActDateError;
-    }
-
-    public String getOrderDateError() {
-        return mOrderDateError;
-    }
-
-    public String getTaskDateError() {
-        return mTaskDateError;
-    }
-
-    public String getWarningDateError() {
-        return mWarningDateError;
-    }
-
-    public String getCreateError() { return mCreateError; }
 
     private void notifyViewModelChange() {
         mViewModel.setValue(this);

@@ -2,14 +2,13 @@ package aslapov.android.study.pallada.kisuknd.raids.model;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import java.util.List;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.AuthResponse;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.LoggedInUser;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,19 +21,18 @@ public class RaidRepository {
     }
 
     private RaidDao mRaidDao;
-    private LiveData<List<RaidWithInspectors>> mRaids;
 
-    public RaidRepository(Context applicationContext) {
+    RaidRepository(Context applicationContext) {
         RaidRoomDatabase db = RaidRoomDatabase.getDatabase(applicationContext);
         mRaidDao = db.raidDao();
     }
 
-    public LiveData<List<RaidWithInspectors>> queryRaids(boolean isDraft) {
+    public Observable<List<RaidWithInspectors>> queryRaids(boolean isDraft) {
         return mRaidDao.queryRaidList(isDraft);
     }
 
-    public LiveData<RaidWithInspectors> queryRaidListById(UUID raidId) {
-        return mRaidDao.queryRaidListById(raidId.toString());
+    public Observable<RaidWithInspectors> queryRaidById(UUID raidId) {
+        return mRaidDao.queryRaidById(raidId.toString());
     }
 
     public void updateRaid(RaidWithInspectors raid) {
@@ -96,69 +94,4 @@ public class RaidRepository {
         });
     }
 
-    /*public void queryRaids(ResponseCallback<List<Raid>> callback) {
-        RaidApiFactory.getRaidService().queryRaids().enqueue(new Callback<List<Raid>>() {
-            @Override
-            public void onResponse(Call<List<Raid>> call, Response<List<Raid>> response) {
-                if (response.isSuccessful())
-
-                    /*for (Raid raid : response.body()) {
-                        Raid raidEntity = new Raid();
-                        raidEntity.setId(raid.getId().toString());
-                        raidEntity.setActNumber(raid.getActNumber());
-                        raidEntity.setDepartment(raid.getDepartment());
-                        raidEntity.setTransportType(raid.getTransportType());
-                        raidEntity.setOrderDate(raid.getOrderDate());
-                        raidEntity.setOrderNumber(raid.getOrderNumber());
-                        raidEntity.setOwnerInn(raid.getOwnerInn());
-                        raidEntity.setOwnerOgrn(raid.getOwnerOgrn());
-                        raidEntity.setPlaceAddress(raid.getPlaceAddress());
-                        raidEntity.setRealEnd(raid.getRealEnd());
-                        raidEntity.setRealStart(raid.getRealStart());
-                        raidEntity.setTaskDate(raid.getTaskDate());
-                        raidEntity.setTaskNumber(raid.getTaskNumber());
-
-                        List<RaidInspectionMember> inspectors = new ArrayList<>();
-                        for (String inspector : raid.getInspectors()) {
-                            RaidInspectionMember member = new RaidInspectionMember();
-                            member.setContactName(inspector);
-                            member.setRaidInspectionId(raid.getId().toString());
-                            inspectors.add(member);
-                        }
-                        mRaidDao.insertRaidWithInspectors(raidEntity, inspectors);
-                    }
-                    response.body();
-                    List<RaidWithInspectors> raids = mRaidDao.queryRaidList();
-                    callback.onResponse(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Raid>> call, Throwable t) {
-                callback.onError(t);
-            }
-        });
-    }*/
-
-    /*public void queryRaidById(UUID raidId, ResponseCallback<Raid> callback) {
-        RaidApiFactory.getRaidService().queryRaidById(raidId).enqueue(new Callback<Raid>() {
-
-            @Override
-            public void onResponse(Call<Raid> call, retrofit2.Response<Raid> response) {
-                // код 200
-                if (response.isSuccessful()) {
-                    callback.onResponse(response.body());
-                } else {
-                    switch (response.code()) {
-                        case 401:
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Raid> call, Throwable t) {
-                callback.onError(t);
-            }
-        });
-    }*/
 }

@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -73,7 +74,7 @@ public class RaidListActivity extends AppCompatActivity
 
         FloatingActionButton addRaidButton = findViewById(R.id.float_create);
         addRaidButton.setOnClickListener(view -> {
-            CreateRaidActivity.start(this);
+            CreateRaidActivity.start(this); //TODO startForResult CreateRaidActivity
         });
     }
 
@@ -125,6 +126,7 @@ public class RaidListActivity extends AppCompatActivity
             raidFragment = ShowRaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_fragment_container, raidFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
     }

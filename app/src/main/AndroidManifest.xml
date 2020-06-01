@@ -27,6 +27,7 @@
 
         <activity
             android:name=".view.ShowRaidActivity"
+            android:label="@string/raid_information"
             android:parentActivityName=".view.RaidListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

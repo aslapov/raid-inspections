@@ -2,21 +2,23 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
@@ -28,33 +30,19 @@ import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 public class ShowRaidFragment extends Fragment {
     private static final String ARG_RAID_ID = "raid_id";
 
-    private ShowRaidViewModel mViewModel;
-
     private ProgressBar mLoading;
 
-    private MaterialTextView mDepartment;
-    private AppCompatSpinner mTransportType;
-    private EditText mAddress;
-    private EditText mActNumber;
-    private EditText mInspector;
-    private EditText mDispositionNumber;
-    private MaterialButton mDispositionDate;
-    private EditText mTaskNumber;
-    private MaterialButton mTaskDate;
-    private MaterialButton mStartDate;
-    private MaterialButton mStartTime;
-    private MaterialButton mEndDate;
-    private MaterialButton mEndTime;
-    private EditText mVehicleInfo;
-    private EditText mOwnerOgrn;
-    private EditText mOwnerInn;
-    private EditText mVehicleOwner;
-    private MaterialButton mWarningCount;
-    private MaterialButton mWarningDate;
-    private MaterialCheckBox mViolationExisting;
-    private MaterialButton mSave;
+    private MaterialTextView mTimeTextView;
+    private MaterialTextView mLocationTextView;
+    private MaterialTextView mDocsTextView;
+    private MaterialTextView mViolationTextView;
+    private MaterialTextView mVehicleTextView;
 
-    public static ShowRaidFragment newInstance(UUID raidId) {
+    private Locale mLocaleRu = new Locale("ru");
+    private DateFormat mDateFormatter = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, mLocaleRu);
+    private DateFormat mTimeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT, mLocaleRu);
+
+    static ShowRaidFragment newInstance(UUID raidId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_RAID_ID, raidId);
 
@@ -67,35 +55,19 @@ public class ShowRaidFragment extends Fragment {
         return (UUID) getArguments().getSerializable(ARG_RAID_ID);
     }
 
-    private RaidWithInspectors mRaid;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.show_raid_layout, container, false);
+        View v = inflater.inflate(R.layout.raid_layout, container, false);
+        setHasOptionsMenu(true);
 
         mLoading = v.findViewById(R.id.loading);
 
-        mDepartment = (MaterialTextView) v.findViewById(R.id.department);
-        mTransportType = (AppCompatSpinner) v.findViewById(R.id.transport_type);
-        mAddress = (EditText) v.findViewById(R.id.address);
-        mActNumber = (EditText) v.findViewById(R.id.act_number);
-        mInspector = (EditText) v.findViewById(R.id.inspector);
-        mDispositionNumber = (EditText) v.findViewById(R.id.order_number);
-        mDispositionDate =  (MaterialButton) v.findViewById(R.id.order_date);
-        mTaskNumber = (EditText) v.findViewById(R.id.task_number);
-        mTaskDate = (MaterialButton) v.findViewById(R.id.task_date);
-        mStartDate = (MaterialButton) v.findViewById(R.id.start_date);
-        mStartTime =  (MaterialButton) v.findViewById(R.id.start_time);
-        mEndDate =  (MaterialButton) v.findViewById(R.id.end_date);
-        mEndTime = (MaterialButton) v.findViewById(R.id.end_time);
-        mVehicleInfo = (EditText) v.findViewById(R.id.vehicle_info);
-        mOwnerOgrn = (EditText) v.findViewById(R.id.owner_ogrn);
-        mOwnerInn = (EditText) v.findViewById(R.id.owner_inn);
-        mVehicleOwner = (EditText) v.findViewById(R.id.vehicle_owner);
-        mWarningCount = (MaterialButton) v.findViewById(R.id.warning_count);
-        mWarningDate = (MaterialButton) v.findViewById(R.id.warning_date);
-        mViolationExisting = (MaterialCheckBox) v.findViewById(R.id.violation_existing);
+        mTimeTextView = (MaterialTextView) v.findViewById(R.id.raid_info_time);
+        mLocationTextView = (MaterialTextView) v.findViewById(R.id.raid_info_location);
+        mDocsTextView = (MaterialTextView) v.findViewById(R.id.raid_info_doc);
+        mViolationTextView = (MaterialTextView) v.findViewById(R.id.raid_info_violation);
+        mVehicleTextView = (MaterialTextView) v.findViewById(R.id.raid_info_vehicle_info);
 
         return v;
     }
@@ -106,32 +78,86 @@ public class ShowRaidFragment extends Fragment {
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(ShowRaidViewModel.class);
-        mViewModel.getRaid(getRaidId()).observe(getViewLifecycleOwner(), this::showRaidInfo);
+        ShowRaidViewModel viewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(ShowRaidViewModel.class);
+        viewModel.getRaid(getRaidId());
+        viewModel.getViewModel().observe(getViewLifecycleOwner(), this::showRaidInfo);
     }
 
-    private void showRaidInfo(RaidWithInspectors raidInspection) {
+    private void showRaidInfo(ShowRaidViewModel viewModel) {
         mLoading.setVisibility(View.GONE);
-        mRaid = raidInspection;
 
-        Raid raid = raidInspection.getRaid();
-        mDepartment.setText(raid.getDepartment());
-        //transportType.text
-        mAddress.setText(raid.getPlaceAddress());
-        mActNumber.setText(raid.getActNumber());
-        mInspector.setText(raidInspection.getInspectors().get(0).getContactName());
-        mDispositionNumber.setText(raid.getOrderNumber());
-        mDispositionDate.setText(raid.getOrderDate().toString());
-        mTaskNumber.setText(raid.getTaskNumber());
-        mTaskDate.setText(raid.getTaskDate().toString());
-        mStartDate.setText(raid.getRealStart().toString());
-        mEndDate.setText(raid.getRealEnd().toString());
-        mVehicleInfo.setText(raid.getVehicleInfo());
-        mOwnerInn.setText(raid.getOwnerInn());
-        mOwnerOgrn.setText(raid.getOwnerOgrn());
-        mVehicleOwner.setText(raid.getVehicleOwner());
-        mWarningCount.setText(Integer.toString(raid.getWarningCount()));
-        //warningDate.setText(raid.getWarningDate().toString());
-        mViolationExisting.setChecked(raid.isViolationsPresence());
+        if (viewModel.getShowError() == null) {
+            RaidWithInspectors raidInspection = viewModel.getRaidWithInspectors();
+            Raid raid = raidInspection.getRaid();
+
+            String startDate = mDateFormatter.format(raid.getRealStart());
+            String startTime = mTimeFormatter.format(raid.getRealStart());
+            String endDate = mDateFormatter.format(raid.getRealEnd());
+            String endTime = mTimeFormatter.format(raid.getRealEnd());
+            if (startDate.compareTo(endDate) == 0) {
+                mTimeTextView.setText(startDate
+                        .concat(" ")
+                        .concat(startTime)
+                        .concat(" - ")
+                        .concat(endTime));
+            } else {
+                mTimeTextView.setText(startDate
+                        .concat(" ")
+                        .concat(startTime)
+                        .concat(" - ")
+                        .concat(endDate)
+                        .concat(" ")
+                        .concat(endTime));
+            }
+
+            mLocationTextView.setText(raid.getPlaceAddress());
+
+            String docs = String.format(mLocaleRu,
+                    "Акт: %s,   %s\n\nЗадание: %s,   %s\n\nРаспоряжение: %s,   %s\n\n%d предостережений,   %s",
+                    raid.getActNumber(), mDateFormatter.format(raid.getActDate()),
+                    raid.getTaskNumber(), mDateFormatter.format(raid.getTaskDate()),
+                    raid.getOrderNumber(), mDateFormatter.format(raid.getOrderDate()),
+                    raid.getWarningCount(), mDateFormatter.format(raid.getWarningDate()));
+            mDocsTextView.setText(docs);
+
+            if (raid.isViolationsPresence()) {
+                mViolationTextView.setText(R.string.violation_exist);
+            } else {
+                mViolationTextView.setText(R.string.violation_not_exist);
+            }
+
+            String vehicleInfo = "";
+            if (!raid.getVehicleInfo().isEmpty())
+                vehicleInfo = String.format(mLocaleRu, "%s %s\n\n", vehicleInfo, raid.getVehicleInfo());
+            if (!raid.getVehicleOwner().isEmpty()) {
+
+                vehicleInfo = String.format(mLocaleRu, "%sСубъект/Перевозчик: %s\n", vehicleInfo, raid.getVehicleOwner());
+
+                if (!raid.getOwnerInn().isEmpty())
+                    vehicleInfo = String.format(mLocaleRu, "%sИНН: %s, ", vehicleInfo, raid.getOwnerInn());
+
+                if (!raid.getOwnerOgrn().isEmpty())
+                    vehicleInfo = String.format(mLocaleRu, "%sОГРН: %s", vehicleInfo, raid.getOwnerOgrn());
+            }
+            mVehicleTextView.setText(vehicleInfo);
+        } else {
+            // TODO show error notification
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.show_raid, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_edit) {
+            EditRaidActivity.start(getActivity(), getRaidId()); //TODO startForResult EditRaidActivity
+            return true;
+        }
+        return false;
     }
 }

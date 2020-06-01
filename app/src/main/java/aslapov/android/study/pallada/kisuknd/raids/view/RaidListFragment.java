@@ -26,8 +26,6 @@ import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<RaidWithInspectors> {
     private static final String ARG_IS_DRAFT = "is_draft";
 
-    private RaidListViewModel mViewModel;
-
     private OnRaidSelectedListener mListener;
 
     private RaidAdapter mAdapter;
@@ -37,7 +35,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         void onRaidSelected(RaidWithInspectors raid);
     }
 
-    public static RaidListFragment newInstance(boolean isDraft) {
+    static RaidListFragment newInstance(boolean isDraft) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_IS_DRAFT, isDraft);
 
@@ -46,7 +44,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         return fragment;
     }
 
-    public boolean isDraft() {
+    private boolean isDraft() {
         return (boolean) getArguments().getSerializable(ARG_IS_DRAFT);
     }
 
@@ -89,13 +87,20 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
         mLoading.setVisibility(View.VISIBLE);
 
-        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidListViewModel.class);
-        mViewModel.getRaids(isDraft()).observe(getViewLifecycleOwner(), this::showRaids);
+        RaidListViewModel viewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidListViewModel.class);
+        viewModel.getRaidList(isDraft());
+        viewModel.getViewModel().observe(getViewLifecycleOwner(), this::showRaids);
     }
 
-    private void showRaids(List<RaidWithInspectors> raids) {
+    private void showRaids(RaidListViewModel viewModel) {
         mLoading.setVisibility(View.GONE);
-        mAdapter.changeDataSet(raids);
+
+        if (viewModel.getShowError() == null) {
+            List<RaidWithInspectors> raids = viewModel.getRaids();
+            mAdapter.changeDataSet(raids);
+        } else {
+            // TODO show error notification
+        }
     }
 
     @Override
@@ -111,13 +116,11 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search_raid:
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.search_raid) {
+            return true;
         }
+        return false;
     }
 
     @Override

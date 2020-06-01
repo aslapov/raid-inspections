@@ -25,7 +25,7 @@ public final class RaidApiFactory {
     }
 
     @NonNull
-    public static IRaidService getRaidService() {
+    static IRaidService getRaidService() {
         IRaidService service = sService;
         if (service == null) {
             synchronized (RaidApiFactory.class) {

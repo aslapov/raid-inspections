@@ -8,9 +8,7 @@ public final class RepositoryProvider {
 
     private static RaidRepository sRaidRepository;
 
-    private RepositoryProvider() {
-
-    }
+    private RepositoryProvider() { }
 
     @NonNull
     public static RaidRepository provideRaidRepository(Context applicationContext) {
@@ -18,9 +16,5 @@ public final class RepositoryProvider {
             sRaidRepository = new RaidRepository(applicationContext);
         }
         return sRaidRepository;
-    }
-
-    public static void setRaidRepository(@NonNull RaidRepository raidRepository) {
-        sRaidRepository = raidRepository;
     }
 }

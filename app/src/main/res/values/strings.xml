@@ -29,7 +29,8 @@
     <string name="search_raid">Поиск рейдовых осмотров ТС</string>
     <string name="raid_information">Информация об осмотре ТС</string>
     <string name="vehicle_information">Информация О ТС</string>
-    <string name="new_raid_bar">Создание осмотра ТС</string>
+    <string name="new_raid_bar">Создать осмотр ТС</string>
+    <string name="edit_raid_bar">Изменить осмотр ТС</string>
 
     <string name="department">Отдел: </string>
     <string name="transport_type">Вид транспорта*</string>
@@ -49,7 +50,7 @@
     <string name="warning_count">Количество предостережений</string>
     <string name="warning_date">Дата предостережений</string>
     <string name="violation_existing">Выявленные нарушения</string>
-    <string name="edit_raid_bar">Рейдовый осмотр ТС</string>
+
     <string name="create_administrative_case">Создание административного дела</string>
     <string name="administrative_case_number">№ административного дела</string>
     <string name="clause">Статья КоАП*</string>
@@ -64,6 +65,9 @@
     <string name="definition_number">№ определения</string>
     <string name="definition_place">Место определения</string>
     <string name="act_date">Дата акта</string>
+
+    <string name="violation_exist">Есть нарушения</string>
+    <string name="violation_not_exist">Нарушений нет</string>
 
     <string-array name="transport_type">
         <item>Автомобильный</item>

@@ -6,7 +6,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.UUID;
@@ -53,7 +55,14 @@ public class ShowRaidActivity extends AppCompatActivity {
             return;
         }
 
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_fragment_toolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+
         if (savedInstanceState == null) {
             raidFragment = ShowRaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()

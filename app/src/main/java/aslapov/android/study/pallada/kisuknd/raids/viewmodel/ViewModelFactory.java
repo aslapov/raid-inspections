@@ -29,6 +29,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(CreateRaidViewModel.class))
             return (T) new CreateRaidViewModel(mApplication);
 
+        if (modelClass.isAssignableFrom(EditRaidViewModel.class))
+            return (T) new EditRaidViewModel(mApplication);
+
         //noinspection unchecked
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

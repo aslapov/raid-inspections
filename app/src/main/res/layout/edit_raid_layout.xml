@@ -5,49 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".view.RaidListActivity">
-
-    <include layout="@layout/show_raid_layout" />
+    tools:context=".view.CreateRaidActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:fitsSystemWindows="true"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="@color/primary_color"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@id/toolbar"
-            app:expandedTitleGravity="top"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
             android:background="@color/primary_color">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.6"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:background="@color/primary_color"
-                android:layout_gravity="center_vertical">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/edit_raid_bar"
-                    android:textSize="30sp"
-                    android:textStyle="bold"/>
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/raid_editable" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

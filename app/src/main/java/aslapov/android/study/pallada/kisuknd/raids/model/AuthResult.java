@@ -43,7 +43,7 @@ public class AuthResult {
         return authState;
     }
 
-    public void setAuthState(State authState) {
+    void setAuthState(State authState) {
         this.authState = authState;
     }
 }
