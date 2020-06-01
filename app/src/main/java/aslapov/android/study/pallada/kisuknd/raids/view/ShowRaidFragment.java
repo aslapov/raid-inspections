@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -58,7 +59,7 @@ public class ShowRaidFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.raid_layout, container, false);
+        View v = inflater.inflate(R.layout.show_raid_layout, container, false);
         setHasOptionsMenu(true);
 
         mLoading = v.findViewById(R.id.loading);
@@ -86,8 +87,8 @@ public class ShowRaidFragment extends Fragment {
     private void showRaidInfo(ShowRaidViewModel viewModel) {
         mLoading.setVisibility(View.GONE);
 
-        if (viewModel.getShowError() == null) {
-            RaidWithInspectors raidInspection = viewModel.getRaidWithInspectors();
+        RaidWithInspectors raidInspection = viewModel.getRaidWithInspectors();
+        if (raidInspection != null) {
             Raid raid = raidInspection.getRaid();
 
             String startDate = mDateFormatter.format(raid.getRealStart());

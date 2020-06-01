@@ -68,6 +68,7 @@
 
     <string name="violation_exist">Есть нарушения</string>
     <string name="violation_not_exist">Нарушений нет</string>
+    <string name="empty_list">Здесь пока ничего нет</string>
 
     <string-array name="transport_type">
         <item>Автомобильный</item>

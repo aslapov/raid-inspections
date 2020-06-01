@@ -18,6 +18,9 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 public class ShowRaidActivity extends AppCompatActivity {
     public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.view.raid_id";
 
+    // result_code для Activity, возвращающееся при изменении конфигурации (вращение экрана)
+    public static final int RESULT_CONFIGURATION_CHANGE = 1;
+
     public static void startForResult(@NonNull Activity activity, UUID raidId, int requestCode) {
         Intent intent = new Intent(activity, ShowRaidActivity.class);
         intent.putExtra(EXTRA_RAID_ID, raidId);
@@ -49,7 +52,7 @@ public class ShowRaidActivity extends AppCompatActivity {
 
             Intent data = new Intent();
             data.putExtra(EXTRA_RAID_ID, raidId);
-            setResult(RESULT_OK, data);
+            setResult(RESULT_CONFIGURATION_CHANGE, data);
 
             finish();
             return;

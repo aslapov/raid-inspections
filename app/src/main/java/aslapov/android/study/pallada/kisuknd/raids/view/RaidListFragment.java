@@ -8,14 +8,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
@@ -30,6 +35,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
     private RaidAdapter mAdapter;
     private ProgressBar mLoading;
+    private TextView mEmptyListTextView;
 
     public interface OnRaidSelectedListener {
         void onRaidSelected(RaidWithInspectors raid);
@@ -71,12 +77,14 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
         EmptyRecyclerView mRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setEmptyView(v.findViewById(R.id.raid_recycler_view));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         mAdapter = new RaidAdapter(new ArrayList<>());
         mAdapter.attachToRecyclerView(mRecyclerView);
         mAdapter.setOnItemClickListener(this);
 
         mLoading = v.findViewById(R.id.loading);
+        mEmptyListTextView = (TextView) v.findViewById(R.id.empty_list_text_view);
 
         return v;
     }
@@ -97,7 +105,20 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
 
         if (viewModel.getShowError() == null) {
             List<RaidWithInspectors> raids = viewModel.getRaids();
-            mAdapter.changeDataSet(raids);
+
+            if (raids.isEmpty()) {
+                mEmptyListTextView.setVisibility(View.VISIBLE);
+            } else {
+                mEmptyListTextView.setVisibility(View.GONE);
+                Collections.sort(raids, (raid1, raid2) -> {
+                    long start1 = raid1.getRaid().getRealStart().getTime();
+                    long start2 = raid2.getRaid().getRealStart().getTime();
+                    if (start1 == start2)
+                        return 0;
+                    return (start1 > start2) ? -1 : 1;
+                });
+                mAdapter.changeDataSet(raids);
+            }
         } else {
             // TODO show error notification
         }
@@ -127,5 +148,7 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mAdapter.clear();
+        mAdapter = null;
     }
 }

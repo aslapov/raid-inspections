@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +29,9 @@ import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspector
 public class RaidListActivity extends AppCompatActivity
         implements RaidListFragment.OnRaidSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int REQUEST_CODE_RAID_ACTIVITY = 0;
+    private static final int REQUEST_CODE_SHOW_RAID_ACTIVITY = 0;
+
+    private ImageView mEmptyRaidImage;
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RaidListActivity.class);
@@ -64,7 +68,7 @@ public class RaidListActivity extends AppCompatActivity
                     .remove(raidFragmentFromDualPane)
                     .commit();
 
-            ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
+            ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_SHOW_RAID_ACTIVITY);
         } else if (raidListFragment == null) {
             raidListFragment = RaidListFragment.newInstance(false);
             fm.beginTransaction()
@@ -76,6 +80,11 @@ public class RaidListActivity extends AppCompatActivity
         addRaidButton.setOnClickListener(view -> {
             CreateRaidActivity.start(this); //TODO startForResult CreateRaidActivity
         });
+
+        if (findViewById(R.id.detail_fragment_container) != null) {
+            mEmptyRaidImage = (ImageView) findViewById(R.id.raid_empty);
+            mEmptyRaidImage.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -101,7 +110,7 @@ public class RaidListActivity extends AppCompatActivity
     public void onRaidSelected(RaidWithInspectors raid) {
         UUID raidId = UUID.fromString(raid.getRaid().getId());
         if (findViewById(R.id.detail_fragment_container) == null) {
-            ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_RAID_ACTIVITY);
+            ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_SHOW_RAID_ACTIVITY);
         } else {
             showRaidFragment(raidId);
         }
@@ -111,10 +120,9 @@ public class RaidListActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Восстановление ShowRaidFragment при повороте экрана в горизонтальное положение.
-        // RESULT_OK нужен для отличия от события нажатия кнопки "назад", при котором
-        // автоматически генерируется код результата RESULT_CANCELED
-        if (requestCode == REQUEST_CODE_RAID_ACTIVITY && resultCode == RESULT_OK) {
+        // Восстановление ShowRaidFragment при повороте экрана в горизонтальное положение
+        if (requestCode == REQUEST_CODE_SHOW_RAID_ACTIVITY &&
+                resultCode == ShowRaidActivity.RESULT_CONFIGURATION_CHANGE) {
             UUID raidId = ShowRaidActivity.getRaidId(data);
             showRaidFragment(raidId);
         }
@@ -123,6 +131,7 @@ public class RaidListActivity extends AppCompatActivity
     private void showRaidFragment(UUID raidId) {
         ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
         if (raidFragment == null || raidFragment.getRaidId() != raidId) {
+            mEmptyRaidImage.setVisibility(View.GONE);
             raidFragment = ShowRaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_fragment_container, raidFragment)

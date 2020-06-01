@@ -21,4 +21,16 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"/>
 
+    <!-- Empty view is only visible when the list has no items. -->
+    <TextView
+        android:id="@+id/empty_list_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/empty_list"
+        android:textSize="24sp"
+        android:textColor="#525252"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:visibility="gone"/>
+
 </RelativeLayout>
