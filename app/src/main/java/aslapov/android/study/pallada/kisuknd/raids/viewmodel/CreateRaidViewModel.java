@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
@@ -79,10 +80,11 @@ public class CreateRaidViewModel extends ViewModel {
 
         getRaid().setDraft(true);
 
-        Date currentDate = Calendar.getInstance(mLocaleRu).getTime();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Date currentDate = calendar.getTime();
         getRaid().setCreateDate(currentDate);
         getRaid().setUpdateDate(currentDate);
-        // TODO TIMEZONE: getRaid().setTimeZone();
+        getRaid().setTimeZone(Calendar.getInstance().getTimeZone().getRawOffset());
 
         List<RaidInspectionMember> members = new ArrayList<>();
         members.add(getInspector());

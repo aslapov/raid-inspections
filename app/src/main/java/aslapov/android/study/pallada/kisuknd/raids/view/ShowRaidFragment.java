@@ -74,14 +74,14 @@ public class ShowRaidFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         mLoading.setVisibility(View.VISIBLE);
 
         ShowRaidViewModel viewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(ShowRaidViewModel.class);
-        viewModel.getRaid(getRaidId());
         viewModel.getViewModel().observe(getViewLifecycleOwner(), this::showRaidInfo);
+        viewModel.getRaid(getRaidId());
     }
 
     private void showRaidInfo(ShowRaidViewModel viewModel) {

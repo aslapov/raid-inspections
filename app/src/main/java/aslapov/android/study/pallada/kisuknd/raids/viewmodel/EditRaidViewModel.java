@@ -75,9 +75,10 @@ public class EditRaidViewModel extends ViewModel {
 		// TODO validate();
 		getRaid().setDraft(true);
 
-		Date currentDate = Calendar.getInstance(mLocaleRu).getTime();
+		Calendar calendar = Calendar.getInstance(mLocaleRu);
+		Date currentDate = calendar.getTime();
 		getRaid().setUpdateDate(currentDate);
-		// TODO TIMEZONE: getRaid().setTimeZone();
+		getRaid().setTimeZone(calendar.getTimeZone().getRawOffset());
 
 		List<RaidInspectionMember> members = new ArrayList<>();
 		members.add(getInspector());

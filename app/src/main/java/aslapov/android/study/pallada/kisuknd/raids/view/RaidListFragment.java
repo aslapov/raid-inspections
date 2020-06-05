@@ -90,14 +90,14 @@ public class RaidListFragment extends Fragment implements BaseAdapter.OnItemClic
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         mLoading.setVisibility(View.VISIBLE);
 
         RaidListViewModel viewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidListViewModel.class);
-        viewModel.getRaidList(isDraft());
         viewModel.getViewModel().observe(getViewLifecycleOwner(), this::showRaids);
+        viewModel.getRaidList(isDraft());
     }
 
     private void showRaids(RaidListViewModel viewModel) {

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:showDividers="middle"
-    android:divider="?android:attr/dividerHorizontal">
+    android:divider="@drawable/dividervertical">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="0dp"
@@ -14,7 +14,7 @@
 
         <FrameLayout
             android:id="@+id/fragment_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -45,7 +45,8 @@
             android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             app:srcCompat="@drawable/list"
-            android:visibility="gone"/>
+            android:visibility="visible"
+            android:tint="@color/grayColor"/>
 
     </RelativeLayout>
 

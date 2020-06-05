@@ -92,9 +92,9 @@ public class Raid {
     @ColumnInfo(name = "WarningDate")
     private Date warningDate;
 
-    // Часовой пояс в формате ±HHmm
+    // Часовой пояс в формате мс (+0300 = 10800000мс)
     @ColumnInfo(name = "TimeZone")
-    private String timeZone;
+    private Integer timeZone;
 
     // Дата создания записи
     @ColumnInfo(name = "CreateDate")
@@ -257,11 +257,11 @@ public class Raid {
         this.warningDate = warningDate;
     }
 
-    public String getTimeZone() {
+    public Integer getTimeZone() {
         return timeZone;
     }
 
-    public void setTimeZone(String timeZone) {
+    public void setTimeZone(Integer timeZone) {
         this.timeZone = timeZone;
     }
 
