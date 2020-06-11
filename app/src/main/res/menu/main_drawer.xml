@@ -9,6 +9,10 @@
             android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="@string/navigation_all" />
         <item
+            android:icon="@drawable/upload"
+            android:id="@+id/nav_outbox"
+            android:title="@string/navigation_outbox" />
+        <item
             android:icon="@drawable/document"
             android:id="@+id/nav_drafts"
             android:title="@string/navigation_drafts" />
@@ -22,7 +26,6 @@
     <item
         android:icon="@android:drawable/ic_menu_preferences"
         android:id="@+id/nav_configuration"
-        android:title="@string/navigation_config"
-        />
+        android:title="@string/navigation_config" />
 
 </menu>

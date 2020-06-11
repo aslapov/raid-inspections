@@ -1,12 +1,11 @@
 package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,142 +13,116 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textview.MaterialTextView;
+
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.AuthViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public class AuthActivity extends AppCompatActivity {
 
-    // Сохранение видимости компоненты ввода пароля после изменения конфигурации Activity
-    private static final String SAVED_PASSWORD_INPUT_VISIBLE = "passwordInputVisible";
+	// Сохранение видимости компоненты ввода пароля после изменения конфигурации Activity
+	private static final String SAVED_PASSWORD_INPUT_VISIBLE = "passwordInputVisible";
 
-    private AuthViewModel mViewModel;
+	private AuthViewModel mViewModel;
 
-    private EditText mLogin;
-    private EditText mPassword;
-    private ProgressBar mLoading;
+	private EditText mLogin;
+	private EditText mPassword;
+	private MaterialTextView mAuthErrorTextView;
+	private ProgressBar mLoading;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.authorization_layout);
-        mViewModel = new ViewModelProvider(this, new ViewModelFactory(getApplication())).get(AuthViewModel.class);
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.authorization_layout);
+		mViewModel = new ViewModelProvider(this, new ViewModelFactory(getApplication())).get(AuthViewModel.class);
+		mViewModel.init();
 
-        mLogin = (EditText) findViewById(R.id.login);
-        mPassword = (EditText) findViewById(R.id.password);
-        Button mAuthButton = (Button) findViewById(R.id.auth);
-        mLoading = findViewById(R.id.loading);
+		mLogin = (EditText) findViewById(R.id.login);
+		mPassword = (EditText) findViewById(R.id.password);
+		mAuthErrorTextView = (MaterialTextView) findViewById(R.id.auth_message);
+		Button mAuthButton = (Button) findViewById(R.id.auth);
+		mLoading = findViewById(R.id.loading);
 
-        if (savedInstanceState != null && savedInstanceState.getBoolean(SAVED_PASSWORD_INPUT_VISIBLE))
-            showPasswordLayout();
+		if (savedInstanceState != null && savedInstanceState.getBoolean(SAVED_PASSWORD_INPUT_VISIBLE))
+			showPasswordLayout();
 
-        TextWatcher passwordTextWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+		Observer<AuthViewModel.ValidationField> validationField = field -> {
+			if (!field.isFieldValid()) {
+				mLoading.setVisibility(View.GONE);
+				showValidationError(getString(field.getValidationError()));
+			}
+		};
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+		mViewModel.getLoginValid().observe(this, validationField);
+		mViewModel.getPasswordValid().observe(this, validationField);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                mViewModel.validatePassword(mPassword.getText().toString());
-            }
-        };
-
-        Observer<AuthViewModel.ValidationField> validationField = field -> {
-            if (field.isFieldValid()) {
-                mAuthButton.setEnabled(true);
-            } else {
-                mLoading.setVisibility(View.GONE);
-                showAuthMessage(getString(field.getValidationError()));
-                mAuthButton.setEnabled(false);
-            }
-        };
-
-        mViewModel.getLoginValid().observe(this, validationField);
-        mViewModel.getPasswordValid().observe(this, validationField);
-
-        mViewModel.getAuthResult().observe(this, authResult -> {
-            if (authResult == null)
-                return;
-
-            mLoading.setVisibility(View.GONE);
-            mPassword.removeTextChangedListener(passwordTextWatcher);
-            switch (authResult.getAuthState()) {
-                case LOGINED:
-                    showPasswordLayout();
-                    break;
-                case WRONG:
-                    clearView();
-                    showAuthMessage(getString(R.string.authorization_wrong));
-                    break;
-                case REGISTRATION:
-                    showPasswordLayout();
-                    mPassword.addTextChangedListener(passwordTextWatcher);
-                    showAuthMessage(getString(R.string.authorization_registration));
-                    break;
-                case REGISTERED:
-                    showAuthMessage(getString(R.string.authorization_registrated));
-                    break;
-                case FAIL:
-                    showAuthMessage(getString(R.string.authorization_fail));
-                    break;
-                case SUCCESS:
-                    openRaidListScreen();
-                    break;
-            }
+		mViewModel.getLoginPhase().observe(this, phase -> {
+			mLoading.setVisibility(View.GONE);
+		    if (phase == AuthViewModel.LoginPhase.ENTERLOGIN)
+		        clearView();
+            if (phase == AuthViewModel.LoginPhase.ENTERPASSWORD)
+		        showPasswordLayout();
         });
 
-        mLogin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+		mAuthButton.setOnClickListener(view -> {
+			mLoading.setVisibility(View.VISIBLE);
+			mAuthErrorTextView.setText("");
+			String userName = mLogin.getText().toString();
+			String password = mPassword.getText().toString();
+			mViewModel.tryAuth(userName, password);
+		});
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+		mViewModel.getAuthResult().observe(this, authResult -> {
+			mLoading.setVisibility(View.GONE);
+			switch (authResult) {
+				case FAIL:
+					mAuthErrorTextView.setText(getString(R.string.authorization_fail));
+					break;
+				case ERROR:
+					mAuthErrorTextView.setText(getString(R.string.authorization_error));
+					break;
+				case CONNECTIONERROR:
+					mAuthErrorTextView.setText(getString(R.string.authorization_connect_error));
+					break;
+				case SUCCESS:
+					openRaidListScreen();
+					break;
+			}
+		});
+	}
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                mViewModel.validateLogin(mLogin.getText().toString());
-            }
-        });
+	private void openRaidListScreen() {
+		mLoading.setVisibility(View.VISIBLE);
+		RaidListActivity.start(this);
+		setResult(RESULT_OK);
+		finish();
+	}
 
-        mAuthButton.setOnClickListener(view -> {
-            mLoading.setVisibility(View.VISIBLE);
-            String userName = mLogin.getText().toString();
-            String password = mPassword.getText().toString();
-            mViewModel.tryAuth(userName, password);
-        });
-    }
+	private void showValidationError(String message) {
+		if (mLogin.getVisibility() == View.VISIBLE)
+			mLogin.setError(message);
+		else
+			mPassword.setError(message);
+	}
 
-    private void openRaidListScreen() {
-        mLoading.setVisibility(View.VISIBLE);
-        RaidListActivity.start(this);
-        setResult(RESULT_OK);
-        finish();
-    }
+	private void clearView() {
+		mLogin.setText("");
+		mPassword.setText("");
+		mAuthErrorTextView.setText("");
+		mLogin.setVisibility(View.VISIBLE);
+		mPassword.setVisibility(View.INVISIBLE);
+	}
 
-    private void showAuthMessage(String message) {
-        if (mLogin.getVisibility() == View.VISIBLE)
-            mLogin.setError(message);
-        else
-            mPassword.setError(message);
-    }
+	private void showPasswordLayout() {
+		mLogin.setVisibility(View.INVISIBLE);
+		mPassword.setVisibility(View.VISIBLE);
+		mPassword.requestFocus();
+	}
 
-    private void clearView() {
-        mLogin.setText("");
-        mPassword.setText("");
-        mLogin.setVisibility(View.VISIBLE);
-        mPassword.setVisibility(View.INVISIBLE);
-    }
-
-    private void showPasswordLayout() {
-        mLogin.setVisibility(View.INVISIBLE);
-        mPassword.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(SAVED_PASSWORD_INPUT_VISIBLE, mPassword.getVisibility() == View.VISIBLE);
-    }
+	@Override
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(SAVED_PASSWORD_INPUT_VISIBLE, mPassword.getVisibility() == View.VISIBLE);
+	}
 }

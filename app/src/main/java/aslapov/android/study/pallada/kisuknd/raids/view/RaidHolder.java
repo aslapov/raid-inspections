@@ -33,7 +33,7 @@ class RaidHolder extends RecyclerView.ViewHolder {
     void bind(RaidWithInspectors raidWithInspectors) {
         Raid raid = raidWithInspectors.getRaid();
         mPlaceTextView.setText(raid.getPlaceAddress());
-        mActTextView.setText(raid.getActNumber());
+        mActTextView.setText("Акт: № " + raid.getActNumber());
 
         String startDate = mDateFormatter.format(raid.getRealStart());
         mTimeTextView.setText(startDate);

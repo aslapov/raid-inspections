@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
+import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
@@ -32,6 +33,8 @@ public class RaidListViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void getRaidList(boolean isDraft) {
+        mRaidRepository.getRaid(UUID.fromString("e1650b76-56f9-43de-b005-a2baa3142ba1"));
+
         mRaidRepository.queryRaids(isDraft)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

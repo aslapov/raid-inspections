@@ -4,6 +4,7 @@
     <string name="navigation_drawer_open">Открыть меню навигации</string>
     <string name="navigation_drawer_close">Закрыть меню навигации</string>
     <string name="navigation_all">Все</string>
+    <string name="navigation_outbox">Исходящие</string>
     <string name="navigation_drafts">Черновики</string>
     <string name="navigation_trash">Корзина</string>
     <string name="navigation_config">Настройки</string>
@@ -11,19 +12,20 @@
     <string name="menu_save">Сохранить</string>
     <string name="menu_delete">Удалить</string>
 
-    <string name="authorization_greeting">Вас приветствует система\nКИСУ КНД ТБ Рейды М</string>
+    <string name="authorization_greeting">Вас приветствует система КИСУ КНД ТБ Рейды М</string>
     <string name="login_hint">Имя пользователя в КИСУ КНД ТБ</string>
     <string name="password_hint">Введите пароль</string>
     <string name="authorization_enter">Войти</string>
     <string name="hotline_support">Горячая линия технической поддержки:</string>
     <string name="support_email_link">kisu-ir@geopallada.ru</string>
 
-    <string name="authorization_wrong">Не удалось выполнить вход, проверьте правильность введенных данных!</string>
     <string name="authorization_registration">Придумайте пароль для регистрации в системе.</string>
     <string name="authorization_registrated">Пользователь зарегистрирован. Войдите в систему</string>
-    <string name="authorization_fail">Ошибка авторизации!</string>
+    <string name="authorization_fail">Не удалось выполнить вход, проверьте правильность введенных данных</string>
+    <string name="authorization_error">Произошла неизвестная ошибка</string>
+    <string name="authorization_connect_error">Не удалось подключиться к серверу</string>
     <string name="invalid_username">Неверное имя пользователя</string>
-    <string name="invalid_password">Пароль должен быть длинее пяти символов</string>
+    <string name="invalid_password">Пароль не должен быть пустым</string>
 
     <string name="new_raid">Создать рейдовый осмотр ТС</string>
     <string name="search_raid">Поиск рейдовых осмотров ТС</string>

@@ -18,7 +18,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(AuthViewModel.class))
-            return (T) new AuthViewModel(mApplication);
+            return (T) new AuthViewModel();
 
         if (modelClass.isAssignableFrom(RaidListViewModel.class))
             return (T) new RaidListViewModel(mApplication);
