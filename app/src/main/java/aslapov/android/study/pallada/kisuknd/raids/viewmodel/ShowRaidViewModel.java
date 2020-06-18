@@ -11,8 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
@@ -59,8 +64,40 @@ public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
 				);
 	}
 
+	public boolean isDraft() {
+		return getRaidWithInspectors().getRaid().getStatus() == 1;
+	}
+
+	public void sendRaidDraft(RaidWithInspectors raidInspection) {
+		Raid raid = raidInspection.getRaid();
+		raid.setStatus(RaidStatus.OUTGOING.ordinal());
+		raidInspection.setRaid(raid);
+
+		Completable.fromAction(() -> mRaidRepository.updateRaid(raidInspection))
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribeOn(Schedulers.io())
+				.subscribe(new CompletableObserver() {
+					@Override
+					public void onSubscribe(@NonNull Disposable d) {
+					}
+
+					@Override
+					public void onComplete() {
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						mShowError = e.getMessage();
+						notifyViewModelChange();
+					}
+				});
+	}
+
 	public RaidWithInspectors getRaidWithInspectors() {
-		return mRaidWithInspectors.getValue();
+		RaidWithInspectors raid = mRaidWithInspectors.getValue();
+		if (raid == null)
+			throw new IllegalStateException();
+		return raid;
 	}
 
 	public String getShowError() {

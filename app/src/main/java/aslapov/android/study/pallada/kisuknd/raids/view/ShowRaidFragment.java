@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -15,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
@@ -38,6 +38,7 @@ public class ShowRaidFragment extends Fragment {
     private MaterialTextView mDocsTextView;
     private MaterialTextView mViolationTextView;
     private MaterialTextView mVehicleTextView;
+    private FloatingActionButton mSendDraftButton;
 
     private Locale mLocaleRu = new Locale("ru");
     private DateFormat mDateFormatter = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, mLocaleRu);
@@ -63,12 +64,14 @@ public class ShowRaidFragment extends Fragment {
         setHasOptionsMenu(true);
 
         mLoading = v.findViewById(R.id.loading);
+        mLoading.setVisibility(View.VISIBLE);
 
         mTimeTextView = (MaterialTextView) v.findViewById(R.id.raid_info_time);
         mLocationTextView = (MaterialTextView) v.findViewById(R.id.raid_info_location);
         mDocsTextView = (MaterialTextView) v.findViewById(R.id.raid_info_doc);
         mViolationTextView = (MaterialTextView) v.findViewById(R.id.raid_info_violation);
         mVehicleTextView = (MaterialTextView) v.findViewById(R.id.raid_info_vehicle_info);
+        mSendDraftButton = (FloatingActionButton) v.findViewById(R.id.float_send_draft);
 
         return v;
     }
@@ -77,73 +80,81 @@ public class ShowRaidFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mLoading.setVisibility(View.VISIBLE);
-
         ShowRaidViewModel viewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(ShowRaidViewModel.class);
-        viewModel.getViewModel().observe(getViewLifecycleOwner(), this::showRaidInfo);
+        viewModel.getViewModel().observe(getViewLifecycleOwner(), this::updateUI);
         viewModel.getRaid(getRaidId());
     }
 
-    private void showRaidInfo(ShowRaidViewModel viewModel) {
+    private void updateUI(ShowRaidViewModel viewModel) {
         mLoading.setVisibility(View.GONE);
+
+        if (viewModel.isDraft())
+            mSendDraftButton.setVisibility(View.VISIBLE);
+        else
+            mSendDraftButton.setVisibility(View.GONE);
 
         RaidWithInspectors raidInspection = viewModel.getRaidWithInspectors();
         if (raidInspection != null) {
-            Raid raid = raidInspection.getRaid();
-
-            String startDate = mDateFormatter.format(raid.getRealStart());
-            String startTime = mTimeFormatter.format(raid.getRealStart());
-            String endDate = mDateFormatter.format(raid.getRealEnd());
-            String endTime = mTimeFormatter.format(raid.getRealEnd());
-            if (startDate.compareTo(endDate) == 0) {
-                mTimeTextView.setText(startDate
-                        .concat(" ")
-                        .concat(startTime)
-                        .concat(" - ")
-                        .concat(endTime));
-            } else {
-                mTimeTextView.setText(startDate
-                        .concat(" ")
-                        .concat(startTime)
-                        .concat(" - ")
-                        .concat(endDate)
-                        .concat(" ")
-                        .concat(endTime));
-            }
-
-            mLocationTextView.setText(raid.getPlaceAddress());
-
-            String docs = String.format(mLocaleRu,
-                    "Акт: %s,   %s\n\nЗадание: %s,   %s\n\nРаспоряжение: %s,   %s\n\n%d предостережений,   %s",
-                    raid.getActNumber(), mDateFormatter.format(raid.getActDate()),
-                    raid.getTaskNumber(), mDateFormatter.format(raid.getTaskDate()),
-                    raid.getOrderNumber(), mDateFormatter.format(raid.getOrderDate()),
-                    raid.getWarningCount(), mDateFormatter.format(raid.getWarningDate()));
-            mDocsTextView.setText(docs);
-
-            if (raid.isViolationsPresence()) {
-                mViolationTextView.setText(R.string.violation_exist);
-            } else {
-                mViolationTextView.setText(R.string.violation_not_exist);
-            }
-
-            String vehicleInfo = "";
-            if (!raid.getVehicleInfo().isEmpty())
-                vehicleInfo = String.format(mLocaleRu, "%s %s\n\n", vehicleInfo, raid.getVehicleInfo());
-            if (!raid.getVehicleOwner().isEmpty()) {
-
-                vehicleInfo = String.format(mLocaleRu, "%sСубъект/Перевозчик: %s\n", vehicleInfo, raid.getVehicleOwner());
-
-                if (!raid.getOwnerInn().isEmpty())
-                    vehicleInfo = String.format(mLocaleRu, "%sИНН: %s, ", vehicleInfo, raid.getOwnerInn());
-
-                if (!raid.getOwnerOgrn().isEmpty())
-                    vehicleInfo = String.format(mLocaleRu, "%sОГРН: %s", vehicleInfo, raid.getOwnerOgrn());
-            }
-            mVehicleTextView.setText(vehicleInfo);
+            showRaidInfo(raidInspection);
+            mSendDraftButton.setOnClickListener(v -> viewModel.sendRaidDraft(raidInspection));
         } else {
             // TODO show error notification
         }
+    }
+
+    private void showRaidInfo(RaidWithInspectors raidInspection) {
+        Raid raid = raidInspection.getRaid();
+
+        String startDate = mDateFormatter.format(raid.getRealStart());
+        String startTime = mTimeFormatter.format(raid.getRealStart());
+        String endDate = mDateFormatter.format(raid.getRealEnd());
+        String endTime = mTimeFormatter.format(raid.getRealEnd());
+        if (startDate.compareTo(endDate) == 0) {
+            mTimeTextView.setText(startDate
+                    .concat(" ")
+                    .concat(startTime)
+                    .concat(" - ")
+                    .concat(endTime));
+        } else {
+            mTimeTextView.setText(startDate
+                    .concat(" ")
+                    .concat(startTime)
+                    .concat(" - ")
+                    .concat(endDate)
+                    .concat(" ")
+                    .concat(endTime));
+        }
+
+        mLocationTextView.setText(raid.getPlaceAddress());
+
+        String docs = String.format(mLocaleRu,
+                "Акт: %s,   %s\n\nЗадание: %s,   %s\n\nРаспоряжение: %s,   %s\n\n%d предостережений,   %s",
+                raid.getActNumber(), mDateFormatter.format(raid.getActDate()),
+                raid.getTaskNumber(), mDateFormatter.format(raid.getTaskDate()),
+                raid.getOrderNumber(), mDateFormatter.format(raid.getOrderDate()),
+                raid.getWarningCount(), mDateFormatter.format(raid.getWarningDate()));
+        mDocsTextView.setText(docs);
+
+        if (raid.isViolationsPresence()) {
+            mViolationTextView.setText(R.string.violation_exist);
+        } else {
+            mViolationTextView.setText(R.string.violation_not_exist);
+        }
+
+        String vehicleInfo = "";
+        if (!raid.getVehicleInfo().isEmpty())
+            vehicleInfo = String.format(mLocaleRu, "%s %s\n\n", vehicleInfo, raid.getVehicleInfo());
+        if (!raid.getVehicleOwner().isEmpty()) {
+
+            vehicleInfo = String.format(mLocaleRu, "%sСубъект/Перевозчик: %s\n", vehicleInfo, raid.getVehicleOwner());
+
+            if (!raid.getOwnerInn().isEmpty())
+                vehicleInfo = String.format(mLocaleRu, "%sИНН: %s, ", vehicleInfo, raid.getOwnerInn());
+
+            if (!raid.getOwnerOgrn().isEmpty())
+                vehicleInfo = String.format(mLocaleRu, "%sОГРН: %s", vehicleInfo, raid.getOwnerOgrn());
+        }
+        mVehicleTextView.setText(vehicleInfo);
     }
 
     @Override
