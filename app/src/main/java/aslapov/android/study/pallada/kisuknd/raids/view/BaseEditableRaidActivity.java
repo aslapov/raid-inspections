@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -25,6 +27,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.CreateRaidViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 
@@ -53,10 +58,13 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 	private Locale mLocaleRu = new Locale("ru");
 	private DateFormat mTimeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT, mLocaleRu);
 
-	// TODO Криво!! Работа по инициализации ViewModel и подписки на изменение
-	protected abstract void setViewModel();
+	protected abstract BaseViewModel getViewModel();
+
+	protected abstract void viewModelInit();
 
 	protected abstract void doSave();
+
+	protected abstract void updateUI(ViewModel viewModel);
 
 	protected void onUpButtonPressed() {
 		onBackPressed();
@@ -66,7 +74,7 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.edit_raid_layout);
+		setContentView(R.layout.editable_raid_activity);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -96,7 +104,9 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 		mOwnerInn = findViewById(R.id.owner_inn);
 		mOwnerOgrn = findViewById(R.id.owner_ogrn);
 
-		setViewModel();
+		BaseViewModel viewModel = getViewModel();
+		viewModelInit();
+		viewModel.getViewModel().observe(this, this::updateUI);
 
 		View.OnClickListener dateChooseClick = view -> {
 			//TODO Отображать выбранную дату

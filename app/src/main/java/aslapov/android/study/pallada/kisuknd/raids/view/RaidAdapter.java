@@ -15,7 +15,7 @@ public class RaidAdapter extends BaseAdapter<RaidHolder, RaidWithInspectors> {
     @Override
     public RaidHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new RaidHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_raid, parent, false));
+                .inflate(R.layout.raid_list_item, parent, false));
     }
 
     @Override

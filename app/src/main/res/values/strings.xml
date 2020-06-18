@@ -3,8 +3,8 @@
 
     <string name="navigation_drawer_open">Открыть меню навигации</string>
     <string name="navigation_drawer_close">Закрыть меню навигации</string>
-    <string name="navigation_all">Все</string>
-    <string name="navigation_outbox">Исходящие</string>
+    <string name="navigation_from_server">Из сервера</string>
+    <string name="navigation_outgoing">Исходящие</string>
     <string name="navigation_drafts">Черновики</string>
     <string name="navigation_trash">Корзина</string>
     <string name="navigation_config">Настройки</string>
@@ -33,6 +33,7 @@
     <string name="vehicle_information">Информация О ТС</string>
     <string name="new_raid_bar">Создать осмотр ТС</string>
     <string name="edit_raid_bar">Изменить осмотр ТС</string>
+    <string name="send_drafts">Отправить все черновики на сервер</string>
 
     <string name="department">Отдел: </string>
     <string name="transport_type">Вид транспорта*</string>
@@ -52,6 +53,7 @@
     <string name="warning_count">Количество предостережений</string>
     <string name="warning_date">Дата предостережений</string>
     <string name="violation_existing">Выявленные нарушения</string>
+    <string name="attacment">Вложения</string>
 
     <string name="create_administrative_case">Создание административного дела</string>
     <string name="administrative_case_number">№ административного дела</string>

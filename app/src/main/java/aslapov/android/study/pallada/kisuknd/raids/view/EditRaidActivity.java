@@ -2,6 +2,8 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.app.Activity;
 import android.content.Intent;
+
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.text.DateFormat;
@@ -10,6 +12,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.EditRaidViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
@@ -29,13 +32,19 @@ public class EditRaidActivity extends BaseEditableRaidActivity {
 	}
 
 	@Override
-	protected void setViewModel() {
-		UUID raidId = (UUID) getIntent().getSerializableExtra(EXTRA_RAID_ID);
+	protected BaseViewModel getViewModel() {
+		if (mViewModel == null) {
+			mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
+					.get(EditRaidViewModel.class);
+		}
 
-		mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
-				.get(EditRaidViewModel.class);
+		return mViewModel;
+	}
+
+	@Override
+	protected void viewModelInit() {
+		UUID raidId = (UUID) getIntent().getSerializableExtra(EXTRA_RAID_ID);
 		mViewModel.init(raidId);
-		mViewModel.getViewModel().observe(this, this::updateUI);
 	}
 
 	@Override
@@ -63,15 +72,18 @@ public class EditRaidActivity extends BaseEditableRaidActivity {
 		mViewModel.editRaid();
 	}
 
-	private void updateUI(EditRaidViewModel viewModel) {
-		if (viewModel.isEdited()) {
+	@Override
+	protected void updateUI(ViewModel viewModel) {
+		EditRaidViewModel raidViewModel = (EditRaidViewModel) viewModel;
+
+		if (raidViewModel.isEdited()) {
 			finish();
 		} else {
-			Raid raid = viewModel.getRaid();
+			Raid raid = raidViewModel.getRaid();
 
 			//TODO show Department and TransportType
 			//getDepartment().setSelection(mDepartment.get);
-			getInspector().setText(viewModel.getInspector().getContactName());
+			getInspector().setText(raidViewModel.getInspector().getContactName());
 			getStartDate().setText(mDateFormatter.format(raid.getRealStart()));
 			getStartTime().setText(mTimeFormatter.format(raid.getRealStart()));
 			getEndDate().setText(mDateFormatter.format(raid.getRealEnd()));

@@ -24,6 +24,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/raid_editable" />
+    <include layout="@layout/editable_raid_layout" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -15,9 +15,12 @@ public class Raid {
     @ColumnInfo(name = "Id")
     private String id;
 
-    // Черновик
-    @ColumnInfo(name = "IsDraft")
-    private boolean isDraft;
+    // Статус рейдового осмотра
+    // 0 - "Входящие"/"Из сервера"/"Из центрального хранилища"
+    // 1 - "Черновики"
+    // 2 - "Исходящие"
+    @ColumnInfo(name = "Status")
+    private Integer status;
 
     // Отдел
     @ColumnInfo(name = "Department")
@@ -281,11 +284,12 @@ public class Raid {
         this.updateDate = updateDate;
     }
 
-    public boolean isDraft() {
-        return isDraft;
+    @NonNull
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setDraft(boolean draft) {
-        isDraft = draft;
+    public void setStatus(@NonNull Integer status) {
+        this.status = status;
     }
 }

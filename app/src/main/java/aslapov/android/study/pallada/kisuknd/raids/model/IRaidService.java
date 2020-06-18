@@ -5,13 +5,10 @@ import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.AuthTicket;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Entry;
-import aslapov.android.study.pallada.kisuknd.raids.model.transfer.InspectionMessage;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.LoggedInUser;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Raid;
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;

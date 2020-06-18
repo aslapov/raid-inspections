@@ -27,7 +27,7 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 
 public class RaidListActivity extends AppCompatActivity
-        implements RaidListFragment.OnRaidSelectedListener, NavigationView.OnNavigationItemSelectedListener {
+        implements OnRaidSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_CODE_SHOW_RAID_ACTIVITY = 0;
 
@@ -70,16 +70,11 @@ public class RaidListActivity extends AppCompatActivity
 
             ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_SHOW_RAID_ACTIVITY);
         } else if (raidListFragment == null) {
-            raidListFragment = RaidListFragment.newInstance(false);
+            raidListFragment = RaidListFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.fragment_container, raidListFragment)
                     .commit();
         }
-
-        FloatingActionButton addRaidButton = findViewById(R.id.float_create);
-        addRaidButton.setOnClickListener(view -> {
-            CreateRaidActivity.start(this); //TODO startForResult CreateRaidActivity
-        });
 
         if (findViewById(R.id.detail_fragment_container) != null) {
             mEmptyRaidImage = (ImageView) findViewById(R.id.raid_empty);
@@ -91,10 +86,15 @@ public class RaidListActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment raidListFragment;
 
-        if (item.getItemId() == R.id.nav_drafts) {
-            raidListFragment = RaidListFragment.newInstance(true);
-        } else {
-            raidListFragment = RaidListFragment.newInstance(false);
+        switch (item.getItemId()) {
+            case R.id.nav_drafts:
+                raidListFragment = RaidDraftListFragment.newInstance();
+                break;
+            case R.id.nav_outgoing:
+                raidListFragment = RaidOutgoingListFragment.newInstance();
+                break;
+            default:
+                raidListFragment = RaidListFragment.newInstance();
         }
 
         getSupportFragmentManager().beginTransaction()

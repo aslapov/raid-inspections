@@ -1,5 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -18,8 +19,8 @@ import io.reactivex.Observable;
 public abstract class RaidDao {
 
     @Transaction
-    @Query("SELECT * FROM RaidInspections WHERE IsDraft = :isDraft")
-    public abstract Observable<List<RaidWithInspectors>> queryRaidList(boolean isDraft);
+    @Query("SELECT * FROM RaidInspections WHERE Status = :status")
+    public abstract Observable<List<RaidWithInspectors>> queryRaidList(@NonNull Integer status);
 
     @Transaction
     @Query("SELECT * FROM RaidInspections WHERE Id = :raidId")

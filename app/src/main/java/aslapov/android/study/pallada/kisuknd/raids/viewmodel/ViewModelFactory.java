@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
+
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private final Context mApplication;
@@ -21,18 +23,60 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new AuthViewModel();
 
         if (modelClass.isAssignableFrom(RaidListViewModel.class))
-            return (T) new RaidListViewModel(mApplication);
+            return (T) createRaidListViewModel();
+
+        if (modelClass.isAssignableFrom(RaidDraftListViewModel.class))
+            return (T) createRaidDraftListViewModel();
+
+        if (modelClass.isAssignableFrom(RaidOutgoingListViewModel.class))
+            return (T) createRaidOutgoingListViewModel();
 
         if (modelClass.isAssignableFrom(ShowRaidViewModel.class))
-            return (T) new ShowRaidViewModel(mApplication);
+            return (T) createShowRaidViewModel();
 
         if (modelClass.isAssignableFrom(CreateRaidViewModel.class))
-            return (T) new CreateRaidViewModel(mApplication);
+            return (T) createCreateRaidViewModel();
 
         if (modelClass.isAssignableFrom(EditRaidViewModel.class))
-            return (T) new EditRaidViewModel(mApplication);
+            return (T) createEditRaidViewModel();
 
         //noinspection unchecked
         throw new IllegalArgumentException("Unknown ViewModel class");
+    }
+
+    private RaidListViewModel createRaidListViewModel() {
+        RaidListViewModel instance = new RaidListViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
+    }
+
+    private RaidDraftListViewModel createRaidDraftListViewModel() {
+        RaidDraftListViewModel instance = new RaidDraftListViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
+    }
+
+    private RaidOutgoingListViewModel createRaidOutgoingListViewModel() {
+        RaidOutgoingListViewModel instance = new RaidOutgoingListViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
+    }
+
+    private ShowRaidViewModel createShowRaidViewModel() {
+        ShowRaidViewModel instance = new ShowRaidViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
+    }
+
+    private CreateRaidViewModel createCreateRaidViewModel() {
+        CreateRaidViewModel instance = new CreateRaidViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
+    }
+
+    private EditRaidViewModel createEditRaidViewModel() {
+        EditRaidViewModel instance = new EditRaidViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
     }
 }

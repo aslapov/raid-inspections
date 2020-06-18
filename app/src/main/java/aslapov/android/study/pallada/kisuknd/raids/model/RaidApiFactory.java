@@ -1,6 +1,5 @@
 package aslapov.android.study.pallada.kisuknd.raids.model;
 
-import android.text.TextUtils;
 import android.util.Base64;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,6 @@ import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +32,7 @@ public final class RaidApiFactory {
 
 	private static volatile IRaidService sService;
 
-	private static final String BASE_URL = "http://192.168.1.51:8082/";
+	private static final String BASE_URL = "http://192.168.77.77:8082/";
 
 	private RaidApiFactory() {
 	}

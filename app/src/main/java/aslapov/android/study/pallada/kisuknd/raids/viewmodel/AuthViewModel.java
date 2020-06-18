@@ -1,7 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;

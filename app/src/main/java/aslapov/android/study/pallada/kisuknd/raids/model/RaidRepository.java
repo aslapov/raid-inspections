@@ -10,7 +10,6 @@ import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Entry;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Inspection;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.InspectionMessage;
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,8 +23,8 @@ public class RaidRepository {
         mRaidDao = db.raidDao();
     }
 
-    public Observable<List<RaidWithInspectors>> queryRaids(boolean isDraft) {
-        return mRaidDao.queryRaidList(isDraft);
+    public Observable<List<RaidWithInspectors>> queryRaids(Integer status) {
+        return mRaidDao.queryRaidList(status);
     }
 
     public Observable<RaidWithInspectors> queryRaidById(UUID raidId) {

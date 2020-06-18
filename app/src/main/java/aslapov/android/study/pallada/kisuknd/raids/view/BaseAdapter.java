@@ -1,5 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.view;
 
+import android.graphics.Color;
 import android.view.View;
 
 import androidx.annotation.CallSuper;
@@ -13,6 +14,7 @@ import java.util.List;
 public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends RecyclerView.Adapter<VH> {
 
     private final List<T> mItems = new ArrayList<>();
+    private int mSelectedItemPosition = 0;
 
     @Nullable
     private OnItemClickListener<T> mOnItemClickListener;
@@ -22,6 +24,11 @@ public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends
             int position = (int) view.getTag();
             T item = mItems.get(position);
             mOnItemClickListener.onItemClick(item);
+
+            int previousItem = mSelectedItemPosition;
+            mSelectedItemPosition = position;
+            notifyItemChanged(previousItem);
+            notifyItemChanged(position);
         }
     };
 
@@ -66,6 +73,10 @@ public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends
     public void onBindViewHolder(VH holder, int position) {
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(mInternalListener);
+
+        /*holder.itemView.setBackgroundColor(holder.itemView.getSolidColor());
+        if (mSelectedItemPosition == position)
+            holder.itemView.setBackgroundColor(Color.GRAY);*/
     }
 
     public void setOnItemClickListener(@Nullable OnItemClickListener<T> onItemClickListener) {

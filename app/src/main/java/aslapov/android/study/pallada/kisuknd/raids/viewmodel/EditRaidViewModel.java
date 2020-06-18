@@ -1,11 +1,12 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.text.Editable;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class EditRaidViewModel extends ViewModel {
+public class EditRaidViewModel extends ViewModel implements BaseViewModel {
 
 	private RaidRepository mRaidRepository;
 
@@ -42,38 +43,48 @@ public class EditRaidViewModel extends ViewModel {
 	private String mTaskDateError;
 	private String mWarningDateError;
 	private String mEditError;
-
 	private boolean isEdited;
 
 	private Locale mLocaleRu = new Locale("ru");
 	private DateFormat mDateFormatter = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, mLocaleRu);
 	private DateFormat mDateTimeFormatter = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, mLocaleRu);
 
-	EditRaidViewModel(Context applicationContext) {
-		mRaidRepository = RepositoryProvider.provideRaidRepository(applicationContext);
+	//@Inject
+	public void setRaidRepository(RaidRepository repo) {
+		if (repo == null)
+			throw new IllegalArgumentException("repo");
+		mRaidRepository = repo;
+	}
+
+	@NotNull
+	private RaidRepository getRaidRepository() {
+		if (mRaidRepository == null)
+			throw new IllegalStateException();
+		return mRaidRepository;
 	}
 
 	@SuppressLint("CheckResult")
 	public void init(UUID raidId) {
-		mRaidRepository.queryRaidById(raidId)
-			.subscribeOn(Schedulers.io())
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(
-				raid -> {
-					mRaid.setValue(raid.getRaid());
-					mInspector.setValue(raid.getInspectors().get(0));
-					notifyViewModelChange();
-				},
-				error -> {
-					mEditError = error.getMessage();
-					notifyViewModelChange();
-				}
-			);
+		getRaidRepository()
+				.queryRaidById(raidId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(
+						raid -> {
+							mRaid.setValue(raid.getRaid());
+							mInspector.setValue(raid.getInspectors().get(0));
+							notifyViewModelChange();
+						},
+						error -> {
+							mEditError = error.getMessage();
+							notifyViewModelChange();
+						}
+				);
 	}
 
 	public void editRaid() {
 		// TODO validate();
-		getRaid().setDraft(true);
+		getRaid().setStatus(RaidStatus.DRAFT.ordinal());
 
 		Calendar calendar = Calendar.getInstance(mLocaleRu);
 		Date currentDate = calendar.getTime();
@@ -119,7 +130,9 @@ public class EditRaidViewModel extends ViewModel {
 		return mRaid.getValue();
 	}
 
-	public RaidInspectionMember getInspector() { return mInspector.getValue(); }
+	public RaidInspectionMember getInspector() {
+		return mInspector.getValue();
+	}
 
 	public String getStartDateError() {
 		return mStartDateError;
@@ -145,7 +158,9 @@ public class EditRaidViewModel extends ViewModel {
 		return mWarningDateError;
 	}
 
-	public String getEditError() { return mEditError; }
+	public String getEditError() {
+		return mEditError;
+	}
 
 	public boolean isEdited() {
 		return isEdited;

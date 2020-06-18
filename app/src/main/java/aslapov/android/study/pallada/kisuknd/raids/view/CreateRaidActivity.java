@@ -3,6 +3,7 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 import android.app.Activity;
 import android.content.Intent;
 
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.text.DateFormat;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.CreateRaidViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
@@ -26,12 +28,20 @@ public class CreateRaidActivity extends BaseEditableRaidActivity {
         activity.startActivity(intent);
     }
 
+
     @Override
-    protected void setViewModel() {
-        mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
-                .get(CreateRaidViewModel.class);
+    protected BaseViewModel getViewModel() {
+        if (mViewModel == null) {
+            mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
+                    .get(CreateRaidViewModel.class);
+        }
+
+        return mViewModel;
+    }
+
+    @Override
+    protected void viewModelInit() {
         mViewModel.init();
-        mViewModel.getViewModel().observe(this, this::updateUI);
     }
 
     @Override
@@ -59,18 +69,21 @@ public class CreateRaidActivity extends BaseEditableRaidActivity {
         mViewModel.saveRaid();
     }
 
-    private void updateUI(CreateRaidViewModel viewModel) {
-        if (viewModel.isCreated()) {
+    @Override
+    protected void updateUI(ViewModel viewModel) {
+        CreateRaidViewModel raidViewModel = (CreateRaidViewModel) viewModel;
+
+        if (raidViewModel.isCreated()) {
             finish();
         } else {
-            if (viewModel.getStartDateError() != null) {
+            if (raidViewModel.getStartDateError() != null) {
                 // TODO Показать сообщение об ошибке
             }
-            Raid raid = viewModel.getRaid();
+            Raid raid = raidViewModel.getRaid();
 
             //TODO show Department and TransportType
             //getDepartment().setSelection(mDepartment.get);
-            getInspector().setText(viewModel.getInspector().getContactName());
+            getInspector().setText(raidViewModel.getInspector().getContactName());
             getStartDate().setText(mDateFormatter.format(raid.getRealStart()));
             getStartTime().setText(mTimeFormatter.format(raid.getRealStart()));
             getEndDate().setText(mDateFormatter.format(raid.getRealEnd()));
