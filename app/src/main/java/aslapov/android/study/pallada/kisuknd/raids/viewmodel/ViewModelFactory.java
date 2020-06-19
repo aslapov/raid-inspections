@@ -31,6 +31,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(RaidOutgoingListViewModel.class))
             return (T) createRaidOutgoingListViewModel();
 
+        if (modelClass.isAssignableFrom(RaidTrashListViewModel.class))
+            return (T) createRaidTrashListViewModel();
+
         if (modelClass.isAssignableFrom(ShowRaidViewModel.class))
             return (T) createShowRaidViewModel();
 
@@ -58,6 +61,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private RaidOutgoingListViewModel createRaidOutgoingListViewModel() {
         RaidOutgoingListViewModel instance = new RaidOutgoingListViewModel();
+        instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        return instance;
+    }
+
+    private RaidTrashListViewModel createRaidTrashListViewModel() {
+        RaidTrashListViewModel instance = new RaidTrashListViewModel();
         instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
         return instance;
     }

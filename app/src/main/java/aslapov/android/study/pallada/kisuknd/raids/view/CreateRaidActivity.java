@@ -31,10 +31,8 @@ public class CreateRaidActivity extends BaseEditableRaidActivity {
 
     @Override
     protected BaseViewModel getViewModel() {
-        if (mViewModel == null) {
-            mViewModel = new ViewModelProvider(this, new ViewModelFactory(this))
-                    .get(CreateRaidViewModel.class);
-        }
+        if (mViewModel == null)
+            mViewModel = new ViewModelProvider(this, new ViewModelFactory(this)).get(CreateRaidViewModel.class);
 
         return mViewModel;
     }

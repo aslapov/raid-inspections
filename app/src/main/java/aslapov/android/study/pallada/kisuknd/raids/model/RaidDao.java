@@ -2,6 +2,7 @@ package aslapov.android.study.pallada.kisuknd.raids.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -27,30 +28,64 @@ public abstract class RaidDao {
     public abstract Observable<RaidWithInspectors> queryRaidById(String raidId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insertRaid(Raid raid);
+    protected abstract void insertRaid(Raid raid);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insertRaidInspector(RaidInspectionMember member);
+    protected abstract void insertRaidInspector(RaidInspectionMember member);
 
     @Transaction
-    public void insertRaidWithInspectors(Raid raid, List<RaidInspectionMember> inspectors) {
-        insertRaid(raid);
-        for (RaidInspectionMember member : inspectors) {
+    public void insertRaidWithInspectors(RaidWithInspectors raidInspection) {
+        insertRaid(raidInspection.getRaid());
+        for (RaidInspectionMember member : raidInspection.getInspectors()) {
             insertRaidInspector(member);
         }
     }
 
     @Update
-    public abstract void updateRaid(Raid raid);
+    protected abstract void updateRaid(Raid raid);
 
     @Update
-    public abstract void updateRaidInspector(RaidInspectionMember member);
+    protected abstract void updateRaidInspector(RaidInspectionMember member);
 
     @Transaction
-    public void updateRaidWithInspectors(Raid raid, List<RaidInspectionMember> inspectors) {
-        updateRaid(raid);
-        for (RaidInspectionMember member : inspectors) {
+    public void updateRaidWithInspectors(RaidWithInspectors raidInspection) {
+        updateRaid(raidInspection.getRaid());
+        for (RaidInspectionMember member : raidInspection.getInspectors()) {
             updateRaidInspector(member);
         }
-    };
+    }
+
+    @Transaction
+    public void updateRaids(List<RaidWithInspectors> raidInspections) {
+        for (RaidWithInspectors raidInspection : raidInspections) {
+            updateRaid(raidInspection.getRaid());
+            for (RaidInspectionMember member : raidInspection.getInspectors()) {
+                updateRaidInspector(member);
+            }
+        }
+    }
+
+    @Delete
+    protected abstract void deleteRaid(Raid raid);
+
+    @Delete
+    protected abstract void deleteRaidInspector(RaidInspectionMember member);
+
+    @Transaction
+    public void deleteRaid(RaidWithInspectors raidInspection) {
+        deleteRaid(raidInspection.getRaid());
+        for (RaidInspectionMember member : raidInspection.getInspectors()) {
+            deleteRaidInspector(member);
+        }
+    }
+
+    @Transaction
+    public void deleteRaids(List<RaidWithInspectors> raidInspections) {
+        for (RaidWithInspectors raidInspection : raidInspections) {
+            deleteRaid(raidInspection.getRaid());
+            for (RaidInspectionMember member : raidInspection.getInspectors()) {
+                deleteRaidInspector(member);
+            }
+        }
+    }
 }

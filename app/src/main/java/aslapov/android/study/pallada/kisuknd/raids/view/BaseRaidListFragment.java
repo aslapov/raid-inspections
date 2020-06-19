@@ -33,6 +33,7 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 	private ProgressBar mLoading;
 	private TextView mEmptyListTextView;
 	private TextView mRaidListNameTextView;
+	private EmptyRecyclerView mRecyclerView;
 
 	protected abstract BaseListViewModel getViewModel();
 
@@ -59,13 +60,13 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.raid_list_fragment, container, false);
 
-		EmptyRecyclerView recyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		recyclerView.setEmptyView(recyclerView);
-		recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+		mRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.raid_recycler_view);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		mRecyclerView.setEmptyView(mRecyclerView);
+		mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
 		mAdapter = new RaidAdapter(new ArrayList<>());
-		mAdapter.attachToRecyclerView(recyclerView);
+		mAdapter.attachToRecyclerView(mRecyclerView);
 		mAdapter.setOnItemClickListener(this);
 
 		mLoading = v.findViewById(R.id.loading);
@@ -103,6 +104,7 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 			if (raids.isEmpty()) {
 				mEmptyListTextView.setVisibility(View.VISIBLE);
 				mRaidListNameTextView.setVisibility(View.GONE);
+				mRecyclerView.setVisibility(View.GONE);
 			} else {
 				mEmptyListTextView.setVisibility(View.GONE);
 				mRaidListNameTextView.setVisibility(View.VISIBLE);

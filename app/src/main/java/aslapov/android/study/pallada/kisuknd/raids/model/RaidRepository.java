@@ -31,12 +31,24 @@ public class RaidRepository {
         return mRaidDao.queryRaidById(raidId.toString());
     }
 
-    public void updateRaid(RaidWithInspectors raid) {
-        mRaidDao.updateRaidWithInspectors(raid.getRaid(), raid.getInspectors());
+    public void addRaid(RaidWithInspectors raidInspection) {
+        mRaidDao.insertRaidWithInspectors(raidInspection);
     }
 
-    public void addRaid(RaidWithInspectors raid) {
-        mRaidDao.insertRaidWithInspectors(raid.getRaid(), raid.getInspectors());
+    public void updateRaid(RaidWithInspectors raidInspection) {
+        mRaidDao.updateRaidWithInspectors(raidInspection);
+    }
+
+    public void updateRaids(List<RaidWithInspectors> raidInspections) {
+        mRaidDao.updateRaids(raidInspections);
+    }
+
+    public void deleteRaid(RaidWithInspectors raidInspection) {
+        mRaidDao.deleteRaid(raidInspection);
+    }
+
+    public void deleteRaids(List<RaidWithInspectors> raidInspections) {
+        mRaidDao.deleteRaids(raidInspections);
     }
 
     public void getRaid(UUID raidId) {

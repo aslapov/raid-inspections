@@ -1,7 +1,23 @@
 package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
 public enum RaidStatus {
+	/**
+	 * Полученные из сервера
+	 */
 	FROMSERVER,
+
+	/**
+	 * Черновики
+	 */
 	DRAFT,
-	OUTGOING
+
+	/**
+	 * Исходящие
+	 */
+	OUTGOING,
+
+	/**
+	 * Корзина
+	 */
+	TRASH
 }

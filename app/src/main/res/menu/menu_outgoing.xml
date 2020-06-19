@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/send_drafts"
-        android:title="@string/send_drafts"
+        android:id="@+id/cancel_send"
+        android:title="@string/menu_cancel_all"
         app:showAsAction="never" />
 </menu>

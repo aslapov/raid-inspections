@@ -10,8 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
+import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class RaidOutgoingListViewModel extends ViewModel implements BaseListViewModel {
@@ -40,11 +45,13 @@ public class RaidOutgoingListViewModel extends ViewModel implements BaseListView
 		return mRaidRepository;
 	}
 
+	@Override
 	public MutableLiveData<RaidOutgoingListViewModel> getViewModel() {
 		return mViewModel;
 	}
 
 	@SuppressLint("CheckResult")
+	@Override
 	public void getRaidList() {
 		getRaidRepository()
 				.queryRaids(sStatus)
@@ -62,15 +69,50 @@ public class RaidOutgoingListViewModel extends ViewModel implements BaseListView
 				);
 	}
 
+	@Override
 	public List<RaidWithInspectors> getRaids() {
 		return mRaids.getValue();
 	}
 
+	@Override
 	public String getShowError() {
 		return mShowError;
 	}
 
+	public void cancelSending() {
+		updateWithRaidsStatus(RaidStatus.DRAFT);
+	}
+
 	private void notifyViewModelChange() {
 		mViewModel.setValue(this);
+	}
+
+	private void updateWithRaidsStatus(RaidStatus status) {
+		List<RaidWithInspectors> raidInspections = getRaids();
+
+		for (RaidWithInspectors raidInspection : raidInspections) {
+			Raid raid = raidInspection.getRaid();
+			raid.setStatus(status.ordinal());
+			raidInspection.setRaid(raid);
+		}
+
+		Completable.fromAction(() -> mRaidRepository.updateRaids(raidInspections))
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribeOn(Schedulers.io())
+				.subscribe(new CompletableObserver() {
+					@Override
+					public void onSubscribe(@NonNull Disposable d) {
+					}
+
+					@Override
+					public void onComplete() {
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						mShowError = e.getMessage();
+						notifyViewModelChange();
+					}
+				});
 	}
 }

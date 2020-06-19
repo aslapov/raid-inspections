@@ -40,11 +40,13 @@ public class RaidListViewModel extends ViewModel implements BaseListViewModel {
 		return mRaidRepository;
 	}
 
+	@Override
 	public MutableLiveData<RaidListViewModel> getViewModel() {
 		return mViewModel;
 	}
 
 	@SuppressLint("CheckResult")
+	@Override
 	public void getRaidList() {
 		//mRaidRepository.getRaid(UUID.fromString("e1650b76-56f9-43de-b005-a2baa3142ba1"));
 
@@ -64,10 +66,12 @@ public class RaidListViewModel extends ViewModel implements BaseListViewModel {
 				);
 	}
 
+	@Override
 	public List<RaidWithInspectors> getRaids() {
 		return mRaids.getValue();
 	}
 
+	@Override
 	public String getShowError() {
 		return mShowError;
 	}

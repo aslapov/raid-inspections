@@ -2,13 +2,12 @@ package aslapov.android.study.pallada.kisuknd.raids.viewmodel;
 
 import android.annotation.SuppressLint;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
+import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
@@ -20,12 +19,16 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
+public class RaidTrashListViewModel extends ViewModel implements BaseListViewModel {
+
+	// Запрашиваемый статус рейдовых осмотров
+	// "3" - "Корзина"
+	private static final Integer sStatus = RaidStatus.TRASH.ordinal();
 
 	private RaidRepository mRaidRepository;
 
-	private MutableLiveData<ShowRaidViewModel> mViewModel = new MutableLiveData<>();
-	private MutableLiveData<RaidWithInspectors> mRaidWithInspectors = new MutableLiveData<>();
+	private MutableLiveData<RaidTrashListViewModel> mViewModel = new MutableLiveData<>();
+	private MutableLiveData<List<RaidWithInspectors>> mRaids = new MutableLiveData<>();
 	private String mShowError;
 
 	//@Inject
@@ -42,19 +45,21 @@ public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
 		return mRaidRepository;
 	}
 
-	public LiveData<ShowRaidViewModel> getViewModel() {
+	@Override
+	public MutableLiveData<RaidTrashListViewModel> getViewModel() {
 		return mViewModel;
 	}
 
 	@SuppressLint("CheckResult")
-	public void requestRaid(UUID raidId) {
+	@Override
+	public void getRaidList() {
 		getRaidRepository()
-				.queryRaidById(raidId)
+				.queryRaids(sStatus)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
-						raid -> {
-							mRaidWithInspectors.setValue(raid);
+						raids -> {
+							mRaids.setValue(raids);
 							notifyViewModelChange();
 						},
 						error -> {
@@ -64,33 +69,23 @@ public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
 				);
 	}
 
-	public boolean isRaidReceived() {
-		return mRaidWithInspectors.getValue() != null;
+	@Override
+	public List<RaidWithInspectors> getRaids() {
+		return mRaids.getValue();
 	}
 
-	public boolean isDraft() {
-		return getRaid().getRaid().getStatus() == 1;
+	@Override
+	public String getShowError() { return mShowError; }
+
+	public void restoreDeletedRaids() {
+		updateWithRaidsStatus(RaidStatus.DRAFT);
 	}
 
-	public RaidWithInspectors getRaid() {
-		RaidWithInspectors raidInspection = mRaidWithInspectors.getValue();
-		if (raidInspection == null)
-			throw new IllegalStateException();
-		return raidInspection;
-	}
+	public void emptyTrash() {
+		//TODO Уведомление с подтверждением операции очистки корзины
 
-	public RaidStatus getRaidStatus() {
-		RaidWithInspectors raidInspection = getRaid();
-		int status = raidInspection.getRaid().getStatus();
-		return RaidStatus.values()[status];
-	}
-
-	public void sendRaidDraft(RaidWithInspectors raidInspection) {
-		Raid raid = raidInspection.getRaid();
-		raid.setStatus(RaidStatus.OUTGOING.ordinal());
-		raidInspection.setRaid(raid);
-
-		Completable.fromAction(() -> mRaidRepository.updateRaid(raidInspection))
+		List<RaidWithInspectors> raidInspections = getRaids();
+		Completable.fromAction(() -> mRaidRepository.deleteRaids(raidInspections))
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribeOn(Schedulers.io())
 				.subscribe(new CompletableObserver() {
@@ -110,38 +105,20 @@ public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
 				});
 	}
 
-	public String getShowError() {
-		return mShowError;
-	}
-
-	public void send() {
-		updateWithRaidsStatus(RaidStatus.OUTGOING);
-	}
-
-	public void cancelSending() {
-		updateWithRaidsStatus(RaidStatus.DRAFT);
-	}
-
-	public void moveToTrash() {
-		updateWithRaidsStatus(RaidStatus.TRASH);
-	}
-
-	public void restore() {
-		updateWithRaidsStatus(RaidStatus.DRAFT);
-	}
-
 	private void notifyViewModelChange() {
 		mViewModel.setValue(this);
 	}
 
 	private void updateWithRaidsStatus(RaidStatus status) {
-		RaidWithInspectors raidInspection = getRaid();
+		List<RaidWithInspectors> raidInspections = getRaids();
 
-		Raid raid = raidInspection.getRaid();
-		raid.setStatus(status.ordinal());
-		raidInspection.setRaid(raid);
+		for (RaidWithInspectors raidInspection : raidInspections) {
+			Raid raid = raidInspection.getRaid();
+			raid.setStatus(status.ordinal());
+			raidInspection.setRaid(raid);
+		}
 
-		Completable.fromAction(() -> mRaidRepository.updateRaid(raidInspection))
+		Completable.fromAction(() -> mRaidRepository.updateRaids(raidInspections))
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribeOn(Schedulers.io())
 				.subscribe(new CompletableObserver() {

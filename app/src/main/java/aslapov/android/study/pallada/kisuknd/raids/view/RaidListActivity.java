@@ -93,6 +93,9 @@ public class RaidListActivity extends AppCompatActivity
             case R.id.nav_outgoing:
                 raidListFragment = RaidOutgoingListFragment.newInstance();
                 break;
+            case R.id.nav_trash:
+                raidListFragment = RaidTrashListFragment.newInstance();
+                break;
             default:
                 raidListFragment = RaidListFragment.newInstance();
         }

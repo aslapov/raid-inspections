@@ -9,44 +9,42 @@ import androidx.lifecycle.ViewModelProvider;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseListViewModel;
-import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidDraftListViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidTrashListViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
-public class RaidDraftListFragment extends BaseRaidListFragment {
+public class RaidTrashListFragment extends BaseRaidListFragment {
 
-	private RaidDraftListViewModel mViewModel;
+	private RaidTrashListViewModel mViewModel;
 
-	static RaidDraftListFragment newInstance() {
-		return new RaidDraftListFragment();
+	static RaidTrashListFragment newInstance() {
+		return new RaidTrashListFragment();
 	}
 
 	@Override
 	protected BaseListViewModel getViewModel() {
 		if (mViewModel == null)
-			mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidDraftListViewModel.class);
+			mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(RaidTrashListViewModel.class);
 
 		return mViewModel;
 	}
 
 	@Override
-	protected int getListNameId() {
-		return R.string.navigation_drafts;
-	}
+	protected int getListNameId() { return R.string.navigation_trash; }
 
 	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.menu_drafts, menu);
+		inflater.inflate(R.menu.menu_trash, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.send_drafts:
-				mViewModel.sendAll();
+			case R.id.restore_all:
+				mViewModel.restoreDeletedRaids();
 				return true;
-			case R.id.delete_drafts:
-				mViewModel.moveAllToTrash();
+			case R.id.menu_delete:
+				mViewModel.emptyTrash();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
