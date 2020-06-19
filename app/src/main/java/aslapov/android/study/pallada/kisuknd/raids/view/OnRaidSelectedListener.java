@@ -4,4 +4,5 @@ import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspector
 
 public interface OnRaidSelectedListener {
 	void onRaidSelected(RaidWithInspectors raid);
+	void onEmptyList();
 }

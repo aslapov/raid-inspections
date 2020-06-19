@@ -39,17 +39,11 @@ public class ShowRaidActivity extends AppCompatActivity {
         UUID raidId = (UUID) getIntent().getSerializableExtra(EXTRA_RAID_ID);
 
         FragmentManager fm = getSupportFragmentManager();
-        ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
 
         // Если текущую активити перевели в горизонтальное положение,
         // то вернуться к предыдущей активити
         if (getResources().getConfiguration().screenWidthDp >= 900) {
-            if (raidFragment != null) {
-                fm.beginTransaction()
-                        .remove(raidFragment)
-                        .commit();
-            }
-
             Intent data = new Intent();
             data.putExtra(EXTRA_RAID_ID, raidId);
             setResult(RESULT_CONFIGURATION_CHANGE, data);
@@ -66,10 +60,10 @@ public class ShowRaidActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && raidFragment == null) {
             raidFragment = ShowRaidFragment.newInstance(raidId);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, raidFragment)
+                    .add(R.id.detail_fragment_container, raidFragment)
                     .commit();
         }
     }

@@ -105,6 +105,8 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 				mEmptyListTextView.setVisibility(View.VISIBLE);
 				mRaidListNameTextView.setVisibility(View.GONE);
 				mRecyclerView.setVisibility(View.GONE);
+
+				mListener.onEmptyList();
 			} else {
 				mEmptyListTextView.setVisibility(View.GONE);
 				mRaidListNameTextView.setVisibility(View.VISIBLE);
@@ -117,6 +119,8 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 					return (start1 > start2) ? -1 : 1;
 				});
 				mAdapter.changeDataSet(raids);
+
+				mListener.onRaidSelected(raids.get(0));
 			}
 		} else {
 			// TODO show error notification
