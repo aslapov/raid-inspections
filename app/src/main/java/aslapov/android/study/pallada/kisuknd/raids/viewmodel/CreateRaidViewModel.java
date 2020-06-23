@@ -128,7 +128,7 @@ public class CreateRaidViewModel extends ViewModel implements BaseViewModel {
             });
     }
 
-    public LiveData<CreateRaidViewModel> getViewModel() {
+    public LiveData<CreateRaidViewModel> getViewModelObserver() {
         return mViewModel;
     }
 

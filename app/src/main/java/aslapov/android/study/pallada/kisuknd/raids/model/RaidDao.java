@@ -27,9 +27,11 @@ public abstract class RaidDao {
     @Query("SELECT * FROM RaidInspections WHERE Id = :raidId")
     public abstract Observable<RaidWithInspectors> queryRaidById(String raidId);
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     protected abstract void insertRaid(Raid raid);
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     protected abstract void insertRaidInspector(RaidInspectionMember member);
 
@@ -41,9 +43,11 @@ public abstract class RaidDao {
         }
     }
 
+    @Transaction
     @Update
     protected abstract void updateRaid(Raid raid);
 
+    @Transaction
     @Update
     protected abstract void updateRaidInspector(RaidInspectionMember member);
 
@@ -65,9 +69,11 @@ public abstract class RaidDao {
         }
     }
 
+    @Transaction
     @Delete
     protected abstract void deleteRaid(Raid raid);
 
+    @Transaction
     @Delete
     protected abstract void deleteRaidInspector(RaidInspectionMember member);
 

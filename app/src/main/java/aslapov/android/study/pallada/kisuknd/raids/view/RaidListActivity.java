@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.UUID;
@@ -27,7 +26,7 @@ import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 
 public class RaidListActivity extends AppCompatActivity
-		implements OnRaidSelectedListener, NavigationView.OnNavigationItemSelectedListener {
+		implements OnRaidShowListener, NavigationView.OnNavigationItemSelectedListener {
 
 	private static final int REQUEST_CODE_SHOW_RAID_ACTIVITY = 0;
 
@@ -56,25 +55,30 @@ public class RaidListActivity extends AppCompatActivity
 		navigationView.setNavigationItemSelectedListener(this);
 
 		FragmentManager fm = getSupportFragmentManager();
-		Fragment raidListFragment = fm.findFragmentById(R.id.fragment_container);
+		BaseRaidListFragment raidListFragment = (BaseRaidListFragment) fm.findFragmentById(R.id.fragment_container);
 		ShowRaidFragment raidFragment = (ShowRaidFragment) fm.findFragmentById(R.id.detail_fragment_container);
 
-		// Случай поворота экрана из горизонтального положения с открытым ShowRaidFragment
-		// в вертикальное положение. В таком случае необходимо открыть ShowRaidActivity
-		// и ShowRaidFragment
-		if (findViewById(R.id.detail_fragment_container) == null && raidFragment != null) {
-			UUID raidId = raidFragment.getRaidId();
-			ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_SHOW_RAID_ACTIVITY);
-		} else if (raidListFragment == null) {
+		if (raidListFragment == null) {
 			raidListFragment = RaidListFragment.newInstance();
 			fm.beginTransaction()
 					.add(R.id.fragment_container, raidListFragment)
 					.commit();
 		}
 
+		// Случай поворота экрана из горизонтального положения с открытым ShowRaidFragment
+		// в вертикальное положение. В таком случае необходимо открыть ShowRaidActivity
+		// и ShowRaidFragment
+		if (findViewById(R.id.detail_fragment_container) == null && raidFragment != null && raidListFragment.isItemSelected()) {
+			UUID raidId = raidFragment.getRaidId();
+			ShowRaidActivity.startForResult(this, raidId, REQUEST_CODE_SHOW_RAID_ACTIVITY);
+		}
+
+		mEmptyRaidImage = (ImageView) findViewById(R.id.raid_empty);
 		if (findViewById(R.id.detail_fragment_container) != null) {
-			mEmptyRaidImage = (ImageView) findViewById(R.id.raid_empty);
-			mEmptyRaidImage.setVisibility(View.VISIBLE);
+			if (raidFragment == null)
+				mEmptyRaidImage.setVisibility(View.VISIBLE);
+			else
+				mEmptyRaidImage.setVisibility(View.GONE);
 		}
 	}
 
@@ -106,6 +110,10 @@ public class RaidListActivity extends AppCompatActivity
 
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
+
+		if (findViewById(R.id.detail_fragment_container) != null)
+			mEmptyRaidImage.setVisibility(View.VISIBLE);
+
 		return true;
 	}
 
@@ -120,17 +128,16 @@ public class RaidListActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onEmptyList() {
-        mEmptyRaidImage = (ImageView) findViewById(R.id.raid_empty);
-        mEmptyRaidImage.setVisibility(View.VISIBLE);
-
+	public void onRaidEmpty() {
 		FragmentManager fm = getSupportFragmentManager();
 		Fragment raidFragment = fm.findFragmentById(R.id.detail_fragment_container);
 
-		if (raidFragment != null)
+		if (raidFragment != null) {
+			mEmptyRaidImage.setVisibility(View.VISIBLE);
 			fm.beginTransaction()
 					.remove(raidFragment)
 					.commit();
+		}
 	}
 
 	@Override
@@ -146,8 +153,6 @@ public class RaidListActivity extends AppCompatActivity
 	}
 
 	private void showRaidFragment(UUID raidId) {
-		mEmptyRaidImage.setVisibility(View.GONE);
-
 		ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
 		if (raidFragment == null || !raidId.equals(raidFragment.getRaidId())) {
 			raidFragment = ShowRaidFragment.newInstance(raidId);
@@ -156,5 +161,6 @@ public class RaidListActivity extends AppCompatActivity
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 					.commit();
 		}
+		mEmptyRaidImage.setVisibility(View.GONE);
 	}
 }

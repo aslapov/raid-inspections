@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
@@ -31,6 +32,16 @@ public class RaidTrashListViewModel extends ViewModel implements BaseListViewMod
 	private MutableLiveData<List<RaidWithInspectors>> mRaids = new MutableLiveData<>();
 	private String mShowError;
 
+	// Выбранный для отображения элемент списка. -1 - элемент не выбран
+	private int mSelectedItemPosition = 0;
+
+	// Наступило ли событие изменения количества осмотров ТС в списке.
+	// Нужно для логичной работы представления: например, если количество изменилось,
+	// необходимо для 2хпанельного представления показать следующий фрагмент осмотра ТС
+	// и снять выделение выбранного элемента списка.
+	// Если количество не изменилось, выбрать первый или ранее выбранный элемент списка
+	private boolean mIsRaidListSizeChanged = false;
+
 	//@Inject
 	public void setRaidRepository(RaidRepository repo) {
 		if (repo == null)
@@ -46,19 +57,29 @@ public class RaidTrashListViewModel extends ViewModel implements BaseListViewMod
 	}
 
 	@Override
-	public MutableLiveData<RaidTrashListViewModel> getViewModel() {
+	public MutableLiveData<RaidTrashListViewModel> getViewModelObserver() {
 		return mViewModel;
 	}
 
 	@SuppressLint("CheckResult")
 	@Override
-	public void getRaidList() {
+	public void getRaids() {
 		getRaidRepository()
 				.queryRaids(sStatus)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
 						raids -> {
+							mIsRaidListSizeChanged = mRaids.getValue() != null && mRaids.getValue().size() != raids.size();
+
+							Collections.sort(raids, (raid1, raid2) -> {
+								long start1 = raid1.getRaid().getRealStart().getTime();
+								long start2 = raid2.getRaid().getRealStart().getTime();
+								if (start1 == start2)
+									return 0;
+								return (start1 > start2) ? -1 : 1;
+							});
+
 							mRaids.setValue(raids);
 							notifyViewModelChange();
 						},
@@ -70,8 +91,23 @@ public class RaidTrashListViewModel extends ViewModel implements BaseListViewMod
 	}
 
 	@Override
-	public List<RaidWithInspectors> getRaids() {
+	public List<RaidWithInspectors> getRaidList() {
 		return mRaids.getValue();
+	}
+
+	@Override
+	public int getSelectedItemPosition() {
+		return mSelectedItemPosition;
+	}
+
+	@Override
+	public void setSelectedItemPosition(int value) {
+		mSelectedItemPosition = value;
+	}
+
+	@Override
+	public boolean isRaidListSizeChanged() {
+		return mIsRaidListSizeChanged;
 	}
 
 	@Override
@@ -84,7 +120,7 @@ public class RaidTrashListViewModel extends ViewModel implements BaseListViewMod
 	public void emptyTrash() {
 		//TODO Уведомление с подтверждением операции очистки корзины
 
-		List<RaidWithInspectors> raidInspections = getRaids();
+		List<RaidWithInspectors> raidInspections = getRaidList();
 		Completable.fromAction(() -> mRaidRepository.deleteRaids(raidInspections))
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribeOn(Schedulers.io())
@@ -110,7 +146,7 @@ public class RaidTrashListViewModel extends ViewModel implements BaseListViewMod
 	}
 
 	private void updateWithRaidsStatus(RaidStatus status) {
-		List<RaidWithInspectors> raidInspections = getRaids();
+		List<RaidWithInspectors> raidInspections = getRaidList();
 
 		for (RaidWithInspectors raidInspection : raidInspections) {
 			Raid raid = raidInspection.getRaid();

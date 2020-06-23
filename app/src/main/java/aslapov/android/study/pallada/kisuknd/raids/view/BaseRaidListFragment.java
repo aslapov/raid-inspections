@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
@@ -27,7 +26,7 @@ import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseListViewModel;
 
 public abstract class BaseRaidListFragment extends Fragment implements BaseAdapter.OnItemClickListener<RaidWithInspectors> {
 
-	private OnRaidSelectedListener mListener;
+	private OnRaidShowListener mListener;
 
 	private RaidAdapter mAdapter;
 	private ProgressBar mLoading;
@@ -43,9 +42,9 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 		try {
-			mListener = (OnRaidSelectedListener) context;
+			mListener = (OnRaidShowListener) context;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(context.toString() + " must implement OnRaidSelectedListener");
+			throw new ClassCastException(context.toString() + " must implement OnRaidShowListener");
 		}
 	}
 
@@ -89,8 +88,19 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 		mLoading.setVisibility(View.VISIBLE);
 
 		BaseListViewModel viewModel = getViewModel();
-		viewModel.getViewModel().observe(getViewLifecycleOwner(), this::showRaids);
-		viewModel.getRaidList();
+		viewModel.getViewModelObserver().observe(getViewLifecycleOwner(), this::showRaids);
+		viewModel.getRaids();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		// Снимать выделение выбранного элемента при однопанельном представлении
+		if (getActivity().findViewById(R.id.detail_fragment_container) == null) {
+			mAdapter.setSelectedPosition(-1);
+			getViewModel().setSelectedItemPosition(-1);
+		}
 	}
 
 	private void showRaids(ViewModel viewModel) {
@@ -99,28 +109,43 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 		BaseListViewModel listViewModel = (BaseListViewModel) viewModel;
 
 		if (listViewModel.getShowError() == null) {
-			List<RaidWithInspectors> raids = listViewModel.getRaids();
+			List<RaidWithInspectors> raids = listViewModel.getRaidList();
 
 			if (raids.isEmpty()) {
 				mEmptyListTextView.setVisibility(View.VISIBLE);
 				mRaidListNameTextView.setVisibility(View.GONE);
 				mRecyclerView.setVisibility(View.GONE);
 
-				mListener.onEmptyList();
+				mListener.onRaidEmpty();
 			} else {
 				mEmptyListTextView.setVisibility(View.GONE);
 				mRaidListNameTextView.setVisibility(View.VISIBLE);
-
-				Collections.sort(raids, (raid1, raid2) -> {
-					long start1 = raid1.getRaid().getRealStart().getTime();
-					long start2 = raid2.getRaid().getRealStart().getTime();
-					if (start1 == start2)
-						return 0;
-					return (start1 > start2) ? -1 : 1;
-				});
 				mAdapter.changeDataSet(raids);
 
-				mListener.onRaidSelected(raids.get(0));
+
+				if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
+					int position = listViewModel.getSelectedItemPosition();
+					if (listViewModel.isRaidListSizeChanged()) {
+						if (position >= raids.size()) {
+							mAdapter.setSelectedPosition(-1);
+							getViewModel().setSelectedItemPosition(-1);
+							mListener.onRaidEmpty();
+						} else {
+							mAdapter.unSelectPosition(position);
+							mListener.onRaidSelected(raids.get(position));
+						}
+					} else {
+						if (position == -1) {
+							position += 1;
+							listViewModel.setSelectedItemPosition(position);
+						}
+
+						// TODO понять почему данный метод может вызываться несколько раз
+						// количество вызовов увеличивается в зависимости от количества повороов экрана
+						mAdapter.setSelectedPosition(position);
+						mListener.onRaidSelected(raids.get(position));
+					}
+				}
 			}
 		} else {
 			// TODO show error notification
@@ -129,7 +154,18 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 
 	@Override
 	public void onItemClick(@NonNull RaidWithInspectors raid) {
+		int position = mAdapter.getSelectedPosition();
+		getViewModel().setSelectedItemPosition(position);
+
+		// Необходимо подсвечивать выбранный элемент только для 2-хпанельного представления
+		if (getActivity().findViewById(R.id.detail_fragment_container) != null)
+			mAdapter.setSelectedPosition(position);
+
 		mListener.onRaidSelected(raid);
+	}
+
+	public boolean isItemSelected() {
+		return getViewModel().getSelectedItemPosition() != -1;
 	}
 
 	@Override

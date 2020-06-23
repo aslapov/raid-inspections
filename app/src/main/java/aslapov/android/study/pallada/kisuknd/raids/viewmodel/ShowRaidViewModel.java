@@ -42,7 +42,7 @@ public class ShowRaidViewModel extends ViewModel implements BaseViewModel {
 		return mRaidRepository;
 	}
 
-	public LiveData<ShowRaidViewModel> getViewModel() {
+	public LiveData<ShowRaidViewModel> getViewModelObserver() {
 		return mViewModel;
 	}
 

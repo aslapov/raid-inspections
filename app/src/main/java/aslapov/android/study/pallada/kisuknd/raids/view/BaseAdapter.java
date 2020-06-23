@@ -1,6 +1,5 @@
 package aslapov.android.study.pallada.kisuknd.raids.view;
 
-import android.graphics.Color;
 import android.view.View;
 
 import androidx.annotation.CallSuper;
@@ -14,7 +13,7 @@ import java.util.List;
 public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends RecyclerView.Adapter<VH> {
 
     private final List<T> mItems = new ArrayList<>();
-    private int mSelectedItemPosition = 0;
+    private Integer mSelectedPosition = -1; // -1 - Элемент не выбран
 
     @Nullable
     private OnItemClickListener<T> mOnItemClickListener;
@@ -23,12 +22,8 @@ public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends
         if (mOnItemClickListener != null) {
             int position = (int) view.getTag();
             T item = mItems.get(position);
+            mSelectedPosition = position;
             mOnItemClickListener.onItemClick(item);
-
-            int previousItem = mSelectedItemPosition;
-            mSelectedItemPosition = position;
-            notifyItemChanged(previousItem);
-            notifyItemChanged(position);
         }
     };
 
@@ -43,6 +38,23 @@ public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends
         mRecyclerView = recyclerView;
         mRecyclerView.setAdapter(this);
         refreshRecycler();
+    }
+
+    public int getSelectedPosition() {
+        return mSelectedPosition;
+    }
+
+    public void setSelectedPosition(int position) {
+        //int previousPosition = mSelectedPosition;
+        mSelectedPosition = position;
+        /*notifyItemChanged(previousPosition);
+        notifyItemChanged(position);*/
+        refreshRecycler();
+    }
+
+    public void unSelectPosition(int position) {
+        notifyItemChanged(position);
+        mSelectedPosition = -1;
     }
 
     public final void add(@NonNull T value) {
@@ -74,9 +86,9 @@ public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, T> extends
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(mInternalListener);
 
-        /*holder.itemView.setBackgroundColor(holder.itemView.getSolidColor());
-        if (mSelectedItemPosition == position)
-            holder.itemView.setBackgroundColor(Color.GRAY);*/
+        holder.itemView.setSelected(false);
+        if (position == mSelectedPosition)
+            holder.itemView.setSelected(true);
     }
 
     public void setOnItemClickListener(@Nullable OnItemClickListener<T> onItemClickListener) {

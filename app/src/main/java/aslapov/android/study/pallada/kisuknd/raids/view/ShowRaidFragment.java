@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -83,7 +85,7 @@ public class ShowRaidFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		mViewModel = new ViewModelProvider(this, new ViewModelFactory(getContext())).get(ShowRaidViewModel.class);
-		mViewModel.getViewModel().observe(getViewLifecycleOwner(), this::updateUI);
+		mViewModel.getViewModelObserver().observe(getViewLifecycleOwner(), this::updateUI);
 		mViewModel.requestRaid(getRaidId());
 	}
 
@@ -100,16 +102,14 @@ public class ShowRaidFragment extends Fragment {
 		RaidWithInspectors raidInspection = viewModel.getRaid();
 		if (raidInspection != null) {
 			showRaidInfo(raidInspection);
-			mSendDraftButton.setOnClickListener(v -> viewModel.sendRaidDraft(raidInspection));
+			mSendDraftButton.setOnClickListener(v -> {
+				viewModel.sendRaidDraft(raidInspection);
+				if (getActivity() instanceof ShowRaidActivity)
+					getActivity().finish();
+			});
 		} else {
 			// TODO show error notification
 		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.show_raid, menu);
 	}
 
 	@Override
@@ -119,8 +119,10 @@ public class ShowRaidFragment extends Fragment {
 
 			switch (mViewModel.getRaidStatus()) {
 				case DRAFT:
-					if (menu.findItem(R.id.menu_move_to_trash) == null)
+					if (menu.findItem(R.id.menu_move_to_trash) == null) {
 						inflater.inflate(R.menu.move_raid_to_trash_item, menu);
+						inflater.inflate(R.menu.edit_raid_item, menu);
+					}
 					break;
 				case OUTGOING:
 					if (menu.findItem(R.id.menu_cancel_raid) == null)
@@ -139,24 +141,30 @@ public class ShowRaidFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
-            case R.id.menu_edit:
-                EditRaidActivity.start(getActivity(), getRaidId()); //TODO startForResult EditRaidActivity
-                return true;
-            case R.id.menu_move_to_trash:
-                mViewModel.moveToTrash();
-                return true;
-            case R.id.menu_cancel_raid:
-                mViewModel.cancelSending();
-                return true;
-            case R.id.menu_restore_raid:
-                mViewModel.restore();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+			case R.id.menu_edit:
+				EditRaidActivity.start(getActivity(), getRaidId()); //TODO startForResult EditRaidActivity
+				return true;
+			case R.id.menu_move_to_trash:
+				mViewModel.moveToTrash();
+				if (getActivity() instanceof ShowRaidActivity)
+					getActivity().finish();
+				return true;
+			case R.id.menu_cancel_raid:
+				mViewModel.cancelSending();
+				if (getActivity() instanceof ShowRaidActivity)
+					getActivity().finish();
+				return true;
+			case R.id.menu_restore_raid:
+				mViewModel.restore();
+				if (getActivity() instanceof ShowRaidActivity)
+					getActivity().finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
-	private void showRaidInfo(RaidWithInspectors raidInspection) {
+	private void showRaidInfo(@NotNull RaidWithInspectors raidInspection) {
 		Raid raid = raidInspection.getRaid();
 
 		String startDate = mDateFormatter.format(raid.getRealStart());

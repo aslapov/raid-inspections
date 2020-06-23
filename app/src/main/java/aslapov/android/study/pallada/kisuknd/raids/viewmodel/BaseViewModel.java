@@ -5,5 +5,5 @@ import androidx.lifecycle.ViewModel;
 
 public interface BaseViewModel {
 
-	LiveData<? extends ViewModel> getViewModel();
+	LiveData<? extends ViewModel> getViewModelObserver();
 }

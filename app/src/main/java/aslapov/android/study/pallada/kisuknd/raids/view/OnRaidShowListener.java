@@ -2,7 +2,8 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 
-public interface OnRaidSelectedListener {
+public interface OnRaidShowListener {
 	void onRaidSelected(RaidWithInspectors raid);
-	void onEmptyList();
+
+	void onRaidEmpty();
 }

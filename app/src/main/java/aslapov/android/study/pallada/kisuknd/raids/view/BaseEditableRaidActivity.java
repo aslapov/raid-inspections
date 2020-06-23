@@ -15,7 +15,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -28,8 +27,6 @@ import java.util.Locale;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseViewModel;
-import aslapov.android.study.pallada.kisuknd.raids.viewmodel.CreateRaidViewModel;
-import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 
@@ -106,7 +103,7 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 
 		BaseViewModel viewModel = getViewModel();
 		viewModelInit();
-		viewModel.getViewModel().observe(this, this::updateUI);
+		viewModel.getViewModelObserver().observe(this, this::updateUI);
 
 		View.OnClickListener dateChooseClick = view -> {
 			//TODO Отображать выбранную дату

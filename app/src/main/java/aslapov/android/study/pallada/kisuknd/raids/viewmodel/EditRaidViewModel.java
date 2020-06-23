@@ -122,7 +122,7 @@ public class EditRaidViewModel extends ViewModel implements BaseViewModel {
 				});
 	}
 
-	public MutableLiveData<EditRaidViewModel> getViewModel() {
+	public MutableLiveData<EditRaidViewModel> getViewModelObserver() {
 		return mViewModel;
 	}
 
