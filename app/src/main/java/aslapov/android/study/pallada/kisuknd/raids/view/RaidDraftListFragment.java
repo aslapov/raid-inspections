@@ -52,7 +52,12 @@ public class RaidDraftListFragment extends BaseRaidListFragment {
 	private void moveAllToTrashClick() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_MaterialComponents_Light_Dialog);
 		builder.setTitle(R.string.dialog_move_all_title);
-		builder.setMessage(R.string.dialog_move_all_message);
+
+		String message = getString(R.string.dialog_move_all_message)
+				.concat(": ")
+				.concat(String.valueOf(mViewModel.getRaidList().size()));
+
+		builder.setMessage(message);
 		builder.setPositiveButton(R.string.trash, (dialog, which) -> mViewModel.moveAllToTrash());
 		builder.setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()));
 		AlertDialog dialog = builder.create();

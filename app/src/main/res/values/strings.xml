@@ -14,12 +14,12 @@
     <string name="menu_move_to_trash">Удалить</string>
     <string name="menu_send">Отправить</string>
     <string name="menu_restore">Восстановить</string>
-    <string name="menu_cancel">Отменить</string>
+    <string name="menu_cancel">Отменить отправку</string>
     <string name="menu_delete">Очистить корзину</string>
     <string name="menu_send_all_drafts">Отправить все черновики на сервер</string>
     <string name="menu_move_to_trash_all_drafts">Удалить все черновики</string>
     <string name="menu_restore_all">Восстановить все</string>
-    <string name="menu_cancel_all">Отменить все</string>
+    <string name="menu_cancel_all">Отменить отправку всех черновиков</string>
 
     <string name="authorization_greeting">Вас приветствует система КИСУ КНД ТБ Рейды М</string>
     <string name="login_hint">Имя пользователя в КИСУ КНД ТБ</string>
