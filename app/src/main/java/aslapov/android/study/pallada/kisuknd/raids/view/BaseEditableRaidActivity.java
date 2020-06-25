@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -51,6 +52,9 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 	private EditText mVehicleOwner;
 	private EditText mOwnerInn;
 	private EditText mOwnerOgrn;
+
+	private ArrayAdapter<CharSequence> mAdapterDepartment;
+	private ArrayAdapter<CharSequence> mAdapterTransportType;
 
 	private Locale mLocaleRu = new Locale("ru");
 	private DateFormat mTimeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT, mLocaleRu);
@@ -150,6 +154,14 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 		mOrderDate.setOnClickListener(dateChooseClick);
 		mTaskDate.setOnClickListener(dateChooseClick);
 		mWarningDate.setOnClickListener(dateChooseClick);
+
+		mAdapterDepartment = ArrayAdapter.createFromResource(this, R.array.department, android.R.layout.simple_spinner_item);
+		mAdapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		mDepartment.setAdapter(mAdapterDepartment);
+
+		mAdapterTransportType = ArrayAdapter.createFromResource(this, R.array.transport_type, android.R.layout.simple_spinner_item);
+		mAdapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		mTransportType.setAdapter(mAdapterTransportType);
 	}
 
 	@Override
@@ -250,5 +262,17 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 
 	public EditText getOwnerOgrn() {
 		return mOwnerOgrn;
+	}
+
+	public ArrayAdapter<CharSequence> getAdapterDepartment() {
+		if (mAdapterDepartment == null)
+			throw new IllegalStateException();
+		return mAdapterDepartment;
+	}
+
+	public ArrayAdapter<CharSequence> getAdapterTransportType() {
+		if (mAdapterTransportType == null)
+			throw new IllegalStateException();
+		return mAdapterTransportType;
 	}
 }

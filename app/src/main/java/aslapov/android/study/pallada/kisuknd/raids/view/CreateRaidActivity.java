@@ -79,14 +79,13 @@ public class CreateRaidActivity extends BaseEditableRaidActivity {
             }
             Raid raid = raidViewModel.getRaid();
 
-            //TODO show Department and TransportType
-            //getDepartment().setSelection(mDepartment.get);
+            getDepartment().setSelection(getAdapterDepartment().getPosition(raid.getDepartment()));
             getInspector().setText(raidViewModel.getInspector().getContactName());
             getStartDate().setText(mDateFormatter.format(raid.getRealStart()));
             getStartTime().setText(mTimeFormatter.format(raid.getRealStart()));
             getEndDate().setText(mDateFormatter.format(raid.getRealEnd()));
             getEndTime().setText(mTimeFormatter.format(raid.getRealEnd()));
-            //getTransportType().setSelection();
+            getTransportType().setSelection(getAdapterTransportType().getPosition(raid.getTransportType()));
             getAddress().setText(raid.getPlaceAddress());
             getActNumber().setText(raid.getActNumber());
             getActDate().setText(mDateFormatter.format(raid.getActDate()));

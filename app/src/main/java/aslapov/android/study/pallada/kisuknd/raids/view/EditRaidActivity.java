@@ -2,6 +2,7 @@ package aslapov.android.study.pallada.kisuknd.raids.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.ArrayAdapter;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
 
+import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.EditRaidViewModel;
@@ -79,14 +81,13 @@ public class EditRaidActivity extends BaseEditableRaidActivity {
 		} else {
 			Raid raid = raidViewModel.getRaid();
 
-			//TODO show Department and TransportType
-			//getDepartment().setSelection(mDepartment.get);
+			getDepartment().setSelection(getAdapterDepartment().getPosition(raid.getDepartment()));
 			getInspector().setText(raidViewModel.getInspector().getContactName());
 			getStartDate().setText(mDateFormatter.format(raid.getRealStart()));
 			getStartTime().setText(mTimeFormatter.format(raid.getRealStart()));
 			getEndDate().setText(mDateFormatter.format(raid.getRealEnd()));
 			getEndTime().setText(mTimeFormatter.format(raid.getRealEnd()));
-			//getTransportType().setSelection();
+			getTransportType().setSelection(getAdapterTransportType().getPosition(raid.getTransportType()));
 			getAddress().setText(raid.getPlaceAddress());
 			getActNumber().setText(raid.getActNumber());
 			getActDate().setText(mDateFormatter.format(raid.getActDate()));
