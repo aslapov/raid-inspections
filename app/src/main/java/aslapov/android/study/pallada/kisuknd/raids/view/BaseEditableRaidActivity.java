@@ -21,6 +21,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,6 +58,7 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 	private ArrayAdapter<CharSequence> mAdapterTransportType;
 
 	private Locale mLocaleRu = new Locale("ru");
+	private DateFormat mDateFormatter = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, mLocaleRu);
 	private DateFormat mTimeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT, mLocaleRu);
 
 	protected abstract BaseViewModel getViewModel();
@@ -110,11 +112,25 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 		viewModel.getViewModelObserver().observe(this, this::updateUI);
 
 		View.OnClickListener dateChooseClick = view -> {
-			//TODO Отображать выбранную дату
+			MaterialButton dateBtn = (MaterialButton) view;
+			String dateString = dateBtn.getText().toString();
+
+			int currentYear, currentMonth, currentDay;
 			Calendar calendar = Calendar.getInstance();
-			int currentYear = calendar.get(Calendar.YEAR);
-			int currentMonth = calendar.get(Calendar.MONTH);
-			int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+			try {
+				Date currentDate = mDateFormatter.parse(dateString);
+				if (currentDate != null)
+					calendar.setTime(currentDate);
+
+				currentYear = calendar.get(Calendar.YEAR);
+				currentMonth = calendar.get(Calendar.MONTH);
+				currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+			} catch (ParseException e) {
+				currentYear = calendar.get(Calendar.YEAR);
+				currentMonth = calendar.get(Calendar.MONTH);
+				currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+			}
 
 			DatePickerDialog.OnDateSetListener listener = (picker, year, month, day) -> {
 				MaterialButton btn = (MaterialButton) view;
@@ -129,10 +145,23 @@ public abstract class BaseEditableRaidActivity extends AppCompatActivity {
 		};
 
 		View.OnClickListener timeChooseClick = view -> {
-			//TODO Отображать выбранное время
+			MaterialButton timeBtn = (MaterialButton) view;
+			String timeString = timeBtn.getText().toString();
+
+			int currentHour, currentMinute;
 			Calendar calendar = Calendar.getInstance();
-			int currentHour = calendar.get(Calendar.YEAR);
-			int currentMinute = calendar.get(Calendar.MONTH);
+
+			try {
+				Date currentDate = mTimeFormatter.parse(timeString);
+				if (currentDate != null)
+					calendar.setTime(currentDate);
+
+				currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+				currentMinute = calendar.get(Calendar.MINUTE);
+			} catch (ParseException e) {
+				currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+				currentMinute = calendar.get(Calendar.MINUTE);
+			}
 
 			TimePickerDialog.OnTimeSetListener listener = (picker, hour, minute) -> {
 				calendar.set(Calendar.HOUR_OF_DAY, hour);
