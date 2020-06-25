@@ -149,8 +149,6 @@ public class ShowRaidFragment extends Fragment {
 				return true;
 			case R.id.menu_move_to_trash:
 				moveToTrashClick();
-				if (getActivity() instanceof ShowRaidActivity)
-					getActivity().finish();
 				return true;
 			case R.id.menu_cancel_raid:
 				mViewModel.cancelSending();
@@ -232,7 +230,11 @@ public class ShowRaidFragment extends Fragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_MaterialComponents_Light_Dialog);
 		builder.setTitle(R.string.dialog_move_title);
 		builder.setMessage(R.string.dialog_move_message);
-		builder.setPositiveButton(R.string.trash, (dialog, which) -> mViewModel.moveToTrash());
+		builder.setPositiveButton(R.string.trash, (dialog, which) -> {
+			mViewModel.moveToTrash();
+			if (getActivity() instanceof ShowRaidActivity)
+				getActivity().finish();
+		});
 		builder.setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()));
 		AlertDialog dialog = builder.create();
 		dialog.show();
