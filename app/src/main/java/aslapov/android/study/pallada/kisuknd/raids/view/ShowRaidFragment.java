@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
@@ -168,6 +169,12 @@ public class ShowRaidFragment extends Fragment {
 
 	private void showRaidInfo(@NotNull RaidWithInspectors raidInspection) {
 		Raid raid = raidInspection.getRaid();
+
+		// Выставление времени для той временной зоны, где производился рейд
+		TimeZone timeZone = TimeZone.getTimeZone("GMT");
+		timeZone.setRawOffset(raid.getTimeZone());
+		mDateFormatter.setTimeZone(timeZone);
+		mTimeFormatter.setTimeZone(timeZone);
 
 		String startDate = mDateFormatter.format(raid.getRealStart());
 		String startTime = mTimeFormatter.format(raid.getRealStart());

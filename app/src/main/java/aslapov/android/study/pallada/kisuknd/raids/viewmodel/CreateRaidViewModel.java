@@ -109,7 +109,7 @@ public class CreateRaidViewModel extends ViewModel implements BaseViewModel {
 
         getRaid().setStatus(RaidStatus.DRAFT.ordinal());
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         getRaid().setCreateDate(currentDate);
         getRaid().setUpdateDate(currentDate);
