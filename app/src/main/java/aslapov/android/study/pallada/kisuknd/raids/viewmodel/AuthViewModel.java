@@ -110,6 +110,7 @@ public class AuthViewModel extends ViewModel {
 	public void tryAuth(String login, String password) {
 		if (getLoginPhase().getValue() == LoginPhase.ENTERLOGIN && validateLogin(login)) {
 			mLoginPhase.setValue(LoginPhase.ENTERPASSWORD);
+			return;
 		}
 		if (getLoginPhase().getValue() == LoginPhase.ENTERPASSWORD && validatePassword(password)) {
 			LoggedInUser user = new LoggedInUser(login, password);

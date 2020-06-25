@@ -204,7 +204,7 @@ public class CreateRaidViewModel extends ViewModel implements BaseViewModel {
                     .concat(" ")
                     .concat(time.toString());
             Date endDate = mDateTimeFormatter.parse(endDateString);
-            getRaid().setRealStart(endDate);
+            getRaid().setRealEnd(endDate);
         } catch (Exception e) {
             mEndDateError = e.getLocalizedMessage();
         }
