@@ -5,6 +5,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
@@ -46,10 +47,20 @@ public class RaidDraftListFragment extends BaseRaidListFragment {
 				mViewModel.sendAll();
 				return true;
 			case R.id.delete_drafts:
-				mViewModel.moveAllToTrash();
+				moveAllToTrashClick();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void moveAllToTrashClick() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_MaterialComponents_Light_Dialog);
+		builder.setTitle(R.string.dialog_move_all_title);
+		builder.setMessage(R.string.dialog_move_all_message);
+		builder.setPositiveButton(R.string.trash, (dialog, which) -> mViewModel.moveAllToTrash());
+		builder.setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()));
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }

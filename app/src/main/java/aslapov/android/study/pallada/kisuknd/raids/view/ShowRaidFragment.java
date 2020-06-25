@@ -1,5 +1,6 @@
 package aslapov.android.study.pallada.kisuknd.raids.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -145,7 +147,7 @@ public class ShowRaidFragment extends Fragment {
 				EditRaidActivity.start(getActivity(), getRaidId()); //TODO startForResult EditRaidActivity
 				return true;
 			case R.id.menu_move_to_trash:
-				mViewModel.moveToTrash();
+				moveToTrashClick();
 				if (getActivity() instanceof ShowRaidActivity)
 					getActivity().finish();
 				return true;
@@ -217,5 +219,15 @@ public class ShowRaidFragment extends Fragment {
 				vehicleInfo = String.format(mLocaleRu, "%sОГРН: %s", vehicleInfo, raid.getOwnerOgrn());
 		}
 		mVehicleTextView.setText(vehicleInfo);
+	}
+
+	private void moveToTrashClick() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_MaterialComponents_Light_Dialog);
+		builder.setTitle(R.string.dialog_move_title);
+		builder.setMessage(R.string.dialog_move_message);
+		builder.setPositiveButton(R.string.trash, (dialog, which) -> mViewModel.moveToTrash());
+		builder.setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()));
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }

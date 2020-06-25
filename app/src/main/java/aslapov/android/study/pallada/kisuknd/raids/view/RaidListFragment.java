@@ -25,6 +25,6 @@ public class RaidListFragment extends BaseRaidListFragment {
 
 	@Override
 	protected int getListNameId() {
-		return R.string.navigation_from_server;
+		return R.string.navigation_raids;
 	}
 }
