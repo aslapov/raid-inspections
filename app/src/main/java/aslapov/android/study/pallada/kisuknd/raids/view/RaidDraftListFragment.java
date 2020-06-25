@@ -30,11 +30,6 @@ public class RaidDraftListFragment extends BaseRaidListFragment {
 	}
 
 	@Override
-	protected int getListNameId() {
-		return R.string.navigation_drafts;
-	}
-
-	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.menu_drafts, menu);

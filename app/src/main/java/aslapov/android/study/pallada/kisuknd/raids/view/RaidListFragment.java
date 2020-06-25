@@ -22,9 +22,4 @@ public class RaidListFragment extends BaseRaidListFragment {
 
 		return mViewModel;
 	}
-
-	@Override
-	protected int getListNameId() {
-		return R.string.navigation_raids;
-	}
 }

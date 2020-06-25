@@ -30,9 +30,6 @@ public class RaidTrashListFragment extends BaseRaidListFragment {
 	}
 
 	@Override
-	protected int getListNameId() { return R.string.navigation_trash; }
-
-	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.menu_trash, menu);

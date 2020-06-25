@@ -31,12 +31,9 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 	private RaidAdapter mAdapter;
 	private ProgressBar mLoading;
 	private TextView mEmptyListTextView;
-	private TextView mRaidListNameTextView;
 	private EmptyRecyclerView mRecyclerView;
 
 	protected abstract BaseListViewModel getViewModel();
-
-	protected abstract int getListNameId();
 
 	@Override
 	public void onAttach(@NonNull Context context) {
@@ -70,8 +67,6 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 
 		mLoading = v.findViewById(R.id.loading);
 		mEmptyListTextView = (TextView) v.findViewById(R.id.empty_list_text_view);
-		mRaidListNameTextView = (TextView) v.findViewById(R.id.raid_list_name);
-		mRaidListNameTextView.setText(getListNameId());
 
 		FloatingActionButton addRaidButton = v.findViewById(R.id.float_create);
 		addRaidButton.setOnClickListener(view -> {
@@ -113,13 +108,11 @@ public abstract class BaseRaidListFragment extends Fragment implements BaseAdapt
 
 			if (raids.isEmpty()) {
 				mEmptyListTextView.setVisibility(View.VISIBLE);
-				mRaidListNameTextView.setVisibility(View.GONE);
 				mRecyclerView.setVisibility(View.GONE);
 
 				mListener.onRaidEmpty();
 			} else {
 				mEmptyListTextView.setVisibility(View.GONE);
-				mRaidListNameTextView.setVisibility(View.VISIBLE);
 				mAdapter.changeDataSet(raids);
 
 

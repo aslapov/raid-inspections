@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,6 +45,7 @@ public class RaidListActivity extends AppCompatActivity
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle(R.string.navigation_raids);
 
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -86,18 +88,23 @@ public class RaidListActivity extends AppCompatActivity
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 		Fragment raidListFragment;
 		FragmentManager fm = getSupportFragmentManager();
+		ActionBar actionBar = getSupportActionBar();
 
 		switch (item.getItemId()) {
 			case R.id.nav_drafts:
+				actionBar.setTitle(R.string.navigation_drafts);
 				raidListFragment = RaidDraftListFragment.newInstance();
 				break;
 			case R.id.nav_outgoing:
+				actionBar.setTitle(R.string.navigation_outgoing);
 				raidListFragment = RaidOutgoingListFragment.newInstance();
 				break;
 			case R.id.nav_trash:
+				actionBar.setTitle(R.string.navigation_trash);
 				raidListFragment = RaidTrashListFragment.newInstance();
 				break;
 			default:
+				actionBar.setTitle(R.string.navigation_raids);
 				raidListFragment = RaidListFragment.newInstance();
 		}
 
