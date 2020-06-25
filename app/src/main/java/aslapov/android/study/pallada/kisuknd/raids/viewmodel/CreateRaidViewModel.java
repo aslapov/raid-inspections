@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidInspectionMember;
@@ -31,7 +32,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CreateRaidViewModel extends ViewModel implements BaseViewModel {
 
-    private RaidRepository mRaidRepository;
+    private RaidRepository mRaidRepository;         // must be injected
+    private ResourcesProvider mResourcesProvider;   // must be injected
 
     private MutableLiveData<CreateRaidViewModel> mViewModel = new MutableLiveData<>();
     private MutableLiveData<Raid> mRaid = new MutableLiveData<>();
@@ -64,6 +66,20 @@ public class CreateRaidViewModel extends ViewModel implements BaseViewModel {
         return mRaidRepository;
     }
 
+    //@Inject
+    public void setResourcesProvider(ResourcesProvider resourcesProvider) {
+        if (resourcesProvider == null)
+            throw  new IllegalArgumentException("repo");
+        mResourcesProvider = resourcesProvider;
+    }
+
+    @NotNull
+    private ResourcesProvider getResourcesProvider() {
+        if (mResourcesProvider == null)
+            throw new IllegalStateException();
+        return mResourcesProvider;
+    }
+
     public void init() {
         Date currentDate = Calendar.getInstance(mLocaleRu).getTime();
 
@@ -75,6 +91,8 @@ public class CreateRaidViewModel extends ViewModel implements BaseViewModel {
         raid.setTaskDate(currentDate);
         raid.setWarningDate(currentDate);
         raid.setWarningCount(0);
+        raid.setDepartment(getResourcesProvider().getDepartmentStringArray()[0]);
+        raid.setTransportType(getResourcesProvider().getTransportTypeStringArray()[0]);
 
         mRaid.setValue(raid);
         mInspector.setValue(new RaidInspectionMember());

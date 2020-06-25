@@ -80,6 +80,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private CreateRaidViewModel createCreateRaidViewModel() {
         CreateRaidViewModel instance = new CreateRaidViewModel();
         instance.setRaidRepository(RepositoryProvider.provideRaidRepository(mApplication));
+        instance.setResourcesProvider(new ResourcesProvider(mApplication));
         return instance;
     }
 
