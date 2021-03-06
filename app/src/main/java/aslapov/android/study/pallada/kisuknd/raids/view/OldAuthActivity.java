@@ -15,15 +15,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textview.MaterialTextView;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
-import aslapov.android.study.pallada.kisuknd.raids.viewmodel.AuthViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.OldAuthViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
-public class AuthActivity extends AppCompatActivity {
+public class OldAuthActivity extends AppCompatActivity {
 
 	// Сохранение видимости компоненты ввода пароля после изменения конфигурации Activity
 	private static final String SAVED_PASSWORD_INPUT_VISIBLE = "passwordInputVisible";
 
-	private AuthViewModel mViewModel;
+	private OldAuthViewModel mViewModel;
 
 	private EditText mLogin;
 	private EditText mPassword;
@@ -35,19 +35,19 @@ public class AuthActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.authorization_layout);
 
-		mViewModel = new ViewModelProvider(this, new ViewModelFactory(getApplication())).get(AuthViewModel.class);
+		mViewModel = new ViewModelProvider(this, new ViewModelFactory(getApplication())).get(OldAuthViewModel.class);
 		mViewModel.init();
 
-		mLogin = (EditText) findViewById(R.id.login);
+		mLogin = (EditText) findViewById(R.id.username);
 		mPassword = (EditText) findViewById(R.id.password);
 		mAuthErrorTextView = (MaterialTextView) findViewById(R.id.auth_message);
-		Button mAuthButton = (Button) findViewById(R.id.auth);
+		Button mAuthButton = (Button) findViewById(R.id.login);
 		mLoading = findViewById(R.id.loading);
 
 		if (savedInstanceState != null && savedInstanceState.getBoolean(SAVED_PASSWORD_INPUT_VISIBLE))
 			showPasswordLayout();
 
-		Observer<AuthViewModel.ValidationField> validationField = field -> {
+		Observer<OldAuthViewModel.ValidationField> validationField = field -> {
 			if (!field.isFieldValid()) {
 				mLoading.setVisibility(View.GONE);
 				showValidationError(getString(field.getValidationError()));
@@ -59,9 +59,9 @@ public class AuthActivity extends AppCompatActivity {
 
 		mViewModel.getLoginPhase().observe(this, phase -> {
 			mLoading.setVisibility(View.GONE);
-		    if (phase == AuthViewModel.LoginPhase.ENTERLOGIN)
+		    if (phase == OldAuthViewModel.LoginPhase.ENTERLOGIN)
 		        clearView();
-            if (phase == AuthViewModel.LoginPhase.ENTERPASSWORD)
+            if (phase == OldAuthViewModel.LoginPhase.ENTERPASSWORD)
 		        showPasswordLayout();
         });
 

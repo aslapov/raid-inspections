@@ -23,7 +23,7 @@
         android:id="@+id/greetings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/login"
+        android:layout_above="@+id/auth_message"
         android:text="@string/applicationLabel"
         android:layout_marginBottom="48dp"
         android:textAlignment="center"
@@ -33,14 +33,14 @@
         android:id="@+id/auth_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/login"
+        android:layout_above="@+id/username"
         android:layout_marginBottom="8dp"
         android:textColor="@color/error_text_color"
         android:textAlignment="center"
         android:textSize="16sp" />
 
     <EditText
-        android:id="@+id/login"
+        android:id="@+id/username"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -52,12 +52,11 @@
         android:id="@+id/password"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
         android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
         android:hint="@string/password_hint"
         android:inputType="textPassword"
-        android:singleLine="true"
-        android:visibility="invisible" />
+        android:singleLine="true" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -68,12 +67,13 @@
         android:layout_marginTop="20dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/auth"
+        android:id="@+id/login"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"
         android:layout_marginTop="8dp"
         android:layout_centerInParent="true"
+        android:enabled="false"
         android:backgroundTint="@color/primary_color"
         android:text="@string/authorization_enter"
         android:textColor="@android:color/white"

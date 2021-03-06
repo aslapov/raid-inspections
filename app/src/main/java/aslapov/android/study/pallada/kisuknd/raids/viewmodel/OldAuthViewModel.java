@@ -16,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
 
-public class AuthViewModel extends ViewModel {
+public class OldAuthViewModel extends ViewModel {
 
 	public enum LoginPhase {
 		/**

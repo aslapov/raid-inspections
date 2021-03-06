@@ -1,5 +1,5 @@
 <resources>
-    <string name="applicationLabel">KИСУ КНД ТБ Рейды М</string>
+    <string name="applicationLabel">KИСУ КНД ТБ Рейды</string>
 
     <string name="navigation_drawer_open">Открыть меню навигации</string>
     <string name="navigation_drawer_close">Закрыть меню навигации</string>
@@ -22,11 +22,11 @@
     <string name="menu_cancel_all">Отменить отправку всех черновиков</string>
 
     <string name="authorization_greeting">Вас приветствует система КИСУ КНД ТБ Рейды М</string>
-    <string name="login_hint">Имя пользователя в КИСУ КНД ТБ</string>
-    <string name="password_hint">Введите пароль</string>
+    <string name="login_hint">Имя пользователя</string>
+    <string name="password_hint">Пароль</string>
     <string name="authorization_enter">Войти</string>
     <string name="hotline_support">Горячая линия технической поддержки:</string>
-    <string name="support_email_link">kisu-ir@geopallada.ru</string>
+    <string name="support_email_link">kisu2@geopallada.ru</string>
 
     <string name="authorization_registration">Придумайте пароль для регистрации в системе.</string>
     <string name="authorization_registrated">Пользователь зарегистрирован. Войдите в систему</string>
