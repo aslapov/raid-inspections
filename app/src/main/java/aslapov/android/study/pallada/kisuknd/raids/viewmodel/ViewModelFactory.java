@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import aslapov.android.study.pallada.kisuknd.raids.auth.AuthRepository;
 import aslapov.android.study.pallada.kisuknd.raids.auth.AuthViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidApiFactory;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -21,7 +23,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(AuthViewModel.class))
-            return (T) new AuthViewModel();
+            return (T) createAuthViewModel();
 
         if (modelClass.isAssignableFrom(RaidListViewModel.class))
             return (T) createRaidListViewModel();
@@ -44,8 +46,12 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(EditRaidViewModel.class))
             return (T) createEditRaidViewModel();
 
-        //noinspection unchecked
         throw new IllegalArgumentException("Unknown ViewModel class");
+    }
+
+    private AuthViewModel createAuthViewModel() {
+        AuthRepository repository = new AuthRepository(mApplication, RaidApiFactory.getRaidService());
+        return new AuthViewModel(repository);
     }
 
     private RaidListViewModel createRaidListViewModel() {

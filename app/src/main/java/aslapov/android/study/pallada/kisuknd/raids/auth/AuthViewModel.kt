@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import aslapov.android.study.pallada.kisuknd.raids.R
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidApiFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     enum class AuthResult {
         SUCCESS, ERROR
     }
@@ -17,7 +21,19 @@ class AuthViewModel : ViewModel() {
     val authResult: LiveData<AuthResult> = _authResult
 
     fun login(username: String, password: String) {
-        _authResult.value = AuthResult.SUCCESS
+        val user = LoggedInUser(username, password)
+        val result = repository.login(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { response ->
+                            val ticketId = response.ticket.id;
+                            RaidApiFactory.setAuthTicket(ticketId)
+                        },
+                        { error ->
+                            val exception = error as HttpException
+                        }
+                )
     }
 
     fun loginDataChanged(username: String, password: String) {

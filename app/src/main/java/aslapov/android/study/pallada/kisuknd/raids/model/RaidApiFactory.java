@@ -32,7 +32,7 @@ public final class RaidApiFactory {
 
 	private static volatile IRaidService sService;
 
-	private static final String BASE_URL = "http://192.168.77.77:8082/";
+	private static final String BASE_URL = "http://10.1.123.96/";
 
 	private RaidApiFactory() {
 	}

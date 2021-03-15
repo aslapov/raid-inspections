@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName;
 
 public class LoggedInUser {
 
-    @SerializedName("username")
+    @SerializedName("userId")
     @Expose
-    private String userName;
+    private String username;
 
     @SerializedName("password")
     @Expose
     private String password;
 
-    public LoggedInUser(String userName, String password) {
-        this.userName = userName;
+    public LoggedInUser(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
