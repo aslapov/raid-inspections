@@ -52,7 +52,7 @@ public class RaidRepository {
     }
 
     public void getRaid(UUID raidId) {
-        RaidApiFactory.getRaidService()
+        ApiFactory.getRaidService()
                 .queryRaidById(raidId)
                 .enqueue(new Callback<Entry>() {
                     @Override

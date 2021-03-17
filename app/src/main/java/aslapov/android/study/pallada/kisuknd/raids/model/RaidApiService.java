@@ -15,16 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface IRaidService {
-
-    @POST("proxy/auth")
-    Observable<TicketEntry> login(@Body LoggedInUser loggedInUser);
-
-    @GET("proxy/auth/ticket")
-    Observable<TicketEntry> isAuthentificated();
-
-    @DELETE("proxy/auth/ticket")
-    void logout();
+public interface RaidApiService {
 
     @GET("Inspections")
     Observable<List<Raid>> queryRaids();

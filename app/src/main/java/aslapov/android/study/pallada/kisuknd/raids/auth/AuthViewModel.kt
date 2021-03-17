@@ -2,16 +2,17 @@ package aslapov.android.study.pallada.kisuknd.raids.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import aslapov.android.study.pallada.kisuknd.raids.R
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidApiFactory
+import aslapov.android.study.pallada.kisuknd.raids.model.ApiFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
 class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     enum class AuthResult {
-        SUCCESS, ERROR
+        SUCCESS, UNAUTHORIZED, ERROR
     }
 
     private val _authForm = MutableLiveData<AuthFormState>()
@@ -22,18 +23,7 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
 
     fun login(username: String, password: String) {
         val user = LoggedInUser(username, password)
-        val result = repository.login(user)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { response ->
-                            val ticketId = response.ticket.id;
-                            RaidApiFactory.setAuthTicket(ticketId)
-                        },
-                        { error ->
-                            val exception = error as HttpException
-                        }
-                )
+        repository.login(user)
     }
 
     fun loginDataChanged(username: String, password: String) {

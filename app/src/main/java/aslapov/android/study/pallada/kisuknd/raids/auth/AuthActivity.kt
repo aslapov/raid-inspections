@@ -17,31 +17,29 @@ import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory
 private lateinit var authViewModel: AuthViewModel
 
 class AuthActivity : AppCompatActivity() {
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+    private lateinit var error: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authorization_layout)
 
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
+        username = findViewById(R.id.username)
+        password = findViewById(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
-        val error = findViewById<TextView>(R.id.auth_message)
+        error = findViewById(R.id.auth_message)
 
         authViewModel = ViewModelProvider(this, ViewModelFactory(application))
                 .get(AuthViewModel::class.java)
 
         username.doAfterTextChanged {
-            authViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-            )
+            onUserCredentialsChanged()
         }
 
         password.doAfterTextChanged {
-            authViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-            )
+            onUserCredentialsChanged()
         }
 
         login.setOnClickListener {
@@ -67,7 +65,8 @@ class AuthActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             when (authResult) {
-                AuthViewModel.AuthResult.ERROR -> error.text = getString(R.string.authorization_fail)
+                AuthViewModel.AuthResult.UNAUTHORIZED -> error.text = getString(R.string.authorization_fail)
+                AuthViewModel.AuthResult.ERROR -> error.text = getString(R.string.authorization_error)
                 AuthViewModel.AuthResult.SUCCESS -> {
                     loading.visibility = View.VISIBLE
                     openRaidListScreen()
@@ -80,5 +79,13 @@ class AuthActivity : AppCompatActivity() {
         RaidListActivity.start(this)
         setResult(RESULT_OK)
         finish()
+    }
+
+    private fun onUserCredentialsChanged() {
+        error.text = ""
+        authViewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+        )
     }
 }

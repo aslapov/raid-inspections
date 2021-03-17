@@ -31,7 +31,7 @@
     <string name="authorization_registration">Придумайте пароль для регистрации в системе.</string>
     <string name="authorization_registrated">Пользователь зарегистрирован. Войдите в систему</string>
     <string name="authorization_fail">Не удалось выполнить вход, проверьте правильность введенных данных</string>
-    <string name="authorization_error">Произошла неизвестная ошибка</string>
+    <string name="authorization_error">Ошибка входа в систему, попробуйте еще раз позже или обратитесь в службу технической поддержки.</string>
     <string name="authorization_connect_error">Не удалось подключиться к серверу</string>
     <string name="invalid_username">Неверное имя пользователя</string>
     <string name="invalid_password">Пароль не должен быть пустым</string>

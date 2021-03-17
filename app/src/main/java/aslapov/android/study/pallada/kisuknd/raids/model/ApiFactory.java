@@ -25,26 +25,42 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public final class RaidApiFactory {
+public final class ApiFactory {
 
-	private static OkHttpClient sClient;
+	private static Retrofit sRetrofit;
+	private static OkHttpClient sHttpClient;
 	private static BasicAuthInterceptor sAuthInterceptor;
 
-	private static volatile IRaidService sService;
+	private static volatile RaidApiService sRaidService;
+	private static volatile AuthApiService sAuthService;
 
 	private static final String BASE_URL = "http://10.1.123.96/";
 
-	private RaidApiFactory() {
+	private ApiFactory() {
 	}
 
 	@NonNull
-	public static IRaidService getRaidService() {
-		IRaidService service = sService;
+	public static RaidApiService getRaidService() {
+		RaidApiService service = sRaidService;
 		if (service == null) {
-			synchronized (RaidApiFactory.class) {
-				service = sService;
+			synchronized (ApiFactory.class) {
+				service = sRaidService;
 				if (service == null) {
-					service = sService = buildRetrofit().create(IRaidService.class);
+					service = sRaidService = getRetrofit().create(RaidApiService.class);
+				}
+			}
+		}
+		return service;
+	}
+
+	@NonNull
+	public static AuthApiService getAuthService() {
+		AuthApiService service = sAuthService;
+		if (service == null) {
+			synchronized (ApiFactory.class) {
+				service = sAuthService;
+				if (service == null) {
+					service = sAuthService = getRetrofit().create(AuthApiService.class);
 				}
 			}
 		}
@@ -59,7 +75,7 @@ public final class RaidApiFactory {
 	public static BasicAuthInterceptor getAuthInterceptor() {
 		BasicAuthInterceptor interceptor = sAuthInterceptor;
 		if (interceptor == null) {
-			synchronized (RaidApiFactory.class) {
+			synchronized (ApiFactory.class) {
 				interceptor = sAuthInterceptor;
 				if (interceptor == null)
 					interceptor = sAuthInterceptor = new BasicAuthInterceptor();
@@ -67,6 +83,20 @@ public final class RaidApiFactory {
 		}
 
 		return interceptor;
+	}
+
+	@NonNull
+	private static Retrofit getRetrofit() {
+		Retrofit retrofit = sRetrofit;
+		if (retrofit == null) {
+			synchronized (ApiFactory.class) {
+				retrofit = sRetrofit;
+				if (retrofit == null) {
+					retrofit = sRetrofit = buildRetrofit();
+				}
+			}
+		}
+		return retrofit;
 	}
 
 	@NonNull
@@ -85,13 +115,13 @@ public final class RaidApiFactory {
 
 	@NonNull
 	private static OkHttpClient getClient() {
-		OkHttpClient client = sClient;
+		OkHttpClient client = sHttpClient;
 		if (client == null) {
-			synchronized (RaidApiFactory.class) {
-				client = sClient;
+			synchronized (ApiFactory.class) {
+				client = sHttpClient;
 				if (client == null) {
 					sAuthInterceptor = new BasicAuthInterceptor();
-					client = sClient = buildClient();
+					client = sHttpClient = buildClient();
 				}
 			}
 		}

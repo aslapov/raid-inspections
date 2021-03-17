@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import aslapov.android.study.pallada.kisuknd.raids.auth.AuthDataSource;
 import aslapov.android.study.pallada.kisuknd.raids.auth.AuthRepository;
 import aslapov.android.study.pallada.kisuknd.raids.auth.AuthViewModel;
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidApiFactory;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -50,7 +50,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private AuthViewModel createAuthViewModel() {
-        AuthRepository repository = new AuthRepository(mApplication, RaidApiFactory.getRaidService());
+        AuthDataSource source = new AuthDataSource(mApplication);
+        AuthRepository repository = new AuthRepository(source);
         return new AuthViewModel(repository);
     }
 
