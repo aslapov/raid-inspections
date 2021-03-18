@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.auth
+package aslapov.android.study.pallada.kisuknd.raids.model
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import aslapov.android.study.pallada.kisuknd.raids.auth.AuthDataSource;
-import aslapov.android.study.pallada.kisuknd.raids.auth.AuthRepository;
-import aslapov.android.study.pallada.kisuknd.raids.auth.AuthViewModel;
+import aslapov.android.study.pallada.kisuknd.raids.model.AuthDataSource;
+import aslapov.android.study.pallada.kisuknd.raids.repository.AuthRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
+import aslapov.android.study.pallada.kisuknd.raids.ui.auth.AuthViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 

@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view;
+package aslapov.android.study.pallada.kisuknd.raids.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import aslapov.android.study.pallada.kisuknd.raids.R;
 
 public class ShowRaidActivity extends AppCompatActivity {
-    public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.view.raid_id";
+    public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.ui.raid_id";
 
     // result_code для Activity, возвращающееся при изменении конфигурации (вращение экрана)
     public static final int RESULT_CONFIGURATION_CHANGE = 1;

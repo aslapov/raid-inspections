@@ -1,8 +1,7 @@
-package aslapov.android.study.pallada.kisuknd.raids.view;
+package aslapov.android.study.pallada.kisuknd.raids.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.widget.ArrayAdapter;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,14 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
 
-import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.EditRaidViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;
 
 public class EditRaidActivity extends BaseEditableRaidActivity {
-	public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.view.raid_id";
+	public static final String EXTRA_RAID_ID = "aslapov.android.study.pallada.kisuknd.raids.ui.raid_id";
 
 	private EditRaidViewModel mViewModel;
 

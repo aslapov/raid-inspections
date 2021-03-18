@@ -1,16 +1,17 @@
-package aslapov.android.study.pallada.kisuknd.raids.auth
+package aslapov.android.study.pallada.kisuknd.raids.repository
 
+import androidx.lifecycle.MediatorLiveData
+import aslapov.android.study.pallada.kisuknd.raids.model.AuthDataSource
 import aslapov.android.study.pallada.kisuknd.raids.model.AuthApiService
 import aslapov.android.study.pallada.kisuknd.raids.model.ApiFactory
-import io.reactivex.Observable
+import aslapov.android.study.pallada.kisuknd.raids.model.AuthResult
+import aslapov.android.study.pallada.kisuknd.raids.model.LoggedInUser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
+import java.net.ConnectException
 
 class AuthRepository(private val dataSource: AuthDataSource) {
-    enum class AuthApiResult {
-        SUCCESS, UNAUTHORIZED, ERROR
-    }
 
     var user: LoggedInUser? = null
         private set
@@ -22,7 +23,11 @@ class AuthRepository(private val dataSource: AuthDataSource) {
         user = dataSource.getUser()
     }
 
-    fun login(user: LoggedInUser) {
+    private val service: AuthApiService = ApiFactory.getAuthService()
+
+    private val result = MediatorLiveData<AuthResult>()
+
+    fun login(user: LoggedInUser){
         val subscriberResult = service.login(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -30,25 +35,23 @@ class AuthRepository(private val dataSource: AuthDataSource) {
                         { response ->
                             val ticketId = response.ticket.id;
                             ApiFactory.setAuthTicket(ticketId)
+                            setLoggedInUser(user)
                             dataSource.setUser(user)
-                            _authResult.value = AuthApiResult.SUCCESS
+                            result.value = AuthResult.AUTHORIZED
                         },
                         { error ->
-                            val exception = error as HttpException
-                            _authResult.value = if (exception.code() == 403)
-                                AuthApiResult.UNAUTHORIZED
-                            else
-                                AuthApiResult.ERROR
+                            when (error) {
+                                is ConnectException -> result.value = AuthResult.ERROR
+                                is HttpException -> {
+                                    result.value = if (error.code() == 403)
+                                        AuthResult.UNAUTHORIZED
+                                    else
+                                        AuthResult.ERROR
+                                }
+                                else -> result.value = AuthResult.ERROR
+                            }
                         }
                 )
-    }
-
-    fun isAuthentificated(): Observable<TicketEntry> {
-        return service.isAuthentificated();
-    }
-
-    fun getSessionStatus() {
-
     }
 
     fun logout() {
@@ -56,8 +59,6 @@ class AuthRepository(private val dataSource: AuthDataSource) {
         dataSource.logout()
         service.logout()
     }
-
-    private val service: AuthApiService = ApiFactory.getAuthService()
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
         this.user = loggedInUser

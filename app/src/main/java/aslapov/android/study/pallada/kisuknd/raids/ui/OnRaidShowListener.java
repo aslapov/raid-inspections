@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view;
+package aslapov.android.study.pallada.kisuknd.raids.ui;
 
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 

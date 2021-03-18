@@ -1,8 +1,7 @@
-package aslapov.android.study.pallada.kisuknd.raids.view;
+package aslapov.android.study.pallada.kisuknd.raids.ui;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import aslapov.android.study.pallada.kisuknd.raids.R;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.BaseListViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidListViewModel;
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory;

@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.view;
+package aslapov.android.study.pallada.kisuknd.raids.ui;
 
 import android.app.Activity;
 import android.content.Intent;

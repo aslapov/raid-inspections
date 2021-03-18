@@ -1,4 +1,4 @@
-package aslapov.android.study.pallada.kisuknd.raids.auth
+package aslapov.android.study.pallada.kisuknd.raids.ui.auth
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import aslapov.android.study.pallada.kisuknd.raids.R
-import aslapov.android.study.pallada.kisuknd.raids.view.RaidListActivity
+import aslapov.android.study.pallada.kisuknd.raids.model.AuthResult
+import aslapov.android.study.pallada.kisuknd.raids.ui.RaidListActivity
 import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory
 
 private lateinit var authViewModel: AuthViewModel
@@ -65,9 +66,9 @@ class AuthActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             when (authResult) {
-                AuthViewModel.AuthResult.UNAUTHORIZED -> error.text = getString(R.string.authorization_fail)
-                AuthViewModel.AuthResult.ERROR -> error.text = getString(R.string.authorization_error)
-                AuthViewModel.AuthResult.SUCCESS -> {
+                AuthResult.UNAUTHORIZED -> error.text = getString(R.string.authorization_fail)
+                AuthResult.ERROR -> error.text = getString(R.string.authorization_error)
+                AuthResult.AUTHORIZED -> {
                     loading.visibility = View.VISIBLE
                     openRaidListScreen()
                 }

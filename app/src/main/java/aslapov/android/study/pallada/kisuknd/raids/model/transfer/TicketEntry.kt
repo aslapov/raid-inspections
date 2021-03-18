@@ -1,5 +1,6 @@
-package aslapov.android.study.pallada.kisuknd.raids.auth
+package aslapov.android.study.pallada.kisuknd.raids.model.transfer
 
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Ticket
 import com.google.gson.annotations.SerializedName
 
 data class TicketEntry(

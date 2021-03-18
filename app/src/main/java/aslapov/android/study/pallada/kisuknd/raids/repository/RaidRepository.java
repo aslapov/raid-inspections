@@ -1,10 +1,13 @@
-package aslapov.android.study.pallada.kisuknd.raids.model;
+package aslapov.android.study.pallada.kisuknd.raids.repository;
 
 import android.content.Context;
 
 import java.util.List;
 import java.util.UUID;
 
+import aslapov.android.study.pallada.kisuknd.raids.model.ApiFactory;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidDao;
+import aslapov.android.study.pallada.kisuknd.raids.model.RaidRoomDatabase;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Entry;
 import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Inspection;
@@ -18,7 +21,7 @@ public class RaidRepository {
 
     private RaidDao mRaidDao;
 
-    RaidRepository(Context applicationContext) {
+    public RaidRepository(Context applicationContext) {
         RaidRoomDatabase db = RaidRoomDatabase.getDatabase(applicationContext);
         mRaidDao = db.raidDao();
     }

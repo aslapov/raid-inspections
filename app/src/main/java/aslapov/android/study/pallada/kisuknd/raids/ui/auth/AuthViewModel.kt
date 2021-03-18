@@ -1,19 +1,15 @@
-package aslapov.android.study.pallada.kisuknd.raids.auth
+package aslapov.android.study.pallada.kisuknd.raids.ui.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import aslapov.android.study.pallada.kisuknd.raids.R
-import aslapov.android.study.pallada.kisuknd.raids.model.ApiFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
+import aslapov.android.study.pallada.kisuknd.raids.model.AuthFormState
+import aslapov.android.study.pallada.kisuknd.raids.repository.AuthRepository
+import aslapov.android.study.pallada.kisuknd.raids.model.AuthResult
+import aslapov.android.study.pallada.kisuknd.raids.model.LoggedInUser
 
 class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
-    enum class AuthResult {
-        SUCCESS, UNAUTHORIZED, ERROR
-    }
 
     private val _authForm = MutableLiveData<AuthFormState>()
     val authFormState: LiveData<AuthFormState> = _authForm
