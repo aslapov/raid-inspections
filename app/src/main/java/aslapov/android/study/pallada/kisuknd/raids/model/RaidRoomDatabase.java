@@ -18,7 +18,7 @@ public abstract class RaidRoomDatabase extends RoomDatabase {
 
     private static volatile RaidRoomDatabase INSTANCE;
 
-    static RaidRoomDatabase getDatabase(final Context context) {
+    public static RaidRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (RaidRoomDatabase.class) {
                 if (INSTANCE == null) {

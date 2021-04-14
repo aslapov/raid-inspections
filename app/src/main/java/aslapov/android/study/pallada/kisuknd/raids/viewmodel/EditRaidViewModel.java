@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
-import aslapov.android.study.pallada.kisuknd.raids.model.RepositoryProvider;
+import aslapov.android.study.pallada.kisuknd.raids.repository.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidInspectionMember;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;

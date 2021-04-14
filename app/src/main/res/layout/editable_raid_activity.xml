@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".view.CreateRaidActivity">
+    tools:context=".ui.CreateRaidActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -24,6 +24,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/editable_raid_layout" />
+    <include layout="@layout/editable_raid_layout_old" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

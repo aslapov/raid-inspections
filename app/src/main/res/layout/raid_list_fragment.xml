@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <aslapov.android.study.pallada.kisuknd.raids.view.EmptyRecyclerView
+    <aslapov.android.study.pallada.kisuknd.raids.ui.EmptyRecyclerView
         android:id="@+id/raid_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +21,7 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-    <!-- Empty view is only visible when the list has no items. -->
+    <!-- Empty ui is only visible when the list has no items. -->
     <TextView
         android:id="@+id/empty_list_text_view"
         android:layout_width="wrap_content"

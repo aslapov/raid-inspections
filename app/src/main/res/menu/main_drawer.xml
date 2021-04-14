@@ -20,7 +20,11 @@
             android:icon="@android:drawable/ic_menu_delete"
             android:id="@+id/nav_trash"
             android:title="@string/navigation_trash" />
-
     </group>
+
+    <item
+        android:icon="@drawable/logout"
+        android:id="@+id/nav_logout"
+        android:title="@string/navigation_logout" />
 
 </menu>

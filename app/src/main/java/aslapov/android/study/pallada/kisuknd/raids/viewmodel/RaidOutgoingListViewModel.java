@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-import aslapov.android.study.pallada.kisuknd.raids.model.RaidRepository;
+import aslapov.android.study.pallada.kisuknd.raids.repository.RaidRepository;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.Raid;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
 import io.reactivex.Completable;
