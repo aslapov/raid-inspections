@@ -6,18 +6,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import aslapov.android.study.pallada.kisuknd.raids.R
+import aslapov.android.study.pallada.kisuknd.raids.RaidApplication
 import aslapov.android.study.pallada.kisuknd.raids.model.AuthResult
 import aslapov.android.study.pallada.kisuknd.raids.ui.RaidListActivity
-import aslapov.android.study.pallada.kisuknd.raids.viewmodel.ViewModelFactory
-
-private lateinit var authViewModel: AuthViewModel
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.AuthViewModelFactory
 
 class AuthActivity : AppCompatActivity() {
+
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory((application as RaidApplication).authRepository)
+    }
+
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var error: TextView
@@ -31,9 +35,6 @@ class AuthActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
         error = findViewById(R.id.auth_message)
-
-        authViewModel = ViewModelProvider(this, ViewModelFactory(application))
-                .get(AuthViewModel::class.java)
 
         username.doAfterTextChanged {
             onUserCredentialsChanged()

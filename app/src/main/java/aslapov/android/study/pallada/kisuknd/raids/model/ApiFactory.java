@@ -34,7 +34,7 @@ public final class ApiFactory {
 	private static volatile RaidApiService sRaidService;
 	private static volatile AuthApiService sAuthService;
 
-	private static final String BASE_URL = "http://10.1.123.96/";
+	private static final String BASE_URL = "http://10.1.3.106/";
 
 	private ApiFactory() {
 	}

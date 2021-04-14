@@ -1,19 +1,18 @@
 package aslapov.android.study.pallada.kisuknd.raids.repository
 
-import androidx.lifecycle.MediatorLiveData
-import aslapov.android.study.pallada.kisuknd.raids.model.AuthDataSource
-import aslapov.android.study.pallada.kisuknd.raids.model.AuthApiService
-import aslapov.android.study.pallada.kisuknd.raids.model.ApiFactory
-import aslapov.android.study.pallada.kisuknd.raids.model.AuthResult
-import aslapov.android.study.pallada.kisuknd.raids.model.LoggedInUser
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import aslapov.android.study.pallada.kisuknd.raids.model.*
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Person
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.Site
+import aslapov.android.study.pallada.kisuknd.raids.model.transfer.UserCredentials
 import retrofit2.HttpException
+import java.lang.Exception
 import java.net.ConnectException
 
-class AuthRepository(private val dataSource: AuthDataSource) {
-
-    var user: LoggedInUser? = null
+class AuthRepository(
+        private val dataSource: AuthDataSource,
+        private val authService: AuthApiService
+) {
+    var user: User? = null
         private set
 
     val isLoggedIn: Boolean
@@ -23,44 +22,54 @@ class AuthRepository(private val dataSource: AuthDataSource) {
         user = dataSource.getUser()
     }
 
-    private val service: AuthApiService = ApiFactory.getAuthService()
+    suspend fun login(username: String, password: String): AuthResult = try {
+            val userCredentials = UserCredentials(username, password)
+            val ticketEntry = authService.login(userCredentials)
+            ApiFactory.setAuthTicket(ticketEntry.ticket.id)
 
-    private val result = MediatorLiveData<AuthResult>()
+            val person = authService.getPerson()
+            val sites = authService.getPersonSites()
+            val userDepartments = sites.list.entries
+                    .map { x -> x.entry.site }
+                    .filter { site -> site.visibility == "PRIVATE" }
+                    .map { site -> site.title }
+            setLoggedInUser(person.entry, userDepartments)
 
-    fun login(user: LoggedInUser){
-        val subscriberResult = service.login(user)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { response ->
-                            val ticketId = response.ticket.id;
-                            ApiFactory.setAuthTicket(ticketId)
-                            setLoggedInUser(user)
-                            dataSource.setUser(user)
-                            result.value = AuthResult.AUTHORIZED
-                        },
-                        { error ->
-                            when (error) {
-                                is ConnectException -> result.value = AuthResult.ERROR
-                                is HttpException -> {
-                                    result.value = if (error.code() == 403)
-                                        AuthResult.UNAUTHORIZED
-                                    else
-                                        AuthResult.ERROR
-                                }
-                                else -> result.value = AuthResult.ERROR
-                            }
-                        }
-                )
+            AuthResult.AUTHORIZED
+        } catch (e: ConnectException) {
+            AuthResult.ERROR
+        } catch (e: HttpException) {
+            if (e.code() == 403)
+                AuthResult.UNAUTHORIZED
+            else
+                AuthResult.ERROR
+        } catch (e: Exception) {
+            AuthResult.ERROR
+        }
+
+    suspend fun logout(): Boolean = try {
+            authService.logout()
+            dataSource.logout()
+            user = null
+            true
+        } catch (error: Exception) {
+            false
+        }
+
+    private fun setLoggedInUser(person: Person) {
+        setLoggedInUser(person, null)
     }
 
-    fun logout() {
-        user = null
-        dataSource.logout()
-        service.logout()
-    }
-
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
+    private fun setLoggedInUser(person: Person, userDepartments: List<String>?) {
+        this.user = User(
+                person.id,
+                person.firstName,
+                person.lastName,
+                person.displayName,
+                person.email,
+                person.jobTitle,
+                userDepartments
+        )
+        user?.let { dataSource.setUser(it) }
     }
 }

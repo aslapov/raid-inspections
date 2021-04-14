@@ -1,13 +1,11 @@
 package aslapov.android.study.pallada.kisuknd.raids.ui.auth
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import aslapov.android.study.pallada.kisuknd.raids.R
 import aslapov.android.study.pallada.kisuknd.raids.model.AuthFormState
 import aslapov.android.study.pallada.kisuknd.raids.repository.AuthRepository
 import aslapov.android.study.pallada.kisuknd.raids.model.AuthResult
-import aslapov.android.study.pallada.kisuknd.raids.model.LoggedInUser
+import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
 
@@ -17,9 +15,15 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     private val _authResult = MutableLiveData<AuthResult>()
     val authResult: LiveData<AuthResult> = _authResult
 
+    init {
+        if (repository.isLoggedIn)
+            _authResult.value = AuthResult.AUTHORIZED
+    }
+
     fun login(username: String, password: String) {
-        val user = LoggedInUser(username, password)
-        repository.login(user)
+        viewModelScope.launch {
+            _authResult.value = repository.login(username, password)
+        }
     }
 
     fun loginDataChanged(username: String, password: String) {

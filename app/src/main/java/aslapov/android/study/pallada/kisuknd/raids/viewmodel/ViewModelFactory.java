@@ -22,9 +22,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(AuthViewModel.class))
-            return (T) createAuthViewModel();
-
         if (modelClass.isAssignableFrom(RaidListViewModel.class))
             return (T) createRaidListViewModel();
 
@@ -47,12 +44,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) createEditRaidViewModel();
 
         throw new IllegalArgumentException("Unknown ViewModel class");
-    }
-
-    private AuthViewModel createAuthViewModel() {
-        AuthDataSource source = new AuthDataSource(mApplication);
-        AuthRepository repository = new AuthRepository(source);
-        return new AuthViewModel(repository);
     }
 
     private RaidListViewModel createRaidListViewModel() {

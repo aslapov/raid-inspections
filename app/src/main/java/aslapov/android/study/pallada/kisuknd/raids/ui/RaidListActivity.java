@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +20,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
 import java.util.UUID;
 
 import aslapov.android.study.pallada.kisuknd.raids.R;
+import aslapov.android.study.pallada.kisuknd.raids.RaidApplication;
 import aslapov.android.study.pallada.kisuknd.raids.model.local.RaidWithInspectors;
+import aslapov.android.study.pallada.kisuknd.raids.ui.auth.AuthActivity;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.AuthViewModelFactory;
+import aslapov.android.study.pallada.kisuknd.raids.viewmodel.RaidLisActivityViewModel;
 
 public class RaidListActivity extends AppCompatActivity
 		implements OnRaidShowListener, NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +40,8 @@ public class RaidListActivity extends AppCompatActivity
 	private static final int REQUEST_CODE_SHOW_RAID_ACTIVITY = 0;
 
 	private ImageView mEmptyRaidImage;
+
+	private RaidLisActivityViewModel mViewModel;
 
 	public static void start(@NonNull Activity activity) {
 		Intent intent = new Intent(activity, RaidListActivity.class);
@@ -42,6 +52,10 @@ public class RaidListActivity extends AppCompatActivity
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		RaidApplication application = (RaidApplication) getApplication();
+		mViewModel = new ViewModelProvider(this, new AuthViewModelFactory(application.getAuthRepository()))
+				.get(RaidLisActivityViewModel.class);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -55,6 +69,13 @@ public class RaidListActivity extends AppCompatActivity
 
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
+
+		View headerLayout = navigationView.getHeaderView(0);
+		TextView userDisplayNameTextView = headerLayout.findViewById(R.id.user_display);
+		userDisplayNameTextView.setText(mViewModel.getUserDisplayName());
+		TextView userDepartmentTextView = headerLayout.findViewById(R.id.user_department);
+		List<String> userDepartments = mViewModel.getUserDepartments();
+		userDepartmentTextView.setText(userDepartments != null ? userDepartments.get(0) : null);
 
 		FragmentManager fm = getSupportFragmentManager();
 		BaseRaidListFragment raidListFragment = (BaseRaidListFragment) fm.findFragmentById(R.id.fragment_container);
@@ -82,12 +103,19 @@ public class RaidListActivity extends AppCompatActivity
 			else
 				mEmptyRaidImage.setVisibility(View.GONE);
 		}
+
+		mViewModel.getLogoutResult().observe(this, isLoggedOut -> {
+			if (isLoggedOut) {
+				closeAndShowAuthActivity();
+			} else {
+				Toast.makeText(this, R.string.logout_error, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		Fragment raidListFragment;
-		FragmentManager fm = getSupportFragmentManager();
+		Fragment raidListFragment = null;
 		ActionBar actionBar = getSupportActionBar();
 
 		switch (item.getItemId()) {
@@ -103,23 +131,16 @@ public class RaidListActivity extends AppCompatActivity
 				actionBar.setTitle(R.string.navigation_trash);
 				raidListFragment = RaidTrashListFragment.newInstance();
 				break;
+			case R.id.nav_logout:
+				mViewModel.logout();;
+				break;
 			default:
 				actionBar.setTitle(R.string.navigation_raids);
 				raidListFragment = RaidListFragment.newInstance();
 		}
 
-		Fragment raidFragment = fm.findFragmentById(R.id.detail_fragment_container);
-
-		FragmentTransaction transaction = fm.beginTransaction().replace(R.id.fragment_container, raidListFragment);
-		if (raidFragment != null)
-			transaction = transaction.remove(raidFragment);
-		transaction.commit();
-
-		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawer.closeDrawer(GravityCompat.START);
-
-		if (findViewById(R.id.detail_fragment_container) != null)
-			mEmptyRaidImage.setVisibility(View.VISIBLE);
+		if (raidListFragment != null)
+			openRaidList(raidListFragment);
 
 		return true;
 	}
@@ -159,6 +180,22 @@ public class RaidListActivity extends AppCompatActivity
 		}
 	}
 
+	private void openRaidList(Fragment raidListFragment) {
+		FragmentManager fm = getSupportFragmentManager();
+		Fragment raidFragment = fm.findFragmentById(R.id.detail_fragment_container);
+
+		FragmentTransaction transaction = fm.beginTransaction().replace(R.id.fragment_container, raidListFragment);
+		if (raidFragment != null)
+			transaction = transaction.remove(raidFragment);
+		transaction.commit();
+
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawer.closeDrawer(GravityCompat.START);
+
+		if (findViewById(R.id.detail_fragment_container) != null)
+			mEmptyRaidImage.setVisibility(View.VISIBLE);
+	}
+
 	private void showRaidFragment(UUID raidId) {
 		ShowRaidFragment raidFragment = (ShowRaidFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
 		if (raidFragment == null || !raidId.equals(raidFragment.getRaidId())) {
@@ -169,5 +206,13 @@ public class RaidListActivity extends AppCompatActivity
 					.commit();
 		}
 		mEmptyRaidImage.setVisibility(View.GONE);
+	}
+
+	private void closeAndShowAuthActivity() {
+		Intent intent = new Intent(this, AuthActivity.class);
+		startActivity(intent);
+
+		setResult(RESULT_OK);
+		finish();
 	}
 }
