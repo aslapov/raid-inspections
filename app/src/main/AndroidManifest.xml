@@ -17,40 +17,40 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name=".ui.auth.AuthActivity">
+            android:name=".auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.RaidListActivity" />
+        <activity android:name=".raidlist.RaidListActivity" />
 
         <activity
-            android:name=".ui.ShowRaidActivity"
+            android:name=".raid.ShowRaidActivity"
             android:label="@string/raid_information"
-            android:parentActivityName=".ui.RaidListActivity">
+            android:parentActivityName=".raidlist.RaidListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.RaidListActivity" />
+                android:value=".raidlist.RaidListActivity" />
         </activity>
 
         <activity
-            android:name=".ui.CreateRaidActivity"
+            android:name=".createraid.CreateRaidActivity"
             android:label="@string/new_raid_bar"
-            android:parentActivityName=".ui.RaidListActivity">
+            android:parentActivityName=".raidlist.RaidListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.RaidListActivity" />
+                android:value=".raidlist.RaidListActivity" />
         </activity>
 
         <activity
-            android:name=".ui.EditRaidActivity"
+            android:name=".editraid.EditRaidActivity"
             android:label="@string/edit_raid_bar"
-            android:parentActivityName=".ui.RaidListActivity">
+            android:parentActivityName=".raidlist.RaidListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.RaidListActivity" />
+                android:value=".raidlist.RaidListActivity" />
         </activity>
     </application>
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <aslapov.android.study.pallada.kisuknd.raids.ui.EmptyRecyclerView
+    <aslapov.android.study.pallada.kisuknd.raids.raidlist.EmptyRecyclerView
         android:id="@+id/raid_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
